@@ -13,8 +13,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-"""Reads in version information.
-Note: This file will be overwritten by the packaging process."""
+"""
+Reads in version information.
+Note: This file will be overwritten by the packaging process.
+"""
 import os
 
 directory_of_this_file = os.path.dirname(os.path.abspath(__file__))

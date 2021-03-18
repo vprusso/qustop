@@ -13,6 +13,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-"""Optimizations over quantum states."""
-from qustop.opt_dist.ppt import PPT
-from qustop.opt_dist.opt_dist import OptDist
+"""Core functionality"""
+from qustop.core.ensemble import Ensemble
+from qustop.core.state import State

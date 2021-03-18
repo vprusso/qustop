@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-"""Information about toqito-sdist and dependencies."""
+"""Information about qustop and dependencies."""
 __all__ = ["about"]
 
 import inspect
@@ -30,12 +30,13 @@ PYTHON_VERSION = sys.version_info[0:3]
 
 
 def about() -> None:
-    """Displays information about toqito-sdist, core/optional packages, and Python
-    version/platform information.
+    """
+    Displays information about qustop, core/optional packages, and
+    Python version/platform information.
     """
 
     about_str = f"""
-toqito-sdist: A Python toolkit for computing optimal probabilities of distinguishing ensembles of quantum states
+qustop: QUantum STate OPtmizer: A Python toolkit for computing optimal values of various state optimization problems.
 ==============================================================================
 Authored by: Vincent Russo, 2021 
 Core Dependencies

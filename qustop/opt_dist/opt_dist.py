@@ -15,18 +15,29 @@
 
 import numpy as np
 
-from qustop.ensemble import Ensemble
+from qustop.core.ensemble import Ensemble
+from qustop.opt_dist.ppt import PPT
 
 
 class OptDist:
-    def __init__(self, ensemble, measurement, error):
+    def __init__(self, ensemble, measurement, error, **kwargs):
         self.ensemble = ensemble
+        self.measurement = measurement
+        self.error = error
 
+        self._optimal_value = None
+        self._optimal_measurements = None
 
+    @property
+    def value(self):
+        return self._optimal_value
 
-if __name__ == "__main__":
-    np_state_1 = 1/2 * np.identity(2)
-    np_state_2 = 1/2 * np.identity(2)
-
-    ensemble = Ensemble([np_state_1, np_state_2], [1/2, 1/2])
-    print(ensemble[0])
+    @property
+    def measurements(self):
+        return self._optimal_measurements
+    
+    def solve(self):
+        if self.measurement == "ppt":
+            opt = PPT(self.ensemble, self.error)
+            self._optimal_value, self._optimal_measurements = opt.solve()
+            
