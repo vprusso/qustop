@@ -1,1 +1,1 @@
-"""The primary source directory for the qustop package."""
+"""The testing source directory for the qustop package."""

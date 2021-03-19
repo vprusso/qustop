@@ -9,23 +9,24 @@ from qustop.core.ensemble import Ensemble
 
 
 class PPT:
-    def __init__(self, ensemble, error, only_opt_val=True):
+    def __init__(self, ensemble, error, fast=False):
         self.ensemble = ensemble
         self.states = self.ensemble.density_matrices
         self.probs = self.ensemble.probs
         self.error = error
 
-        self.dim_x, self.dim_y = self.states[0].shape
-        self.dim = int(np.log2(self.dim_x))
-        self.dim_list = [2] * int(np.log2(self.dim_x))
-        self.sys_list = list(range(1, self.dim, 2))
+        self.dim_x, self.dim_y = self.ensemble[0].shape
+        self.dim_list = self.ensemble[0].dims
 
-        self.only_opt_val = only_opt_val
+        dim = int(np.log2(self.dim_x))
+        self.sys_list = list(range(1, dim, 2))
+
+        self.fast = fast
 
     def solve(self):
         # If just the optimal value is required, it is often less
         # computationally intensive to solve the dual problem.
-        if self.only_opt_val:
+        if self.fast:
             return self.dual_problem()
         # Otherwise, return the optimal value and the optimal measurements for
         # obtaining that value.
@@ -106,6 +107,6 @@ class PPT:
             )
 
         problem = cvxpy.Problem(objective, constraints)
-        sol_default = problem.solve(solver="CVXOPT")
+        sol_default = problem.solve(solver="CVXOPT", verbose=True)
 
         return sol_default, dual_vars

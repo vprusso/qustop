@@ -36,7 +36,7 @@ def about() -> None:
     """
 
     about_str = f"""
-qustop: QUantum STate OPtmizer: A Python toolkit for computing optimal values of various state optimization problems.
+qustop: Quantum Optimizer: A Python toolkit for computing optimal values of various convex optimization problems in quantum information.
 ==============================================================================
 Authored by: Vincent Russo, 2021 
 Core Dependencies

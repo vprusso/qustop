@@ -67,11 +67,8 @@ class Ensemble:
         return self._states
 
     @property
-    def density_matrices(self):
-        states: List[np.ndarray] = []
-        for state in self._states:
-            states.append(state.value)
-        return states
+    def density_matrices(self) -> List[np.ndarray]:
+        return [state.value for state in self._states]
 
     @staticmethod
     def _prepare_states(states: List[np.ndarray]) -> Optional[List[np.ndarray]]:

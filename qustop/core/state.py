@@ -42,31 +42,23 @@ class State:
         return self.__str__()
 
     @property
-    def shape(self):
+    def shape(self) -> Tuple[int, int]:
         return self._state.shape
 
     @property
-    def dims(self):
+    def dims(self) -> List[int]:
         return self._dims
 
     @property
-    def partitions(self):
+    def partitions(self) -> List[int]:
         return self._partitions
 
     @property
-    def value(self):
+    def value(self) -> np.ndarray:
         return self._state
 
-    def swap(self, sub_sys_swap: List[int]):
-        self._state = swap(self._state, sub_sys_swap, self._dims)
-        idx_1 = self._partitions.index(sub_sys_swap[0])
-        idx_2 = self._partitions.index(sub_sys_swap[1])
-
-        self._partitions[idx_1], self._partitions[idx_2] = self._partitions[idx_2], self._partitions[idx_1]
-        self._dims[idx_1], self._dims[idx_2] = self._dims[idx_2], self._dims[idx_1]
-
     @staticmethod
-    def _validate_state(state):
+    def _validate_state(state) -> Optional[np.ndarray]:
         # If `state` is provided as a vector. Transform it into density a
         # matrix.
         _, dim_y = state.shape
@@ -77,3 +69,14 @@ class State:
             raise ValueError("InvalidStates: All states must be density operators.")
 
         return states
+
+    def swap(self, sub_sys_swap: List[int]) -> None:
+        self._state = swap(self._state, sub_sys_swap, self._dims)
+
+        # Once the swap operation is performed, ensure the information is
+        # propagated to the associated state property class variables.
+        idx_1 = self._partitions.index(sub_sys_swap[0])
+        idx_2 = self._partitions.index(sub_sys_swap[1])
+
+        self._partitions[idx_1], self._partitions[idx_2] = self._partitions[idx_2], self._partitions[idx_1]
+        self._dims[idx_1], self._dims[idx_2] = self._dims[idx_2], self._dims[idx_1]
