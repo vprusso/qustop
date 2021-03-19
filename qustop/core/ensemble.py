@@ -83,6 +83,11 @@ class Ensemble:
         if probs is None:
             probs = [1 / len(self)] * len(self)
 
+        # The probability vector must be of the same length of the number of
+        # states in the ensemble.
+        if len(probs) != len(self):
+            raise ValueError("The number of probabilities in vector must be the same as the number of states in the ensemble.")
+
         # Probability vector must sum to one to be valid.
         if not np.isclose(sum(probs), 1):
             raise ValueError("InvalidProbabilities: Probabilities must sum to 1.")

@@ -1,8 +1,7 @@
 import numpy as np
 from toqito.perms import swap_operator
-from qustop.core.state import State
-from qustop.core.ensemble import Ensemble
-from qustop.opt_dist.opt_dist import OptDist
+from qustop.core import Ensemble, State
+from qustop.opt_dist import OptDist
 
 dim = 2
 sigma_0 = (np.kron(np.identity(dim), np.identity(dim)) + swap_operator(dim)) / (dim * (dim + 1))

@@ -1,3 +1,18 @@
+# Copyright (C) 2021 Vincent Russo
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 """PPT distinguishability."""
 from typing import List
 
@@ -18,10 +33,13 @@ class PPT:
         self.dim_x, self.dim_y = self.ensemble[0].shape
         self.dim_list = self.ensemble[0].dims
 
+        # TODO: Something needs to be generalized here for sys_list.
         dim = int(np.log2(self.dim_x))
         self.sys_list = list(range(1, dim, 2))
 
         self.fast = fast
+
+        self.dim = int(np.log2(self.dim_x))
 
     def solve(self):
         # If just the optimal value is required, it is often less
@@ -40,23 +58,22 @@ class PPT:
         meas = []
         constraints = []
 
+        if self.error == "unambiguous":
+            num_measurements = len(self.states) + 1
+        elif self.error == "min-error":
+            num_measurements = len(self.states)
+
+        for i in range(num_measurements):
+            meas.append(cvxpy.Variable((self.dim_x, self.dim_x), PSD=True))
+            constraints.append(partial_transpose(meas[i], self.sys_list, self.dim_list) >> 0)
+
         # Unambiguous consists of k + 1 operators, where the outcome of the
         # k+1^st corresponds to the inconclusive answer.
         if self.error == "unambiguous":
-            for i in range(len(self.states) + 1):
-                meas.append(cvxpy.Variable((self.dim_x, self.dim_x), PSD=True))
-                constraints.append(partial_transpose(meas[i], self.sys_list, self.dim_list) >> 0)
-
             for i, _ in enumerate(self.states):
                 for j, _ in enumerate(self.states):
                     if i != j:
                         constraints.append(self.probs[j] * cvxpy.trace(self.states[j].conj().T @ meas[i]) == 0)
-
-        # Minimize error of distinguishing via PPT measurements.
-        elif self.error == "min-error":
-            for i, _ in enumerate(self.states):
-                meas.append(cvxpy.Variable((self.dim_x, self.dim_x), PSD=True))
-                constraints.append(partial_transpose(meas[i], self.sys_list, self.dim_list) >> 0)
 
         for i, _ in enumerate(self.states):
             obj_func.append(self.probs[i] * cvxpy.trace(self.states[i].conj().T @ meas[i]))
@@ -67,7 +84,7 @@ class PPT:
 
         objective = cvxpy.Maximize(sum(obj_func))
         problem = cvxpy.Problem(objective, constraints)
-        sol_default = problem.solve(solver="CVXOPT")
+        sol_default = problem.solve(solver="CVXOPT", verbose=True)
 
         return sol_default, meas
 

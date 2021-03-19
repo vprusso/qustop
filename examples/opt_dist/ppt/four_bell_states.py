@@ -11,9 +11,8 @@ measurements is at most
 import numpy as np
 
 from toqito.states import bell
-from qustop.core.ensemble import Ensemble
-from qustop.core.state import State
-from qustop.opt_dist.opt_dist import OptDist
+from qustop.core import Ensemble, State
+from qustop.opt_dist import OptDist
 
 
 # Construct the corresponding density matrices of the Bell states.
@@ -25,7 +24,7 @@ states = [
 ]
 ensemble = Ensemble(states=states, probs=[1/4, 1/4, 1/4, 1/4])
 sd = OptDist(ensemble=ensemble, 
-                measurement="ppt", 
-                error="min-error")
+             measurement="ppt", 
+             error="min-error")
 sd.solve()
 print(sd.value)
