@@ -8,8 +8,6 @@ Assuming a uniform distribution p_1 = p_2 = p_3 = p_4 = 1/4, the
 optimal probability of distinguishing the Bell states via PPT
 measurements is at most
 """
-import numpy as np
-
 from toqito.states import bell
 from qustop.core import Ensemble, State
 from qustop.opt_dist import OptDist
@@ -24,7 +22,7 @@ states = [
 ]
 ensemble = Ensemble(states=states, probs=[1/4, 1/4, 1/4, 1/4])
 sd = OptDist(ensemble=ensemble, 
-             measurement="ppt", 
-             error="min-error")
+             dist_measurement="ppt",
+             dist_method="min-error")
 sd.solve()
 print(sd.value)

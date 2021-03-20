@@ -1,6 +1,13 @@
 Distinguishing Quantum States via PPT Measurements
 ==================================================
 
+Conclusive
+----------
+
+Inconclusive
+------------
+
+
 Entanglement cost of distinguishing Bell states
 -----------------------------------------------
 

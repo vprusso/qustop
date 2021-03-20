@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-"""PPT distinguishability."""
+
 from typing import List
 
 import cvxpy
@@ -24,11 +24,12 @@ from qustop.core.ensemble import Ensemble
 
 
 class PPT:
-    def __init__(self, ensemble, error, fast=False):
+    """PPT distinguishability."""
+    def __init__(self, ensemble, dist_method, fast=False):
         self.ensemble = ensemble
         self.states = self.ensemble.density_matrices
         self.probs = self.ensemble.probs
-        self.error = error
+        self.dist_method = dist_method
 
         self.dim_x, self.dim_y = self.ensemble[0].shape
         self.dim_list = self.ensemble[0].dims
@@ -58,9 +59,9 @@ class PPT:
         meas = []
         constraints = []
 
-        if self.error == "unambiguous":
+        if self.dist_method == "unambiguous":
             num_measurements = len(self.states) + 1
-        elif self.error == "min-error":
+        elif self.dist_method == "min-error":
             num_measurements = len(self.states)
 
         for i in range(num_measurements):
@@ -69,7 +70,7 @@ class PPT:
 
         # Unambiguous consists of k + 1 operators, where the outcome of the
         # k+1^st corresponds to the inconclusive answer.
-        if self.error == "unambiguous":
+        if self.dist_method == "unambiguous":
             for i, _ in enumerate(self.states):
                 for j, _ in enumerate(self.states):
                     if i != j:
@@ -84,7 +85,7 @@ class PPT:
 
         objective = cvxpy.Maximize(sum(obj_func))
         problem = cvxpy.Problem(objective, constraints)
-        sol_default = problem.solve(solver="CVXOPT", verbose=True)
+        sol_default = problem.solve(solver="CVXOPT")
 
         return sol_default, meas
 
@@ -98,7 +99,7 @@ class PPT:
         y_var = cvxpy.Variable((self.dim_x, self.dim_x), hermitian=True)
         objective = cvxpy.Minimize(cvxpy.trace(cvxpy.real(y_var)))
 
-        if self.error == "min-error":
+        if self.dist_method == "min-error":
             for i, _ in enumerate(self.states):
                 dual_vars.append(cvxpy.Variable((self.dim_x, self.dim_x), PSD=True))
                 constraints.append(
@@ -106,7 +107,7 @@ class PPT:
                     >> partial_transpose(dual_vars[i], sys=self.sys_list, dim=self.dim_list)
                 )
 
-        if self.error == "unambiguous":
+        if self.dist_method == "unambiguous":
             for j, _ in enumerate(self.states):
                 sum_val = 0
                 for i, _ in enumerate(self.states):

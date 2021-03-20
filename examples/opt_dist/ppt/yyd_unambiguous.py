@@ -23,7 +23,7 @@ rho_4 = State(x_4 * x_4.conj().T, [2, 2, 2, 2])
 ensemble = Ensemble([rho_1, rho_2, rho_3, rho_4])
 
 sd = OptDist(ensemble=ensemble, 
-             measurement="ppt", 
-             error="unambiguous")
+             dist_measurement="ppt",
+             dist_method="unambiguous")
 sd.solve()
 print(sd.value)

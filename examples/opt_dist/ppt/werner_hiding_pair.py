@@ -13,8 +13,8 @@ ensemble = Ensemble(states)
 expected_val = 1 / 2 + 1 / (dim + 1)
 
 sd = OptDist(ensemble=ensemble, 
-             measurement="ppt", 
-             error="min-error")
+             dist_measurement="ppt",
+             dist_method="min-error")
 
 sd.solve()
 

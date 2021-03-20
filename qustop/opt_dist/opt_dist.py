@@ -20,10 +20,10 @@ from qustop.opt_dist.ppt import PPT
 
 
 class OptDist:
-    def __init__(self, ensemble, measurement, error, **kwargs):
+    def __init__(self, ensemble: Ensemble, dist_measurement, dist_method, **kwargs):
         self.ensemble = ensemble
-        self.measurement = measurement
-        self.error = error
+        self.dist_measurement = dist_measurement
+        self.dist_method = dist_method
 
         self._optimal_value = None
         self._optimal_measurements = None
@@ -37,7 +37,6 @@ class OptDist:
         return self._optimal_measurements
     
     def solve(self):
-        if self.measurement == "ppt":
-            opt = PPT(self.ensemble, self.error)
+        if self.dist_measurement == "ppt":
+            opt = PPT(self.ensemble, self.dist_method)
             self._optimal_value, self._optimal_measurements = opt.solve()
-            

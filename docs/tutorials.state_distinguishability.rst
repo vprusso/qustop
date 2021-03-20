@@ -43,6 +43,17 @@ This setting is depicted in the following figure.
 
    The quantum state distinguishability setting.
 
+Conclusive discrimination
+^^^^^^^^^^^^^^^^^^^^^^^^^
+(Coming soon).
+
+Inconclusive discrimination
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Coming soon).
+
+Some section
+------------
+
 Depending on the sets of measurements that Alice and Bob are allowed to use,
 the optimal probability of distinguishing a given set of states is characterized
 by the following image.

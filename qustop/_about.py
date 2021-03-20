@@ -20,11 +20,14 @@ import inspect
 import platform
 import sys
 
+from cvxpy import __version__ as cvxpy_version
 from numpy import __version__ as numpy_version
 from scipy import __version__ as scipy_version
 
 import toqito
 
+TOQITO_SOURCE_FILE = inspect.getsourcefile(toqito)
+assert TOQITO_SOURCE_FILE
 
 PYTHON_VERSION = sys.version_info[0:3]
 
@@ -36,11 +39,14 @@ def about() -> None:
     """
 
     about_str = f"""
-qustop: Quantum Optimizer: A Python toolkit for computing optimal values of various convex optimization problems in quantum information.
+qustop: Quantum Optimizer: A Python toolkit for computing optimal values of various convex 
+optimization problems in quantum information.
 ==============================================================================
-Authored by: Vincent Russo, 2021 
+Authored by: Vincent Russo, 2021
+
 Core Dependencies
 -----------------
+CVXPY Version:\t{cvxpy_version}
 NumPy Version:\t{numpy_version}
 SciPy Version:\t{scipy_version}
 Optional Dependencies
