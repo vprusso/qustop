@@ -14,29 +14,36 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import numpy as np
+from typing import List
 
-from qustop.core.ensemble import Ensemble
-from qustop.opt_dist.ppt import PPT
+from qustop.core import Ensemble
+from qustop.opt_dist import Positive, PPT
 
 
 class OptDist:
-    def __init__(self, ensemble: Ensemble, dist_measurement, dist_method, **kwargs):
+    def __init__(self, ensemble: Ensemble, dist_measurement: str, dist_method: str, fast: bool = False):
         self.ensemble = ensemble
         self.dist_measurement = dist_measurement
         self.dist_method = dist_method
+        self.fast = fast
+
+        # TODO: Specify solver and precision.
 
         self._optimal_value = None
         self._optimal_measurements = None
 
     @property
-    def value(self):
+    def value(self) -> float:
         return self._optimal_value
 
     @property
-    def measurements(self):
+    def measurements(self) -> List[np.ndarray]:
         return self._optimal_measurements
     
     def solve(self):
         if self.dist_measurement == "ppt":
-            opt = PPT(self.ensemble, self.dist_method)
+            opt = PPT(self.ensemble, self.dist_method, self.fast)
+            self._optimal_value, self._optimal_measurements = opt.solve()
+        if self.dist_measurement == "positive":
+            opt = Positive(self.ensemble, self.dist_method, self.fast)
             self._optimal_value, self._optimal_measurements = opt.solve()
