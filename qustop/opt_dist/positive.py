@@ -21,7 +21,7 @@ import numpy as np
 
 
 class Positive:
-    """Global distinguishability."""
+    """Positive (global) distinguishability."""
     def __init__(self, ensemble, dist_method, fast=False):
         self.ensemble = ensemble
         self.states = self.ensemble.density_matrices
@@ -41,17 +41,37 @@ class Positive:
 
     def solve(self):
 
-        if len(self.ensemble) == 2:
-            # TODO: Don't need SDP for just two states
-            pass
+        # If there is only one state in the ensemble, the optimal value is trivially equal to
+        # one. The optimal measurement is simply the identity matrix.
+        if len(self.ensemble) == 1:
+            return 1, np.identity(self.ensemble.shape)
 
-        # If just the optimal value is required, it is often less
-        # computationally intensive to solve the dual problem.
-        if self.fast:
-            return self.dual_problem()
-        # Otherwise, return the optimal value and the optimal measurements for
-        # obtaining that value.
-        return self.primal_problem()
+        # There is a closed-form expression for the distinguishability of two density matrices.
+        if len(self.ensemble) == 2:
+            opt_val = 1/2 + np.linalg.norm(self.probs[0] * self.states[0] -
+                                           self.probs[1] * self.states[1])/2
+            D, V = np.linalg.eig(
+                self.probs[0] * self.states[0][:, [0]] @ self.states[0][:, [0]].conj().T -
+                self.probs[1] * self.states[1][:, [0]] @ self.states[1][:, [0]].conj().T
+            )
+            D = np.diag(D)
+            pind = np.argwhere(np.asarray(D) >= 0)
+            print(V[:, [pind]] @ V[:, [pind]].conj().T)
+            # pind = (D >= 0).nonzero()
+#            print(V[:, pind])
+#            meas_1 = V[:, pind] @ V[:, pind].conj().T
+#            print(V[:, pind])
+
+            # Construct optimal measurements:
+            return opt_val, []
+
+        # # If just the optimal value is required, it is often less
+        # # computationally intensive to solve the dual problem.
+        # if self.fast:
+        #     return self.dual_problem()
+        # # Otherwise, return the optimal value and the optimal measurements for
+        # # obtaining that value.
+        # return self.primal_problem()
 
     def primal_problem(self):
         r"""
@@ -63,7 +83,7 @@ class Positive:
 
         if self.dist_method == "unambiguous":
             num_measurements = len(self.states) + 1
-        elif self.dist_method == "min-error":
+        else:
             num_measurements = len(self.states)
 
         # Unambiguous state discrimination has an additional constraint on the states and

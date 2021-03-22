@@ -13,12 +13,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from typing import List, Optional, Tuple
+from typing import List, Optional
 
 import numpy as np
-
-from toqito.perms import swap
-from toqito.matrix_props import is_density
 
 from qustop.core.state import State
 
@@ -55,10 +52,6 @@ class Ensemble:
             state.swap(sub_sys_swap)
 
     @property
-    def subsystems(self):
-        return self._subsystems
-
-    @property
     def probs(self) -> List[float]:
         return self._probs
 
@@ -71,7 +64,7 @@ class Ensemble:
         return [state.value for state in self._states]
 
     @staticmethod
-    def _prepare_states(states: List[np.ndarray]) -> Optional[List[np.ndarray]]:
+    def _prepare_states(states: List[State]) -> Optional[List[State]]:
         # Assume at least one state is provided.
         if states is None or states == []:
             raise ValueError("InvalidStates: There must be at least one state provided.")
@@ -86,7 +79,8 @@ class Ensemble:
         # The probability vector must be of the same length of the number of
         # states in the ensemble.
         if len(probs) != len(self):
-            raise ValueError("The number of probabilities in vector must be the same as the number of states in the ensemble.")
+            raise ValueError("The number of probabilities in vector must be the same as the number "
+                             "of states in the ensemble.")
 
         # Probability vector must sum to one to be valid.
         if not np.isclose(sum(probs), 1):

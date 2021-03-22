@@ -13,7 +13,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-
 from typing import List, Optional, Tuple
 
 import numpy as np
@@ -21,9 +20,10 @@ import numpy as np
 from toqito.perms import swap
 from toqito.matrix_props import is_density
 
+
 class State:
     def __init__(self, state: np.ndarray, dims: List[int]) -> None:
-        self._state = state
+        self._state = self._prepare_state(state)
         self._dims = dims
         self._partitions = list(range(1, len(self._dims) + 1))
 
@@ -35,7 +35,10 @@ class State:
                 labels += f"{party}_{sub_sys}"
             else:
                 labels += f"{party}_{sub_sys} ⊗ "
-        out_s = f"State: \n dimensions = {self._dims}, \n partitions = {labels}\n shape = {self.shape}"
+        out_s = f"State: \n " \
+                f"dimensions = {self._dims}, \n " \
+                f"partitions = {labels}, \n " \
+                f"shape = {self.shape}, \n"
         return out_s
 
     def __repr__(self) -> str:
@@ -58,7 +61,7 @@ class State:
         return self._state
 
     @staticmethod
-    def _validate_state(state) -> Optional[np.ndarray]:
+    def _prepare_state(state: np.ndarray) -> Optional[np.ndarray]:
         # If `state` is provided as a vector. Transform it into density a
         # matrix.
         _, dim_y = state.shape
@@ -66,9 +69,9 @@ class State:
             state = state * state.conj().T
 
         if not is_density(state):
-            raise ValueError("InvalidStates: All states must be density operators.")
+            raise ValueError("All states must be density operators (PSD and trace equal to 1).")
 
-        return states
+        return state
 
     def swap(self, sub_sys_swap: List[int]) -> None:
         self._state = swap(self._state, sub_sys_swap, self._dims)

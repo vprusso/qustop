@@ -16,12 +16,13 @@
 import cvxpy
 import numpy as np
 
-from toqito.channels import partial_transpose
 from qustop.core import Ensemble
+from toqito.channels import partial_trace, partial_transpose
+from toqito.perms import symmetric_projection
 
 
-class PPT:
-    """PPT distinguishability."""
+class Separable:
+    """Separable distinguishability."""
     def __init__(self,
                  ensemble: Ensemble,
                  dist_method: str,
@@ -35,6 +36,8 @@ class PPT:
 
         self.dim_x, self.dim_y = self.ensemble[0].shape
         self.dim_list = self.ensemble[0].dims
+
+        self.level = 1
 
         # TODO: Something needs to be generalized here for sys_list.
         dim = int(np.log2(self.dim_x))
@@ -50,6 +53,44 @@ class PPT:
         # Otherwise, return the optimal value and the optimal measurements for
         # obtaining that value.
         return self.primal_problem()
+
+    def primal_problem(self):
+        r"""Compute optimal value of the symmetric extension hierarchy SDP."""
+        obj_func = []
+        meas = []
+        x_var = []
+        constraints = []
+
+        dim = int(np.log2(self.dim_x))
+        dim_list = [dim] * (self.level + 1)
+        # The `sys_list` variable contains the numbering pertaining to the symmetrically extended
+        # spaces.
+        sys_list = list(range(3, 3 + self.level - 1))
+        sym = symmetric_projection(dim, self.level)
+
+        dim_xy = self.dim_x
+        dim_xyy = np.prod(dim_list)
+        for k, _ in enumerate(states):
+            meas.append(cvxpy.Variable((dim_xy, dim_xy), PSD=True))
+            x_var.append(cvxpy.Variable((dim_xyy, dim_xyy), PSD=True))
+            constraints.append(partial_trace(x_var[k], sys_list, dim_list) == meas[k])
+            constraints.append(
+                np.kron(np.identity(dim), sym) @ x_var[k] @ np.kron(np.identity(dim), sym) == x_var[
+                    k]
+            )
+            constraints.append(partial_transpose(x_var[k], 1, dim_list) >> 0)
+            for sys in range(level - 1):
+                constraints.append(partial_transpose(x_var[k], sys + 3, dim_list) >> 0)
+
+            obj_func.append(probs[k] * cvxpy.trace(states[k].conj().T @ meas[k]))
+
+        constraints.append(sum(meas) == np.identity(dim_xy))
+
+        objective = cvxpy.Maximize(sum(obj_func))
+        problem = cvxpy.Problem(objective, constraints)
+        sol_default = problem.solve()
+
+        return sol_default
 
     def primal_problem(self):
         r"""

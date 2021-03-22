@@ -21,16 +21,20 @@ from qustop.opt_dist import Positive, PPT
 
 
 class OptDist:
-    def __init__(self, ensemble: Ensemble, dist_measurement: str, dist_method: str, fast: bool = False):
+    def __init__(self,
+                 ensemble: Ensemble,
+                 dist_measurement: str,
+                 dist_method: str,
+                 return_optimal_meas: bool = False):
         self.ensemble = ensemble
         self.dist_measurement = dist_measurement
         self.dist_method = dist_method
-        self.fast = fast
+        self.return_optimal_meas = return_optimal_meas
 
         # TODO: Specify solver and precision.
 
         self._optimal_value = None
-        self._optimal_measurements = None
+        self._optimal_measurements = []
 
     @property
     def value(self) -> float:
@@ -42,8 +46,12 @@ class OptDist:
     
     def solve(self):
         if self.dist_measurement == "ppt":
-            opt = PPT(self.ensemble, self.dist_method, self.fast)
-            self._optimal_value, self._optimal_measurements = opt.solve()
+            opt = PPT(self.ensemble, self.dist_method, self.return_optimal_meas)
+            if self.return_optimal_meas:
+                self._optimal_value, self._optimal_measurements = opt.solve()
+            else:
+                self._optimal_value = opt.solve()
+
         if self.dist_measurement == "positive":
-            opt = Positive(self.ensemble, self.dist_method, self.fast)
+            opt = Positive(self.ensemble, self.dist_method, self.return_optimal_meas)
             self._optimal_value, self._optimal_measurements = opt.solve()
