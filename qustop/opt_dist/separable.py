@@ -23,10 +23,10 @@ from toqito.perms import symmetric_projection
 
 class Separable:
     """Separable distinguishability."""
-    def __init__(self,
-                 ensemble: Ensemble,
-                 dist_method: str,
-                 return_optimal_meas: bool = False) -> None:
+
+    def __init__(
+        self, ensemble: Ensemble, dist_method: str, return_optimal_meas: bool = False
+    ) -> None:
         self.ensemble = ensemble
         self.dist_method = dist_method
         self.return_optimal_meas = return_optimal_meas
@@ -75,8 +75,8 @@ class Separable:
             x_var.append(cvxpy.Variable((dim_xyy, dim_xyy), PSD=True))
             constraints.append(partial_trace(x_var[k], sys_list, dim_list) == meas[k])
             constraints.append(
-                np.kron(np.identity(dim), sym) @ x_var[k] @ np.kron(np.identity(dim), sym) == x_var[
-                    k]
+                np.kron(np.identity(dim), sym) @ x_var[k] @ np.kron(np.identity(dim), sym)
+                == x_var[k]
             )
             constraints.append(partial_transpose(x_var[k], 1, dim_list) >> 0)
             for sys in range(level - 1):
@@ -115,7 +115,9 @@ class Separable:
             for i, _ in enumerate(self.states):
                 for j, _ in enumerate(self.states):
                     if i != j:
-                        constraints.append(self.probs[j] * cvxpy.trace(self.states[j].conj().T @ meas[i]) == 0)
+                        constraints.append(
+                            self.probs[j] * cvxpy.trace(self.states[j].conj().T @ meas[i]) == 0
+                        )
 
         for i, _ in enumerate(self.states):
             obj_func.append(self.probs[i] * cvxpy.trace(self.states[i].conj().T @ meas[i]))
@@ -162,7 +164,8 @@ class Separable:
 
             dual_vars.append(cvxpy.Variable((self.dim_x, self.dim_x), PSD=True))
             constraints.append(
-                cvxpy.real(y_var) >> partial_transpose(dual_vars[-1], sys=self.sys_list, dim=self.dim_list)
+                cvxpy.real(y_var)
+                >> partial_transpose(dual_vars[-1], sys=self.sys_list, dim=self.dim_list)
             )
 
         problem = cvxpy.Problem(objective, constraints)

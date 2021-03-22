@@ -22,10 +22,10 @@ from qustop.core import Ensemble
 
 class PPT:
     """PPT distinguishability."""
-    def __init__(self,
-                 ensemble: Ensemble,
-                 dist_method: str,
-                 return_optimal_meas: bool = False) -> None:
+
+    def __init__(
+        self, ensemble: Ensemble, dist_method: str, return_optimal_meas: bool = False
+    ) -> None:
         self.ensemble = ensemble
         self.dist_method = dist_method
         self.return_optimal_meas = return_optimal_meas
@@ -74,7 +74,9 @@ class PPT:
             for i, _ in enumerate(self.states):
                 for j, _ in enumerate(self.states):
                     if i != j:
-                        constraints.append(self.probs[j] * cvxpy.trace(self.states[j].conj().T @ meas[i]) == 0)
+                        constraints.append(
+                            self.probs[j] * cvxpy.trace(self.states[j].conj().T @ meas[i]) == 0
+                        )
 
         for i, _ in enumerate(self.states):
             obj_func.append(self.probs[i] * cvxpy.trace(self.states[i].conj().T @ meas[i]))
@@ -121,7 +123,8 @@ class PPT:
 
             dual_vars.append(cvxpy.Variable((self.dim_x, self.dim_x), PSD=True))
             constraints.append(
-                cvxpy.real(y_var) >> partial_transpose(dual_vars[-1], sys=self.sys_list, dim=self.dim_list)
+                cvxpy.real(y_var)
+                >> partial_transpose(dual_vars[-1], sys=self.sys_list, dim=self.dim_list)
             )
 
         problem = cvxpy.Problem(objective, constraints)

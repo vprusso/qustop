@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from typing import List, Optional, Tuple
+from typing import Optional
 
 import numpy as np
 
@@ -22,7 +22,7 @@ from toqito.matrix_props import is_density
 
 
 class State:
-    def __init__(self, state: np.ndarray, dims: List[int]) -> None:
+    def __init__(self, state: np.ndarray, dims: list[int]) -> None:
         self._state = self._prepare_state(state)
         self._dims = dims
         self._partitions = list(range(1, len(self._dims) + 1))
@@ -31,29 +31,31 @@ class State:
         labels = ""
         for i, sub_sys in enumerate(self._partitions):
             party = "A" if sub_sys % 2 != 0 else "B"
-            if i == len(self._partitions)-1:
+            if i == len(self._partitions) - 1:
                 labels += f"{party}_{sub_sys}"
             else:
                 labels += f"{party}_{sub_sys} ⊗ "
-        out_s = f"State: \n " \
-                f"dimensions = {self._dims}, \n " \
-                f"partitions = {labels}, \n " \
-                f"shape = {self.shape}, \n"
+        out_s = (
+            f"State: \n "
+            f"dimensions = {self._dims}, \n "
+            f"partitions = {labels}, \n "
+            f"shape = {self.shape}, \n"
+        )
         return out_s
 
     def __repr__(self) -> str:
         return self.__str__()
 
     @property
-    def shape(self) -> Tuple[int, int]:
+    def shape(self) -> tuple[int, int]:
         return self._state.shape
 
     @property
-    def dims(self) -> List[int]:
+    def dims(self) -> list[int]:
         return self._dims
 
     @property
-    def partitions(self) -> List[int]:
+    def partitions(self) -> list[int]:
         return self._partitions
 
     @property
@@ -73,7 +75,7 @@ class State:
 
         return state
 
-    def swap(self, sub_sys_swap: List[int]) -> None:
+    def swap(self, sub_sys_swap: list[int]) -> None:
         self._state = swap(self._state, sub_sys_swap, self._dims)
 
         # Once the swap operation is performed, ensure the information is
@@ -81,5 +83,8 @@ class State:
         idx_1 = self._partitions.index(sub_sys_swap[0])
         idx_2 = self._partitions.index(sub_sys_swap[1])
 
-        self._partitions[idx_1], self._partitions[idx_2] = self._partitions[idx_2], self._partitions[idx_1]
+        self._partitions[idx_1], self._partitions[idx_2] = (
+            self._partitions[idx_2],
+            self._partitions[idx_1],
+        )
         self._dims[idx_1], self._dims[idx_2] = self._dims[idx_2], self._dims[idx_1]

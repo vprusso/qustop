@@ -14,18 +14,19 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import numpy as np
-from typing import List
 
 from qustop.core import Ensemble
 from qustop.opt_dist import Positive, PPT
 
 
 class OptDist:
-    def __init__(self,
-                 ensemble: Ensemble,
-                 dist_measurement: str,
-                 dist_method: str,
-                 return_optimal_meas: bool = False):
+    def __init__(
+        self,
+        ensemble: Ensemble,
+        dist_measurement: str,
+        dist_method: str,
+        return_optimal_meas: bool = True,
+    ):
         self.ensemble = ensemble
         self.dist_measurement = dist_measurement
         self.dist_method = dist_method
@@ -41,9 +42,9 @@ class OptDist:
         return self._optimal_value
 
     @property
-    def measurements(self) -> List[np.ndarray]:
+    def measurements(self) -> list[np.ndarray]:
         return self._optimal_measurements
-    
+
     def solve(self):
         if self.dist_measurement == "ppt":
             opt = PPT(self.ensemble, self.dist_method, self.return_optimal_meas)

@@ -30,18 +30,20 @@ maintainers = [
     "Vincent Russo <vincentrusso1@gmail.com>"
 ]
 readme = "README.md"
-homepage = "https://vprusso.github.io/toqito/"
-repository = "https://github.com/vprusso/toqito"
+homepage = "https://vprusso.github.io/"
+repository = "https://github.com/vprusso/qustop"
 keywords = ["quantum information", "quantum computing", "quantum state optimization", "quantum state distinguishability"]
 
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.9"
 cvx = "*"
 cvxpy = "*"
 numpy = "*"
 scipy = "*"
 toqito = "*"
+black = "^20.8b1"
+pytest = "^6.2.2"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.7"
