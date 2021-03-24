@@ -13,6 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+from typing import Any
+
 import numpy as np
 
 from qustop.core import Ensemble
@@ -25,14 +27,16 @@ class OptDist:
         ensemble: Ensemble,
         dist_measurement: str,
         dist_method: str,
-        return_optimal_meas: bool = True,
+        **kwargs: Any,
     ):
         self.ensemble = ensemble
         self.dist_measurement = dist_measurement
         self.dist_method = dist_method
-        self.return_optimal_meas = return_optimal_meas
 
-        # TODO: Specify solver and precision.
+        self.return_optimal_meas = kwargs.get("return_optimal_meas", False)
+        self.solver = kwargs.get("solver", "CVXOPT")
+        self.verbose = kwargs.get("verbose", True)
+        self.abstols = kwargs.get("abstol", 1e-5)
 
         self._optimal_value = None
         self._optimal_measurements = []
@@ -45,14 +49,27 @@ class OptDist:
     def measurements(self) -> list[np.ndarray]:
         return self._optimal_measurements
 
+    @staticmethod
+    def convert_measurements(measurements) -> list[np.ndarray]:
+        return [measurements[i].value for i in range(len(measurements))]
+
     def solve(self):
         if self.dist_measurement == "ppt":
-            opt = PPT(self.ensemble, self.dist_method, self.return_optimal_meas)
+            opt = PPT(
+                self.ensemble,
+                self.dist_method,
+                self.return_optimal_meas,
+                self.solver,
+                self.verbose,
+                self.abstols,
+            )
             if self.return_optimal_meas:
                 self._optimal_value, self._optimal_measurements = opt.solve()
             else:
                 self._optimal_value = opt.solve()
 
-        if self.dist_measurement == "positive":
-            opt = Positive(self.ensemble, self.dist_method, self.return_optimal_meas)
+        elif self.dist_measurement == "positive":
+            opt = Positive(
+                self.ensemble, self.dist_method, self.return_optimal_meas
+            )
             self._optimal_value, self._optimal_measurements = opt.solve()

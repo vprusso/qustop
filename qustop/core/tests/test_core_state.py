@@ -22,7 +22,7 @@ e_0, e_1 = basis(2, 0), basis(2, 1)
 
 
 def test_state_shape():
-    bell_vec = 1/np.sqrt(2) * (np.kron(e_0, e_0) + np.kron(e_1, e_1))
+    bell_vec = 1 / np.sqrt(2) * (np.kron(e_0, e_0) + np.kron(e_1, e_1))
     state_vec = State(bell_vec, [2, 2])
 
     assert state_vec.shape == (4, 4)

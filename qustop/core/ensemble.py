@@ -26,7 +26,9 @@ class Ensemble:
     probability of being selected from the set.
     """
 
-    def __init__(self, states: list[State], probs: Optional[list[float]] = None) -> None:
+    def __init__(
+        self, states: list[State], probs: Optional[list[float]] = None
+    ) -> None:
         """Initializes an Ensemble.
 
         Args:
@@ -34,7 +36,8 @@ class Ensemble:
             probs: A vector of associated probabilities for the quantum states of the ensemble.
 
         Raises:
-            TypeError: If all elements of `state` are not instances of `State`.
+            TypeError:
+                * If all elements of `state` are not instances of `State`.
         """
         if not all(isinstance(state, State) for state in states):
             raise TypeError("All elements of `state` must be of type `State`.")
@@ -47,7 +50,7 @@ class Ensemble:
 
     def __str__(self) -> str:
         out_s = f"Ensemble: num_states = {len(self)}\n"
-        for i, subsystem in enumerate(self._states):
+        for i, _ in enumerate(self._states):
             if i == len(self._states) - 1:
                 out_s += f"ρ_{i}"
             else:
@@ -58,11 +61,7 @@ class Ensemble:
         return self.__str__()
 
     def __getitem__(self, key: int) -> State:
-        return self.states[key]
-
-    @property
-    def shape(self) -> tuple[int, int]:
-        return self._states[0].shape
+        return self._states[key]
 
     @property
     def probs(self) -> list[float]:
@@ -73,6 +72,10 @@ class Ensemble:
         return self._states
 
     @property
+    def shape(self) -> tuple[int, int]:
+        return self._states[0].shape
+
+    @property
     def density_matrices(self) -> list[np.ndarray]:
         return [state.value for state in self._states]
 
@@ -80,7 +83,7 @@ class Ensemble:
         """Performs a swap between two subsystems of each state in the ensemble.
 
         Args:
-            sub_sys_swap: A list containing two elements
+            sub_sys_swap: A list containing two elements representing the spaces to swap.
 
         Raises:
             ValueError:
@@ -90,12 +93,16 @@ class Ensemble:
         """
 
         if len(sub_sys_swap) != 2:
-            raise ValueError(f"The length of the swap vector is {len(sub_sys_swap)}, but must be "
-                             f"of length 2.")
+            raise ValueError(
+                f"The length of the swap vector is {len(sub_sys_swap)}, but must be "
+                f"of length 2."
+            )
 
         if sub_sys_swap[0] > len(self) + 1 or sub_sys_swap[1] > len(self) + 1:
-            raise ValueError(f"Cannot swap {sub_sys_swap[0]} with {sub_sys_swap[1]} as one or both "
-                             f"of these values exceed the number of systems in the ensemble.")
+            raise ValueError(
+                f"Cannot swap {sub_sys_swap[0]} with {sub_sys_swap[1]} as one or both "
+                f"of these values exceed the number of systems in the ensemble."
+            )
 
         # Perform the swap operation on each state in the ensemble.
         [state.swap(sub_sys_swap) for state in self._states]
@@ -120,7 +127,9 @@ class Ensemble:
         dims = states[0].shape
         for state in states:
             if state.shape != dims:
-                raise ValueError("Each state in the ensemble must be of equal dimension.")
+                raise ValueError(
+                    "Each state in the ensemble must be of equal dimension."
+                )
 
         return states
 
@@ -150,6 +159,9 @@ class Ensemble:
 
         # Probability vector must sum to one to be valid.
         if not np.isclose(sum(probs), 1):
-            raise ValueError("InvalidProbabilities: Probabilities must sum to 1.")
+            raise ValueError(
+                f"The probability vector must sum to 1, but it currently sums to "
+                f"{sum(probs)}."
+            )
 
         return probs

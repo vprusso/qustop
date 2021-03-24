@@ -49,12 +49,19 @@ class Positive:
         if len(self.ensemble) == 2:
             opt_val = (
                 1 / 2
-                + np.linalg.norm(self.probs[0] * self.states[0] - self.probs[1] * self.states[1])
+                + np.linalg.norm(
+                    self.probs[0] * self.states[0]
+                    - self.probs[1] * self.states[1]
+                )
                 / 2
             )
             D, V = np.linalg.eig(
-                self.probs[0] * self.states[0][:, [0]] @ self.states[0][:, [0]].conj().T
-                - self.probs[1] * self.states[1][:, [0]] @ self.states[1][:, [0]].conj().T
+                self.probs[0]
+                * self.states[0][:, [0]]
+                @ self.states[0][:, [0]].conj().T
+                - self.probs[1]
+                * self.states[1][:, [0]]
+                @ self.states[1][:, [0]].conj().T
             )
             D = np.diag(D)
             pind = np.argwhere(np.asarray(D) >= 0)
@@ -96,16 +103,24 @@ class Positive:
                 for j, _ in enumerate(self.states):
                     if i != j:
                         constraints.append(
-                            cvxpy.trace(self.states[i].conj().T @ measurements[i]) == 0
+                            cvxpy.trace(
+                                self.states[i].conj().T @ measurements[i]
+                            )
+                            == 0
                         )
 
         # Note we have one additional measurement operator in the unambiguous case.
         for i in range(num_measurements):
-            measurements.append(cvxpy.Variable((self.dim_x, self.dim_x), PSD=True))
+            measurements.append(
+                cvxpy.Variable((self.dim_x, self.dim_x), PSD=True)
+            )
 
         # Objective function is the inner product between the states and measurements.
         for i, _ in enumerate(self.states):
-            obj_func.append(self.probs[i] * cvxpy.trace(self.states[i].conj().T @ measurements[i]))
+            obj_func.append(
+                self.probs[i]
+                * cvxpy.trace(self.states[i].conj().T @ measurements[i])
+            )
 
         constraints.append(sum(measurements) == np.identity(self.dim_x))
 

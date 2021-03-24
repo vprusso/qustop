@@ -13,6 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+from typing import Tuple, Union
+
 import cvxpy
 import numpy as np
 
@@ -24,17 +26,36 @@ class PPT:
     """PPT distinguishability."""
 
     def __init__(
-        self, ensemble: Ensemble, dist_method: str, return_optimal_meas: bool = False
+        self,
+        ensemble: Ensemble,
+        dist_method: str,
+        return_optimal_meas: bool,
+        solver: str,
+        verbose: bool,
+        abstol: float,
     ) -> None:
-        self.ensemble = ensemble
-        self.dist_method = dist_method
-        self.return_optimal_meas = return_optimal_meas
+        """Computes either the primal or dual problem of the PPT SDP.
 
-        self.states = self.ensemble.density_matrices
-        self.probs = self.ensemble.probs
+        Args:
+            ensemble:
+            dist_method:
+            return_optimal_meas: Whether the optimal measurements are to be returned.
+            solver: The SDP solver to use.
+            verbose: Overrides the default of hiding the solver output.
+            abstol: Absolute accuracy of the SDP solver.
+        """
+        self._ensemble = ensemble
+        self._dist_method = dist_method
+        self._return_optimal_meas = return_optimal_meas
+        self._solver = solver
+        self._verbose = verbose
+        self._abstol = abstol
 
-        self.dim_x, self.dim_y = self.ensemble[0].shape
-        self.dim_list = self.ensemble[0].dims
+        self._states = self._ensemble.density_matrices
+        self._probs = self._ensemble.probs
+
+        self.dim_x, self.dim_y = self._ensemble[0].shape
+        self.dim_list = self._ensemble[0].dims
 
         # TODO: Something needs to be generalized here for sys_list.
         dim = int(np.log2(self.dim_x))
@@ -42,92 +63,142 @@ class PPT:
 
         self.dim = int(np.log2(self.dim_x))
 
-    def solve(self):
-        # If just the optimal value is required, it is often less
-        # computationally intensive to solve the dual problem.
-        if self.return_optimal_meas:
-            return self.dual_problem()
+    def solve(self) -> Union[float, Tuple[float, list[cvxpy.Variable]]]:
+        """Solve either the primal or dual problem for the PPT SDP."""
+        # If just the optimal value is required, it is often less computationally intensive to
+        # solve the dual problem.
+        if self._return_optimal_meas:
+            return self.primal_problem()
         # Otherwise, return the optimal value and the optimal measurements for
         # obtaining that value.
-        return self.primal_problem()
+        return self.dual_problem()
 
-    def primal_problem(self):
-        r"""
-        Calculate primal problem for PPT distinguishability.
+    def primal_problem(self) -> tuple[float, list[cvxpy.Variable]]:
+        """Calculate primal problem for the PPT distinguishability SDP.
+
+        The primal problem for the min-error case is defined in equation-1 from arXiv:1205.1031.
+        The primal problem for the unambiguous case is defined in equation-4 from arXiv:1205.1031.
         """
-        obj_func = []
-        meas = []
-        constraints = []
 
-        if self.dist_method == "unambiguous":
-            num_measurements = len(self.states) + 1
-        else:
-            num_measurements = len(self.states)
+        # Unambiguous consists of `len(self._states)` + 1 measurement operators, where the outcome
+        # of the `len(self._states)`+1^st corresponds to the inconclusive answer.
+        num_measurements = (
+            len(self._states) + 1
+            if self._dist_method == "unambiguous"
+            else len(self._states)
+        )
 
-        for i in range(num_measurements):
-            meas.append(cvxpy.Variable((self.dim_x, self.dim_x), PSD=True))
-            constraints.append(partial_transpose(meas[i], self.sys_list, self.dim_list) >> 0)
+        # Define each measurement variable to be a PSD variable of appropriate dimension.
+        meas = [
+            cvxpy.Variable(self._ensemble.shape, PSD=True)
+            for _ in range(num_measurements)
+        ]
 
-        # Unambiguous consists of k + 1 operators, where the outcome of the
-        # k+1^st corresponds to the inconclusive answer.
-        if self.dist_method == "unambiguous":
-            for i, _ in enumerate(self.states):
-                for j, _ in enumerate(self.states):
+        # Each measurement variable must be PPT.
+        constraints = [
+            partial_transpose(meas[i], self.sys_list, self.dim_list) >> 0
+            for i in range(num_measurements)
+        ]
+
+        # For all states, the inner product between each state with index `i` with each measurement
+        # of index `j` must be equal to zero.
+        if self._dist_method == "unambiguous":
+            for i, _ in enumerate(self._states):
+                for j, _ in enumerate(self._states):
                     if i != j:
                         constraints.append(
-                            self.probs[j] * cvxpy.trace(self.states[j].conj().T @ meas[i]) == 0
+                            self._probs[j]
+                            * cvxpy.trace(self._states[j].conj().T @ meas[i])
+                            == 0
                         )
-
-        for i, _ in enumerate(self.states):
-            obj_func.append(self.probs[i] * cvxpy.trace(self.states[i].conj().T @ meas[i]))
 
         # Valid collection of measurements need to sum to the identity
         # operator.
-        constraints.append(sum(meas) == np.identity(self.dim_x))
+        constraints.append(sum(meas) == np.identity(self._ensemble.shape[0]))
 
+        # Construct the objective function by taking the inner product of each of the states with
+        # each of the measurement variables scaled by the corresponding probability of the given
+        # state being selected by the ensemble.
+        obj_func = [
+            self._probs[i] * cvxpy.trace(self._states[i].conj().T @ meas[i])
+            for i, _ in enumerate(self._states)
+        ]
         objective = cvxpy.Maximize(sum(obj_func))
+
         problem = cvxpy.Problem(objective, constraints)
-        sol_default = problem.solve(solver="CVXOPT")
+        opt_val = problem.solve(
+            solver=self._solver, verbose=self._verbose, abstol=self._abstol
+        )
 
-        return sol_default, meas
+        return opt_val, meas
 
-    def dual_problem(self):
-        r"""
-        Calculate dual problem for PPT distinguishability.
+    def dual_problem(self) -> float:
+        """Calculate dual problem for PPT distinguishability.
+
+        The dual problem for the min-error case is defined in equation-2 from arXiv:1205.1031.
+        The dual problem for the unambiguous case is defined in equation-5 from arXiv:1205.1031.
         """
         constraints = []
-        dual_vars = []
 
-        y_var = cvxpy.Variable((self.dim_x, self.dim_x), hermitian=True)
-        objective = cvxpy.Minimize(cvxpy.trace(cvxpy.real(y_var)))
+        y_var = cvxpy.Variable(self._ensemble.shape, hermitian=True)
 
-        if self.dist_method == "min-error":
-            for i, _ in enumerate(self.states):
-                dual_vars.append(cvxpy.Variable((self.dim_x, self.dim_x), PSD=True))
-                constraints.append(
-                    cvxpy.real(y_var - self.probs[i] * self.states[i])
-                    >> partial_transpose(dual_vars[i], sys=self.sys_list, dim=self.dim_list)
+        # This implements the dual problem (equation-2) from arXiv:1205.1031:
+        if self._dist_method == "min-error":
+            num_measurements = len(self._states)
+
+            dual_vars = [
+                cvxpy.Variable(self._ensemble.shape, PSD=True)
+                for _ in range(num_measurements)
+            ]
+            constraints = [
+                cvxpy.real(y_var - self._probs[i] * self._states[i])
+                >> partial_transpose(
+                    dual_vars[i], self.sys_list, self.dim_list
                 )
+                for i in range(num_measurements)
+            ]
 
-        if self.dist_method == "unambiguous":
-            for j, _ in enumerate(self.states):
+        # This implements the dual problem (equation-5) rom arXiv:1205.1031:
+        if self._dist_method == "unambiguous":
+            num_measurements = len(self._states) + 1
+
+            dual_vars = [
+                cvxpy.Variable(self._ensemble.shape, PSD=True)
+                for _ in range(num_measurements)
+            ]
+            scalar_vars = [
+                [cvxpy.Variable() for i, _ in enumerate(self._states)]
+                for j, _ in enumerate(self._states)
+            ]
+
+            for j, _ in enumerate(self._states):
                 sum_val = 0
-                for i, _ in enumerate(self.states):
+                for i, _ in enumerate(self._states):
                     if i != j:
-                        sum_val += cvxpy.real(cvxpy.Variable()) * self.probs[i] * self.states[i]
-                dual_vars.append(cvxpy.Variable((self.dim_x, self.dim_x), PSD=True))
+                        sum_val += (
+                            cvxpy.real(scalar_vars[i][j])
+                            * self._probs[i]
+                            * self._states[i]
+                        )
                 constraints.append(
-                    cvxpy.real(y_var - self.probs[j] * self.states[j] + sum_val)
-                    >> partial_transpose(dual_vars[j], sys=self.sys_list, dim=self.dim_list)
+                    cvxpy.real(
+                        y_var - self._probs[j] * self._states[j] + sum_val
+                    )
+                    >> partial_transpose(
+                        dual_vars[j], self.sys_list, self.dim_list
+                    )
                 )
-
-            dual_vars.append(cvxpy.Variable((self.dim_x, self.dim_x), PSD=True))
             constraints.append(
                 cvxpy.real(y_var)
-                >> partial_transpose(dual_vars[-1], sys=self.sys_list, dim=self.dim_list)
+                >> partial_transpose(
+                    dual_vars[-1], self.sys_list, self.dim_list
+                )
             )
 
+        objective = cvxpy.Minimize(cvxpy.trace(cvxpy.real(y_var)))
         problem = cvxpy.Problem(objective, constraints)
-        sol_default = problem.solve(solver="CVXOPT")
+        opt_val = problem.solve(
+            solver=self._solver, verbose=self._verbose, abstol=self._abstol
+        )
 
-        return sol_default, dual_vars
+        return opt_val

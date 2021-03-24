@@ -25,7 +25,10 @@ class Separable:
     """Separable distinguishability."""
 
     def __init__(
-        self, ensemble: Ensemble, dist_method: str, return_optimal_meas: bool = False
+        self,
+        ensemble: Ensemble,
+        dist_method: str,
+        return_optimal_meas: bool = False,
     ) -> None:
         self.ensemble = ensemble
         self.dist_method = dist_method
@@ -73,16 +76,24 @@ class Separable:
         for k, _ in enumerate(states):
             meas.append(cvxpy.Variable((dim_xy, dim_xy), PSD=True))
             x_var.append(cvxpy.Variable((dim_xyy, dim_xyy), PSD=True))
-            constraints.append(partial_trace(x_var[k], sys_list, dim_list) == meas[k])
             constraints.append(
-                np.kron(np.identity(dim), sym) @ x_var[k] @ np.kron(np.identity(dim), sym)
+                partial_trace(x_var[k], sys_list, dim_list) == meas[k]
+            )
+            constraints.append(
+                np.kron(np.identity(dim), sym)
+                @ x_var[k]
+                @ np.kron(np.identity(dim), sym)
                 == x_var[k]
             )
             constraints.append(partial_transpose(x_var[k], 1, dim_list) >> 0)
             for sys in range(level - 1):
-                constraints.append(partial_transpose(x_var[k], sys + 3, dim_list) >> 0)
+                constraints.append(
+                    partial_transpose(x_var[k], sys + 3, dim_list) >> 0
+                )
 
-            obj_func.append(probs[k] * cvxpy.trace(states[k].conj().T @ meas[k]))
+            obj_func.append(
+                probs[k] * cvxpy.trace(states[k].conj().T @ meas[k])
+            )
 
         constraints.append(sum(meas) == np.identity(dim_xy))
 
@@ -107,7 +118,9 @@ class Separable:
 
         for i in range(num_measurements):
             meas.append(cvxpy.Variable((self.dim_x, self.dim_x), PSD=True))
-            constraints.append(partial_transpose(meas[i], self.sys_list, self.dim_list) >> 0)
+            constraints.append(
+                partial_transpose(meas[i], self.sys_list, self.dim_list) >> 0
+            )
 
         # Unambiguous consists of k + 1 operators, where the outcome of the
         # k+1^st corresponds to the inconclusive answer.
@@ -116,11 +129,15 @@ class Separable:
                 for j, _ in enumerate(self.states):
                     if i != j:
                         constraints.append(
-                            self.probs[j] * cvxpy.trace(self.states[j].conj().T @ meas[i]) == 0
+                            self.probs[j]
+                            * cvxpy.trace(self.states[j].conj().T @ meas[i])
+                            == 0
                         )
 
         for i, _ in enumerate(self.states):
-            obj_func.append(self.probs[i] * cvxpy.trace(self.states[i].conj().T @ meas[i]))
+            obj_func.append(
+                self.probs[i] * cvxpy.trace(self.states[i].conj().T @ meas[i])
+            )
 
         # Valid collection of measurements need to sum to the identity
         # operator.
@@ -144,10 +161,14 @@ class Separable:
 
         if self.dist_method == "min-error":
             for i, _ in enumerate(self.states):
-                dual_vars.append(cvxpy.Variable((self.dim_x, self.dim_x), PSD=True))
+                dual_vars.append(
+                    cvxpy.Variable((self.dim_x, self.dim_x), PSD=True)
+                )
                 constraints.append(
                     cvxpy.real(y_var - self.probs[i] * self.states[i])
-                    >> partial_transpose(dual_vars[i], sys=self.sys_list, dim=self.dim_list)
+                    >> partial_transpose(
+                        dual_vars[i], sys=self.sys_list, dim=self.dim_list
+                    )
                 )
 
         if self.dist_method == "unambiguous":
@@ -155,17 +176,31 @@ class Separable:
                 sum_val = 0
                 for i, _ in enumerate(self.states):
                     if i != j:
-                        sum_val += cvxpy.real(cvxpy.Variable()) * self.probs[i] * self.states[i]
-                dual_vars.append(cvxpy.Variable((self.dim_x, self.dim_x), PSD=True))
+                        sum_val += (
+                            cvxpy.real(cvxpy.Variable())
+                            * self.probs[i]
+                            * self.states[i]
+                        )
+                dual_vars.append(
+                    cvxpy.Variable((self.dim_x, self.dim_x), PSD=True)
+                )
                 constraints.append(
-                    cvxpy.real(y_var - self.probs[j] * self.states[j] + sum_val)
-                    >> partial_transpose(dual_vars[j], sys=self.sys_list, dim=self.dim_list)
+                    cvxpy.real(
+                        y_var - self.probs[j] * self.states[j] + sum_val
+                    )
+                    >> partial_transpose(
+                        dual_vars[j], sys=self.sys_list, dim=self.dim_list
+                    )
                 )
 
-            dual_vars.append(cvxpy.Variable((self.dim_x, self.dim_x), PSD=True))
+            dual_vars.append(
+                cvxpy.Variable((self.dim_x, self.dim_x), PSD=True)
+            )
             constraints.append(
                 cvxpy.real(y_var)
-                >> partial_transpose(dual_vars[-1], sys=self.sys_list, dim=self.dim_list)
+                >> partial_transpose(
+                    dual_vars[-1], sys=self.sys_list, dim=self.dim_list
+                )
             )
 
         problem = cvxpy.Problem(objective, constraints)
