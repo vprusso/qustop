@@ -2,7 +2,7 @@
 
 ### Installing
 
-1. Ensure you have python 3.7 or greater.
+1. Ensure you have python 3.9 or greater.
 
     See [Installing Python 3 on Linux](https://docs.python-guide.org/starting/install3/linux/) 
     for a guide on how to install python.
@@ -30,7 +30,7 @@ machine. Consult the [pytest](https://docs.pytest.org/en/latest/) website for mo
 tests for `toqito`, run the following command in the root directory of this project:
 
 ```
-pytest --cov-report term-missing --cov=toqito tests/
+pytest -v --cov=qustop --cov-report=term --cov-report=xml qustop
 ```
     
 ### Contributing
@@ -39,27 +39,28 @@ All contributions, bug reports, bug fixes, documentation improvements,
 enhancements, and ideas are welcome.
 
 A detailed overview on how to contribute can be found in the
-[contributing guide](https://github.com/vprusso/toqito/blob/master/.github/CONTRIBUTING.md).
+[contributing guide](https://github.com/vprusso/qustop/blob/master/.github/CONTRIBUTING.md).
 
 ### Citing
 
-You can cite `toqito` using the following DOI: [10.5281/zenodo.3699578](https://zenodo.org/record/3699578>).
+You can cite `qustop` using the following DOI: [10.5281/zenodo.3699578](https://zenodo.org/record
+/3699578>).
 
-If you are using the `toqito` software package in research work, please
-include an explicit mention of `toqito` in your publication. Something
+If you are using the `qustop` software package in research work, please
+include an explicit mention of `qustop` in your publication. Something
 along the lines of:
 
-    To solve problem "X" we used `toqito`; a package for studying certain
-    aspects of quantum information.
+    To solve problem "X" we used `qustop`; a package for studying various
+    quantum state optimization scenarios
 
 A BibTeX entry that you can use to cite :code:`toqito` is provided here:
 
 
-    @misc{toqito,
+    @misc{qustop,
        author       = {Vincent Russo},
-       title        = {toqito: A {P}ython toolkit for quantum information, version 0.0.2},
-       howpublished = {\url{https://github.com/vprusso/toqito}},
+       title        = {qustop: A {P}ython toolkit for quantum state optimization, version 0.0.1},
+       howpublished = {\url{https://github.com/vprusso/qustop}},
        month        = Mar,
-       year         = 2020,
+       year         = 2021,
        doi          = {10.5281/zenodo.3699578}
      }

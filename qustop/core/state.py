@@ -36,6 +36,13 @@ class State:
         self._dims = self._prepare_dims(dims)
         self._systems = list(range(1, len(self._dims) + 1))
 
+    def __eq__(self, other: "State") -> bool:
+        if isinstance(other, State):
+            return (
+                np.allclose(self.value, other.value)
+                and self.dims == other.dims
+            )
+
     def __str__(self) -> str:
         labels, spaces = "", ""
         for i in range(len(self._systems)):
@@ -70,6 +77,14 @@ class State:
     @property
     def systems(self) -> list[int]:
         return self._systems
+
+    @property
+    def alice_systems(self) -> list[int]:
+        return [i for i in self._systems if i % 2 != 0]
+
+    @property
+    def bob_systems(self) -> list[int]:
+        return [i for i in self._systems if i % 2 == 0]
 
     @property
     def value(self) -> np.ndarray:
@@ -113,6 +128,16 @@ class State:
                 f"The product of `dims` should be equal to {self.shape[0]} and {self.shape[1]}."
             )
         return dims
+
+    def kron(self, r_state: "State") -> "State":
+        """Performs the Kronecker (tensor) product between two states.
+
+        Args:
+            r_state: The state on the right-side of the tensor product.
+        """
+        new_state = np.kron(self._state, r_state.value)
+        new_dims = self._dims + r_state.dims
+        return State(new_state, new_dims)
 
     def swap(self, sub_sys_swap: list[int]) -> None:
         """Performs a swap between two subsystems of the state.

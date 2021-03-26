@@ -2,6 +2,8 @@
 
 # qustop
 
+NOTE: The `qustop` package is still is under development. 
+
 qustop (QUantum STate OPtimizer) is a Python toolkit for studying various
 quantum state optimization scenarios including calculating optimal values for
 quantum state distinguishability, quantum state exclusion, quantum state

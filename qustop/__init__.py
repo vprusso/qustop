@@ -15,3 +15,5 @@
 
 from qustop._about import about
 from qustop._version import __version__
+from qustop.core import State, Ensemble
+from qustop.opt_dist import OptDist

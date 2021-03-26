@@ -72,6 +72,14 @@ class Ensemble:
         return self._states
 
     @property
+    def systems(self) -> list[int]:
+        return self._states[0].systems
+
+    @property
+    def dims(self) -> list[int]:
+        return self._states[0].dims
+
+    @property
     def shape(self) -> tuple[int, int]:
         return self._states[0].shape
 

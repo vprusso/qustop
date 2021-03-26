@@ -54,23 +54,17 @@ class PPT:
         self._states = self._ensemble.density_matrices
         self._probs = self._ensemble.probs
 
-        self.dim_x, self.dim_y = self._ensemble[0].shape
-        self.dim_list = self._ensemble[0].dims
-
-        # TODO: Something needs to be generalized here for sys_list.
-        dim = int(np.log2(self.dim_x))
-        self.sys_list = list(range(1, dim, 2))
-
-        self.dim = int(np.log2(self.dim_x))
+        self._dims = self._ensemble.dims
+        self._sys = [i for i in self._ensemble.systems if i % 2 != 0]
 
     def solve(self) -> Union[float, Tuple[float, list[cvxpy.Variable]]]:
         """Solve either the primal or dual problem for the PPT SDP."""
-        # If just the optimal value is required, it is often less computationally intensive to
-        # solve the dual problem.
+
+        # Return the optimal value and the optimal measurements.
         if self._return_optimal_meas:
             return self.primal_problem()
-        # Otherwise, return the optimal value and the optimal measurements for
-        # obtaining that value.
+
+        # Otherwise, it is often less computationally intensive to just solve the dual problem.
         return self.dual_problem()
 
     def primal_problem(self) -> tuple[float, list[cvxpy.Variable]]:
@@ -96,7 +90,7 @@ class PPT:
 
         # Each measurement variable must be PPT.
         constraints = [
-            partial_transpose(meas[i], self.sys_list, self.dim_list) >> 0
+            partial_transpose(meas[i], self._sys, self._dims) >> 0
             for i in range(num_measurements)
         ]
 
@@ -152,9 +146,7 @@ class PPT:
             ]
             constraints = [
                 cvxpy.real(y_var - self._probs[i] * self._states[i])
-                >> partial_transpose(
-                    dual_vars[i], self.sys_list, self.dim_list
-                )
+                >> partial_transpose(dual_vars[i], self._sys, self._dims)
                 for i in range(num_measurements)
             ]
 
@@ -184,15 +176,11 @@ class PPT:
                     cvxpy.real(
                         y_var - self._probs[j] * self._states[j] + sum_val
                     )
-                    >> partial_transpose(
-                        dual_vars[j], self.sys_list, self.dim_list
-                    )
+                    >> partial_transpose(dual_vars[j], self._sys, self._dims)
                 )
             constraints.append(
                 cvxpy.real(y_var)
-                >> partial_transpose(
-                    dual_vars[-1], self.sys_list, self.dim_list
-                )
+                >> partial_transpose(dual_vars[-1], self._sys, self._dims)
             )
 
         objective = cvxpy.Minimize(cvxpy.trace(cvxpy.real(y_var)))

@@ -1,11 +1,36 @@
 Distinguishing Quantum States via PPT Measurements
 ==================================================
 
-Conclusive
-----------
+Minimum-Error
+-------------
 
-Inconclusive
-------------
+.. math::
+    \begin{equation}
+        \begin{aligned}
+            \textbf{Primal:} \quad & \\
+            \text{maximize:} \quad & \sum_{j=1}^k \langle P_j, \rho_j \rangle \\
+            \text{subject to:} \quad & P_1 + \cdots + P_k = \mathbb{I}_{\mathcal{A}}
+                                        \otimes \mathbb{I}_{\mathcal{B}}, \\
+                                     & P_1, \ldots, P_k \in \text{PPT}(\mathcal{A} : \mathcal{B}).
+        \end{aligned}
+    \end{equation}
+
+.. math::
+    \begin{equation}
+        \begin{aligned}
+            \textbf{Primal:} \quad & \\
+            \text{minimize:} \quad & \frac{1}{k} \text{Tr}(Y) \\
+            \text{subject to:} \quad & Y - \rho_j \geq \text{T}_{\mathcal{A}} (Q_j),
+                                        \quad j = 1, \ldots, k, \\
+                                     & Y \in \text{Herm}(\mathcal{A} \otimes
+                                        \mathcal{B}), \\
+                                     & Q_1, \ldots, Q_k \in
+                                        \text{Pos}(\mathcal{A} \otimes \mathcal{B}).
+        \end{aligned}
+    \end{equation}
+
+Unambiguous
+-----------
 
 
 Entanglement cost of distinguishing Bell states

@@ -35,7 +35,7 @@ class OptDist:
 
         self.return_optimal_meas = kwargs.get("return_optimal_meas", False)
         self.solver = kwargs.get("solver", "CVXOPT")
-        self.verbose = kwargs.get("verbose", True)
+        self.verbose = kwargs.get("verbose", False)
         self.abstols = kwargs.get("abstol", 1e-5)
 
         self._optimal_value = None
@@ -70,6 +70,14 @@ class OptDist:
 
         elif self.dist_measurement == "positive":
             opt = Positive(
-                self.ensemble, self.dist_method, self.return_optimal_meas
+                self.ensemble,
+                self.dist_method,
+                self.return_optimal_meas,
+                self.solver,
+                self.verbose,
+                self.abstols,
             )
-            self._optimal_value, self._optimal_measurements = opt.solve()
+            if self.return_optimal_meas:
+                self._optimal_value, self._optimal_measurements = opt.solve()
+            else:
+                self._optimal_value = opt.solve()

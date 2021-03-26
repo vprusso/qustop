@@ -17,123 +17,151 @@
 import cvxpy
 import numpy as np
 
+from qustop import Ensemble
+
 
 class Positive:
     """Positive (global) distinguishability."""
 
-    def __init__(self, ensemble, dist_method, fast=False):
-        self.ensemble = ensemble
-        self.states = self.ensemble.density_matrices
-        self.probs = self.ensemble.probs
-        self.dist_method = dist_method
+    def __init__(
+        self,
+        ensemble: Ensemble,
+        dist_method: str,
+        return_optimal_meas: bool,
+        solver: str,
+        verbose: bool,
+        abstol: float,
+    ) -> None:
+        self._ensemble = ensemble
+        self._dist_method = dist_method
+        self._return_optimal_meas = return_optimal_meas
+        self._solver = solver
+        self._verbose = verbose
+        self._abstol = abstol
 
-        self.dim_x, self.dim_y = self.ensemble[0].shape
-        self.dim_list = self.ensemble[0].dims
+        self._states = self._ensemble.density_matrices
+        self._probs = self._ensemble.probs
 
-        # TODO: Something needs to be generalized here for sys_list.
-        dim = int(np.log2(self.dim_x))
-        self.sys_list = list(range(1, dim, 2))
-
-        self.fast = fast
-
-        self.dim = int(np.log2(self.dim_x))
+        self._dims = self._ensemble.dims
+        self._sys = [i for i in self._ensemble.systems if i % 2 != 0]
 
     def solve(self):
 
         # If there is only one state in the ensemble, the optimal value is trivially equal to
         # one. The optimal measurement is simply the identity matrix.
-        if len(self.ensemble) == 1:
-            return 1, np.identity(self.ensemble.shape)
+        if len(self._ensemble) == 1:
+            if self._return_optimal_meas:
+                return 1.0, np.identity(self._ensemble.shape[0])
+            else:
+                return 1.0
 
-        # There is a closed-form expression for the distinguishability of two density matrices.
-        if len(self.ensemble) == 2:
-            opt_val = (
-                1 / 2
-                + np.linalg.norm(
-                    self.probs[0] * self.states[0]
-                    - self.probs[1] * self.states[1]
-                )
-                / 2
-            )
-            D, V = np.linalg.eig(
-                self.probs[0]
-                * self.states[0][:, [0]]
-                @ self.states[0][:, [0]].conj().T
-                - self.probs[1]
-                * self.states[1][:, [0]]
-                @ self.states[1][:, [0]].conj().T
-            )
-            D = np.diag(D)
-            pind = np.argwhere(np.asarray(D) >= 0)
-            print(V[:, [pind]] @ V[:, [pind]].conj().T)
-            # pind = (D >= 0).nonzero()
-            #            print(V[:, pind])
-            #            meas_1 = V[:, pind] @ V[:, pind].conj().T
-            #            print(V[:, pind])
+        # # There is a closed-form expression for the distinguishability of two density matrices.
+        # if len(self.ensemble) == 2:
+        #     opt_val = (
+        #         1 / 2
+        #         + np.linalg.norm(
+        #             self.probs[0] * self.states[0]
+        #             - self.probs[1] * self.states[1]
+        #         )
+        #         / 2
+        #     )
+        #     D, V = np.linalg.eig(
+        #         self.probs[0]
+        #         * self.states[0][:, [0]]
+        #         @ self.states[0][:, [0]].conj().T
+        #         - self.probs[1]
+        #         * self.states[1][:, [0]]
+        #         @ self.states[1][:, [0]].conj().T
+        #     )
+        #     D = np.diag(D)
+        #     pind = np.argwhere(np.asarray(D) >= 0)
+        #     print(V[:, [pind]] @ V[:, [pind]].conj().T)
+        #     # pind = (D >= 0).nonzero()
+        #     #            print(V[:, pind])
+        #     #            meas_1 = V[:, pind] @ V[:, pind].conj().T
+        #     #            print(V[:, pind])
+        #
+        #     # Construct optimal measurements:
+        #     return opt_val, []
 
-            # Construct optimal measurements:
-            return opt_val, []
+        # Return the optimal value and the optimal measurements.
+        if self._return_optimal_meas:
+            return self.primal_problem()
 
-        # If just the optimal value is required, it is often less
-        # computationally intensive to solve the dual problem.
-        if self.fast:
-            return self.dual_problem()
-        # Otherwise, return the optimal value and the optimal measurements for
-        # obtaining that value.
-        return self.primal_problem()
+        # Otherwise, it is often less computationally intensive to just solve the dual problem.
+        return self.dual_problem()
 
-    def primal_problem(self):
-        r"""
-        Calculate primal problem for positive distinguishability.
+    def primal_problem(self) -> tuple[float, list[cvxpy.Variable]]:
+        """Calculate primal problem for the positive (global) distinguishability SDP.
+
+        The primal problem for the min-error case is defined in equation-20 from arXiv:1707.02571
+        The primal problem for the unambiguous case is defined in equation- from arXiv:.
         """
-        obj_func = []
-        measurements = []
-        constraints = []
+        # Unambiguous consists of `len(self._states)` + 1 measurement operators, where the outcome
+        # of the `len(self._states)`+1^st corresponds to the inconclusive answer.
+        num_measurements = (
+            len(self._states) + 1
+            if self._dist_method == "unambiguous"
+            else len(self._states)
+        )
 
-        if self.dist_method == "unambiguous":
-            num_measurements = len(self.states) + 1
-        else:
-            num_measurements = len(self.states)
+        # Define each measurement variable to be a PSD variable of appropriate dimension.
+        meas = [
+            cvxpy.Variable(self._ensemble.shape, PSD=True)
+            for _ in range(num_measurements)
+        ]
+
+        # Objective function is the inner product between the states and measurements.
+        obj_func = [
+            self._probs[i] * cvxpy.trace(self._states[i].conj().T @ meas[i])
+            for i, _ in enumerate(self._states)
+        ]
+
+        # Valid collection of measurements need to sum to the identity operator.
+        constraints = [sum(meas) == np.identity(self._ensemble.shape[0])]
 
         # Unambiguous state discrimination has an additional constraint on the states and
         # measurements.
-        if self.dist_method == "unambiguous":
+        if self._dist_method == "unambiguous":
             # This is an extra condition required for the unambiguous case.
-            for i, _ in enumerate(self.states):
-                for j, _ in enumerate(self.states):
+            for i, _ in enumerate(self._states):
+                for j, _ in enumerate(self._states):
                     if i != j:
                         constraints.append(
-                            cvxpy.trace(
-                                self.states[i].conj().T @ measurements[i]
-                            )
+                            cvxpy.trace(self._states[i].conj().T @ meas[i])
                             == 0
                         )
 
-        # Note we have one additional measurement operator in the unambiguous case.
-        for i in range(num_measurements):
-            measurements.append(
-                cvxpy.Variable((self.dim_x, self.dim_x), PSD=True)
-            )
-
-        # Objective function is the inner product between the states and measurements.
-        for i, _ in enumerate(self.states):
-            obj_func.append(
-                self.probs[i]
-                * cvxpy.trace(self.states[i].conj().T @ measurements[i])
-            )
-
-        constraints.append(sum(measurements) == np.identity(self.dim_x))
-
         objective = cvxpy.Maximize(sum(obj_func))
         problem = cvxpy.Problem(objective, constraints)
-        sol_default = problem.solve(solver="CVXOPT")
+        opt_val = problem.solve(
+            solver=self._solver, verbose=self._verbose, abstol=self._abstol
+        )
+        return opt_val, meas
 
-        return sol_default, measurements
+    def dual_problem(self) -> float:
+        """Calculate dual problem for the positive (global) distinguishability SDP.
 
-    def dual_problem(self):
-        r"""
-        Calculate dual problem for PPT distinguishability.
+        The dual problem for the min-error case is defined in equation-21 from arXiv:1707.02571.
+        The dual problem for the unambiguous case is defined in equation- from arXiv:.
         """
-        constraints = []
-        dual_vars = []
-        return 0, []
+        num_measurements = (
+            len(self._states) + 1
+            if self._dist_method == "unambiguous"
+            else len(self._states)
+        )
+
+        y_var = cvxpy.Variable(self._ensemble.shape, hermitian=True)
+
+        constraints = [
+            cvxpy.real(y_var - self._probs[i] * self._states[i]) >> 0
+            for i in range(num_measurements)
+        ]
+
+        objective = cvxpy.Minimize(cvxpy.trace(cvxpy.real(y_var)))
+        problem = cvxpy.Problem(objective, constraints)
+        opt_val = problem.solve(
+            solver=self._solver, verbose=self._verbose, abstol=self._abstol
+        )
+
+        return opt_val
