@@ -68,7 +68,7 @@ class OptDist:
             else:
                 self._optimal_value = opt.solve()
 
-        elif self.dist_measurement == "positive":
+        elif self.dist_measurement == "pos":
             opt = Positive(
                 self.ensemble,
                 self.dist_method,

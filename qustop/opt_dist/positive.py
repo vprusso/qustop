@@ -92,7 +92,7 @@ class Positive:
         return self.dual_problem()
 
     def primal_problem(self) -> tuple[float, list[cvxpy.Variable]]:
-        """Calculate primal problem for the positive (global) distinguishability SDP.
+        """Calculate primal problem for the pos (global) distinguishability SDP.
 
         The primal problem for the min-error case is defined in equation-20 from arXiv:1707.02571
         The primal problem for the unambiguous case is defined in equation- from arXiv:.
@@ -128,7 +128,7 @@ class Positive:
                 for j, _ in enumerate(self._states):
                     if i != j:
                         constraints.append(
-                            cvxpy.trace(self._states[i].conj().T @ meas[i])
+                            cvxpy.trace(self._states[j].conj().T @ meas[i])
                             == 0
                         )
 
@@ -140,7 +140,7 @@ class Positive:
         return opt_val, meas
 
     def dual_problem(self) -> float:
-        """Calculate dual problem for the positive (global) distinguishability SDP.
+        """Calculate dual problem for the pos (global) distinguishability SDP.
 
         The dual problem for the min-error case is defined in equation-21 from arXiv:1707.02571.
         The dual problem for the unambiguous case is defined in equation- from arXiv:.

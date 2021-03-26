@@ -10,9 +10,9 @@ Quantum State Distinguishability
    :maxdepth: 5
 
    tutorials.state_distinguishability
-   tutorials.global
+   tutorials.positive
    tutorials.ppt
-   tutorials.sep
+   tutorials.separable
 
 Quantum State Exclusion
 -----------------------

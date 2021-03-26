@@ -43,16 +43,15 @@ This setting is depicted in the following figure.
 
    The quantum state distinguishability setting.
 
-Conclusive discrimination
-^^^^^^^^^^^^^^^^^^^^^^^^^
-(Coming soon).
+Distinguishability Methods
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Inconclusive discrimination
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-(Coming soon).
+* Minimum-error discrimination
 
-Some section
-------------
+* Unambiguous discrimination
+
+Distinguishability Measurements
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Depending on the sets of measurements that Alice and Bob are allowed to use,
 the optimal probability of distinguishing a given set of states is characterized
@@ -67,7 +66,7 @@ by the following image.
 
 That is, the probability that Alice and Bob are able to distinguish using PPT
 measurements is a natural upper bound on the optimal probability of
-distinguishing via separable measurements.
+distinguishing via separable measurements and so on.
 
 In general:
 
@@ -81,9 +80,16 @@ In general:
   techniques that allow one to optimize over the set of PPT measurements via
   semidefinite programming.
 
-* `Distinguishaing Quantum States via Global Measurements <https://qustop.readthedocs.io/en/latest/tutorials.global.html>`_
-* `Distinguishaing Quantum States via PPT Measurements <https://qustop.readthedocs.io/en/latest/tutorials.global.html>`_
-* `Distinguishaing Quantum States via Separable Measurements <https://qustop.readthedocs.io/en/latest/tutorials.global.html>`_
+* Positive (Global): These measurements are the most general and constitute the set
+  of all valid quantum operations that Alice and Bob can perform. The optimal value
+  of distinguishing via positive operations can be phrased as an SDP.
+
+* `Distinguishaing Quantum States via Global Measurements <https://qustop.readthedocs
+.io/en/latest/tutorials.positive.html>`_
+* `Distinguishaing Quantum States via PPT Measurements <https://qustop.readthedocs
+.io/en/latest/tutorials.ppt.html>`_
+* `Distinguishaing Quantum States via Separable Measurements <https://qustop.readthedocs
+.io/en/latest/tutorials.separable.html>`_
 
 Optimal probability of distinguishing a quantum state
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
