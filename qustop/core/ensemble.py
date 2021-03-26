@@ -16,6 +16,8 @@
 """Ensemble of quantum states."""
 from typing import Optional
 
+import sys
+
 import numpy as np
 
 from qustop.core.state import State
@@ -86,6 +88,16 @@ class Ensemble:
     @property
     def density_matrices(self) -> list[np.ndarray]:
         return [state.value for state in self._states]
+
+    @property
+    def is_mutually_orthogonal(self) -> bool:
+        """Determines if all states in the ensemble are mutually orthogonal with each other."""
+        for i, vec_1 in enumerate(self._states):
+            for j, vec_2 in enumerate(self._states):
+                if i != j:
+                    if not np.allclose(np.inner(vec_1.value.conj().T, vec_2.value.conj().T), 0):
+                        return False
+        return True
 
     def swap(self, sub_sys_swap: list[int]) -> None:
         """Performs a swap between two subsystems of each state in the ensemble.

@@ -14,7 +14,6 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import numpy as np
 
-from toqito.states import bell
 from toqito.state_props import is_pure
 from qustop import State, Ensemble, OptDist
 
@@ -22,37 +21,29 @@ from qustop import State, Ensemble, OptDist
 e_0, e_1 = np.array([[1, 0]]).T, np.array([[0, 1]]).T
 e_p, e_m = 1/np.sqrt(2) * np.array([[1, 1]]).T, 1/np.sqrt(2) * np.array([[1, -1]]).T
 
-
-dims = [2]
-theta = 2*np.pi
-
-v_1 = np.cos(theta) * e_0 + np.sin(theta) * e_1
-v_2 = np.cos(theta) * e_0 - np.sin(theta) * e_1
-
-rho_1 = State(v_1, dims)
-rho_2 = State(v_2, dims)
-
+# rho_1 = 3/4 |+><+| + 1/4|-><-|
+v_1 = 3/4 * e_p + 1/4 * e_m
 rho_1 = 3/4 * (e_p * e_p.conj().T) + 1/4 * (e_m * e_m.conj().T)
-rho_2 = 1/4 * (e_p * e_p.conj().T) - 3/4 * (e_m * e_m.conj().T)
+
+# rho_2 = 1/4 |+><+| - 3/4|-><-|
+v_2 = 1/4 * e_p - 3/4 * e_m
+rho_2 = 3/4 * (e_p * e_p.conj().T) + 1/4 * (e_m * e_m.conj().T)
+
+print(f"Is rho_1 pure: {is_pure(rho_1)}")
+print(f"Is rho_2 pure: {is_pure(rho_2)}")
+
 dims = [2]
 rho_1 = State(rho_1, dims)
 rho_2 = State(rho_2, dims)
-
 ensemble = Ensemble([rho_1, rho_2])
-#
-# dims = [2, 2]
-# ensemble = Ensemble([State(bell(0), dims), State(bell(1), dims), State(bell(2), dims)])
-#
+
 sd = OptDist(ensemble=ensemble,
              dist_measurement="pos",
-             dist_method="min-error",
-             return_optimal_meas=True)
+             dist_method="min-error")
 
-# 0.7499999977563431
+# 0.5000000000000002
 sd.solve()
 print(sd.value)
 
-# print(np.cos(2*theta))
-#
-# # The closed-form equation yields: 3/4 = 0.75
-# print(1/2 + 1/4 * np.linalg.norm(rho_1.value - rho_2.value, ord="nuc"))
+# The closed-form equation yields: 1/2
+print(1/2 + 1/4 * np.linalg.norm(rho_1.value - rho_2.value, ord="nuc"))

@@ -31,7 +31,7 @@ may be obtained by solving the following semidefinite program (SDP).
         \end{aligned}
     \end{equation}
 
-The `qustop` package solves either of these two optimization problems depending on whether the
+The :code:`qustop` package solves either of these two optimization problems depending on whether the
 optimal measurements are required.
 
 For the special case of distinguishing between two states, the probability of optimally
@@ -42,25 +42,61 @@ distinguishing is exactly
 
 where :math:`\left\lVert \cdot \right\rVert_1`.
 
-For example, consider the following two states:
+A result of []_ shows that any two orthogonal pure states can be distinguished perfectly.
+This result actually applies to LOCC measurements and is a stronger claim than just for positive
+measurements, but since :math:`\text{opt}_{\text{LOCC}} \leq \text{opt}_{\text{pos}}` it also
+holds for positive measurements.
+
+For example, consider the two orthogonal pure states
 
 .. math::
-    v_1 = \frac{\sqrt{3}}{2} | 00 \rangle + \frac{1}{2} | 11 \rangle
+    | \psi_0 \rangle = \sqrt{\frac{3}{4}} | + \rangle + \sqrt{\frac{1}{4}} | - \rangle,
     \quad \text{and} \quad
-    v_2 = \frac{1}{2} |00 \rangle + \frac{\sqrt{3}}{2} | 11 \rangle.
+    | \psi_1 \rangle = \sqrt{\frac{1}{4}} | + \rangle + \sqrt{\frac{3}{4}} | - \rangle.
 
-The following code sample shows that the closed-form equation matches the result obtained from
-:code:`qustop`.
+Since :math:`| \psi_0 \rangle` and :math:`| \psi_1 \rangle` are pure and orthogonal with each
+other, they are able to be perfectly distinguished.
 
-.. literalinclude:: ../examples/opt_dist/positive/min_error_two_states.py
+.. literalinclude:: ../examples/opt_dist/positive/min_error/two_pure_states.py
    :language: python
    :linenos:
    :start-after: # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-If the ensemble of states provided consist of all mutually orthogonal states, then it is possible
-to distinguish with perfect probability in this case.
+Consider now the following two mixed states
 
-EXAMPLE
+.. math::
+    | \phi_1 \rangle =
+    \quad \text{and} \quad
+    | \phi_2 \rangle =
+
+The following code sample shows that the closed-form equation matches the result obtained from
+:code:`qustop`, however, since they are mixed states and not pure, we are not able to perfectly
+distinguish them.
+
+.. literalinclude:: ../examples/opt_dist/positive/min_error/two_mixed_states.py
+   :language: python
+   :linenos:
+   :start-after: # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+On the note of orthogonality, if the ensemble of states provided consist of all mutually
+orthogonal states, then it is possible to distinguish with perfect probability in this special case.
+
+As a prototypical example, consider the four Bell states
+
+.. math::
+    \begin{equation}
+        \begin{aligned}
+            | \psi_0 \rangle = \frac{|00\rangle + |11\rangle}{\sqrt{2}}, &\quad
+            | \psi_1 \rangle = \frac{|01\rangle + |10\rangle}{\sqrt{2}}, \\
+            | \psi_2 \rangle = \frac{|01\rangle - |10\rangle}{\sqrt{2}}, &\quad
+            | \psi_3 \rangle = \frac{|00\rangle - |11\rangle}{\sqrt{2}}.
+        \end{aligned}
+    \end{equation}
+
+.. literalinclude:: ../examples/opt_dist/positive/min_error/bell_states.py
+   :language: python
+   :linenos:
+   :start-after: # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 If there are more than two states and those states are not mutually orthogonal, no closed-form
 equation is known to exist, so we resort to solving the SDP.
