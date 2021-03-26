@@ -35,12 +35,22 @@ b_3 = 1 / np.sqrt(2) * (e_01 - e_10)
 def test_is_mutually_orthogonal():
     """Check if the states in the ensemble are mutually orthogonal or not."""
     dims = [2, 2]
-    orthogonal_states = [State(b_0, dims), State(b_1, dims), State(b_2, dims), State(b_3, dims)]
+    orthogonal_states = [
+        State(b_0, dims),
+        State(b_1, dims),
+        State(b_2, dims),
+        State(b_3, dims),
+    ]
     orthogonal_ensemble = Ensemble(orthogonal_states)
 
     assert orthogonal_ensemble.is_mutually_orthogonal is True
 
-    nonorthogonal_states = [State(b_0, dims), State(b_0, dims), State(b_2, dims), State(b_3, dims)]
+    nonorthogonal_states = [
+        State(b_0, dims),
+        State(b_0, dims),
+        State(b_2, dims),
+        State(b_3, dims),
+    ]
     nonorthogonal_ensemble = Ensemble(nonorthogonal_states)
 
     assert nonorthogonal_ensemble.is_mutually_orthogonal is False

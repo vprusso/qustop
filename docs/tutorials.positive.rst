@@ -1,7 +1,33 @@
 Distinguishing Quantum States via Positive Measurements
 =======================================================
 
-In this tutorial, we are going to show how ...
+In this tutorial, we are going to show how to make use of :code:`qustop` to calculate the optimal
+probability of distinguishing a state from an ensemble of quantum states when Alice and Bob are
+allowed to use global (positive) measurements on their system.
+
+The optimal probability of distinguishing using positive measurements serves as an upper bound on
+the optimal probability of distinguishing using PPT, separable, and LOCC measurements.
+Specifically, given an ensemble of quantum states, :math:`\eta`, it holds that
+
+.. math::
+    \text{opt}_{\text{LOCC}}(\eta) \leq
+    \text{opt}_{\text{SEP}}(\eta) \leq
+    \text{opt}_{\text{PPT}}(\eta) \leq
+    \text{opt}(\eta),
+
+where:
+
+- :math:`\text{opt}(\eta)` represents the optimal probability of distinguishing using
+  positive measurements,
+
+-   :math:`\text{opt}_{\text{PPT}}(\eta)` represents the probability of distinguishing via PPT
+    measurements,
+
+-   :math:`\text{opt}_{\text{SEP}}(\eta)` represents the probability of distinguishing via
+    separable measurements,
+
+-   :math:`\text{opt}_{\text{LOCC}}(\eta)` represents the probability of distinguishing via LOCC
+    measurements.
 
 Minimum-error distinguishability via positive measurements
 ----------------------------------------------------------
@@ -42,7 +68,7 @@ distinguishing is exactly
 
 where :math:`\left\lVert \cdot \right\rVert_1`.
 
-A result of []_ shows that any two orthogonal pure states can be distinguished perfectly.
+A result of [tWalgate00]_ shows that any two orthogonal pure states can be distinguished perfectly.
 This result actually applies to LOCC measurements and is a stronger claim than just for positive
 measurements, but since :math:`\text{opt}_{\text{LOCC}} \leq \text{opt}_{\text{pos}}` it also
 holds for positive measurements.
@@ -65,9 +91,9 @@ other, they are able to be perfectly distinguished.
 Consider now the following two mixed states
 
 .. math::
-    | \phi_1 \rangle =
+    | \phi_1 \rangle = \frac{3}{4} |+ \rangle \langle + | + \frac{1}{4} |- \rangle \langle - |
     \quad \text{and} \quad
-    | \phi_2 \rangle =
+    | \phi_2 \rangle = \frac{1}{4} |+ \rangle \langle + | - \frac{3}{4} |- \rangle \langle - |
 
 The following code sample shows that the closed-form equation matches the result obtained from
 :code:`qustop`, however, since they are mixed states and not pure, we are not able to perfectly
@@ -117,3 +143,9 @@ Unambiguous distinguishability via positive measurements
                                     \forall i \not= j = 1, \ldots, n \\
                                  & M_1, \ldots, M_n \in \text{Pos}(\mathcal{A} \otimes \mathcal{B}).
     \end{align*}
+
+References
+------------------------------
+.. [tWalgate00] Walgate, J., Short, A. J., Hardy, L., & Vedral, V
+    "Local distinguishability of multipartite orthogonal quantum states."
+    Physical Review Letters 85.23 (2000): 4972.

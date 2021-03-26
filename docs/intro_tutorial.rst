@@ -152,3 +152,10 @@ This setting is depicted in the following figure.
 Depending on the sets of measurements that Alice and Bob are allowed to use,
 the optimal probability of distinguishing a given set of states is characterized
 by the following image.
+
+.. figure:: figures/measurement_inclusions.svg
+   :alt: measurement inclusion diagram
+   :align: center
+
+   The measurement inclusion diagram.
+

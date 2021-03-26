@@ -38,18 +38,21 @@ def test_state_distinguishability_one_state():
     rho = [State(b_0 * b_0.conj().T, dims)]
     ensemble = Ensemble(rho)
 
-    primal_res = OptDist(ensemble=ensemble,
-                         dist_measurement="pos",
-                         dist_method="min-error",
-                         return_optimal_meas=True,
+    primal_res = OptDist(
+        ensemble=ensemble,
+        dist_measurement="pos",
+        dist_method="min-error",
+        return_optimal_meas=True,
     )
     primal_res.solve()
     np.testing.assert_equal(np.isclose(primal_res.value, 1), True)
 
-    dual_res = OptDist(ensemble=ensemble,
-                       dist_measurement="pos",
-                       dist_method="min-error",
-                       return_optimal_meas=False)
+    dual_res = OptDist(
+        ensemble=ensemble,
+        dist_measurement="pos",
+        dist_method="min-error",
+        return_optimal_meas=False,
+    )
     dual_res.solve()
     np.testing.assert_equal(np.isclose(dual_res.value, 1), True)
 
@@ -60,17 +63,21 @@ def test_state_distinguishability_one_state_vec():
     rho = [State(b_0, dims)]
     ensemble = Ensemble(rho)
 
-    primal_res = OptDist(ensemble=ensemble,
-                         dist_measurement="pos",
-                         dist_method="min-error",
-                         return_optimal_meas=True)
+    primal_res = OptDist(
+        ensemble=ensemble,
+        dist_measurement="pos",
+        dist_method="min-error",
+        return_optimal_meas=True,
+    )
     primal_res.solve()
     np.testing.assert_equal(np.isclose(primal_res.value, 1), True)
 
-    dual_res = OptDist(ensemble=ensemble,
-                       dist_measurement="pos",
-                       dist_method="min-error",
-                       return_optimal_meas=False)
+    dual_res = OptDist(
+        ensemble=ensemble,
+        dist_measurement="pos",
+        dist_method="min-error",
+        return_optimal_meas=False,
+    )
     dual_res.solve()
     np.testing.assert_equal(np.isclose(dual_res.value, 1), True)
 
@@ -82,17 +89,21 @@ def test_state_distinguishability_two_states():
     probs = [1 / 2, 1 / 2]
     ensemble = Ensemble(states, probs)
 
-    primal_res = OptDist(ensemble=ensemble,
-                         dist_measurement="pos",
-                         dist_method="min-error",
-                         return_optimal_meas=True)
+    primal_res = OptDist(
+        ensemble=ensemble,
+        dist_measurement="pos",
+        dist_method="min-error",
+        return_optimal_meas=True,
+    )
     primal_res.solve()
     np.testing.assert_equal(np.isclose(primal_res.value, 1), True)
 
-    dual_res = OptDist(ensemble=ensemble,
-                       dist_measurement="pos",
-                       dist_method="min-error",
-                       return_optimal_meas=False)
+    dual_res = OptDist(
+        ensemble=ensemble,
+        dist_measurement="pos",
+        dist_method="min-error",
+        return_optimal_meas=False,
+    )
     dual_res.solve()
     np.testing.assert_equal(np.isclose(dual_res.value, 1), True)
 
@@ -104,10 +115,12 @@ def test_unambiguous_state_distinguishability_two_states():
     probs = [1 / 2, 1 / 2]
     ensemble = Ensemble(states, probs)
 
-    primal_res = OptDist(ensemble=ensemble,
-                         dist_measurement="pos",
-                         dist_method="unambiguous",
-                         return_optimal_meas=True)
+    primal_res = OptDist(
+        ensemble=ensemble,
+        dist_measurement="pos",
+        dist_method="unambiguous",
+        return_optimal_meas=True,
+    )
     primal_res.solve()
     np.testing.assert_equal(np.isclose(primal_res.value, 0), True)
 
@@ -131,14 +144,16 @@ def test_state_distinguishability_yyd_density_matrices():
         State(np.kron(psi0, psi0), dims),
         State(np.kron(psi2, psi1), dims),
         State(np.kron(psi3, psi1), dims),
-        State(np.kron(psi1, psi1), dims)
+        State(np.kron(psi1, psi1), dims),
     ]
     probs = [1 / 4, 1 / 4, 1 / 4, 1 / 4]
     ensemble = Ensemble(states, probs)
 
-    primal_res = OptDist(ensemble=ensemble,
-                         dist_measurement="pos",
-                         dist_method="min-error",
-                         return_optimal_meas=True)
+    primal_res = OptDist(
+        ensemble=ensemble,
+        dist_measurement="pos",
+        dist_method="min-error",
+        return_optimal_meas=True,
+    )
     primal_res.solve()
     np.testing.assert_equal(np.isclose(primal_res.value, 1, atol=0.001), True)

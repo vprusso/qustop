@@ -16,8 +16,6 @@
 """Ensemble of quantum states."""
 from typing import Optional
 
-import sys
-
 import numpy as np
 
 from qustop.core.state import State
@@ -95,7 +93,9 @@ class Ensemble:
         for i, vec_1 in enumerate(self._states):
             for j, vec_2 in enumerate(self._states):
                 if i != j:
-                    if not np.allclose(np.inner(vec_1.value.conj().T, vec_2.value.conj().T), 0):
+                    if not np.allclose(
+                        np.inner(vec_1.value.conj().T, vec_2.value.conj().T), 0
+                    ):
                         return False
         return True
 

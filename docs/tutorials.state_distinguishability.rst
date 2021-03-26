@@ -9,7 +9,7 @@ with which this problem can be solved when given access to certain
 measurements.
 
 Further information beyond the scope of this tutorial can be found in the text
-[tWatrousQI]_ as well as the course [tSikoraSDP]_.
+[WatrousQI]_ as well as the course [SikoraSDP]_.
 
 The state distinguishability problem
 -------------------------------------
@@ -84,210 +84,51 @@ In general:
   of all valid quantum operations that Alice and Bob can perform. The optimal value
   of distinguishing via positive operations can be phrased as an SDP.
 
-* `Distinguishaing Quantum States via Global Measurements <https://qustop.readthedocs
-.io/en/latest/tutorials.positive.html>`_
-* `Distinguishaing Quantum States via PPT Measurements <https://qustop.readthedocs
-.io/en/latest/tutorials.ppt.html>`_
-* `Distinguishaing Quantum States via Separable Measurements <https://qustop.readthedocs
-.io/en/latest/tutorials.separable.html>`_
+* `Distinguishaing Quantum States via Global Measurements <https://qustop.readthedocs.io/en/latest/tutorials.positive.html>`_
+
+* `Distinguishaing Quantum States via PPT Measurements <https://qustop.readthedocs.io/en/latest/tutorials.ppt.html>`_
+
+* `Distinguishaing Quantum States via Separable Measurements <https://qustop.readthedocs.io/en/latest/tutorials.separable.html>`_
 
 Optimal probability of distinguishing a quantum state
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The optimal probability with which Bob can distinguish the state he is given
-may be obtained by solving the following semidefinite program (SDP).
+In this tutorial, we are going to show how to make use of :code:`qustop` to calculate the optimal
+probability of distinguishing a state from an ensemble of quantum states when Alice and Bob are
+allowed to use global (positive) measurements on their system.
+
+The optimal probability of distinguishing using positive measurements serves as an upper bound on
+the optimal probability of distinguishing using PPT, separable, and LOCC measurements.
+Specifically, given an ensemble of quantum states, :math:`\eta`, it holds that
 
 .. math::
-    \begin{align*}
-        \text{maximize:} \quad & \sum_{i=0}^n p_i \langle M_i,
-        \rho_i \rangle \\
-        \text{subject to:} \quad & \sum_{i=0}^n M_i = \mathbb{I}_{\mathcal{X}},\\
-                                 & M_i \in \text{Pos}(\mathcal{X})
-    \end{align*}
+    \text{opt}_{\text{LOCC}}(\eta) \leq
+    \text{opt}_{\text{SEP}}(\eta) \leq
+    \text{opt}_{\text{PPT}}(\eta) \leq
+    \text{opt}(\eta),
 
-This optimization problem is solved in :code:`toqito` to obtain the optimal
-probability with which Bob can distinguish state :math:`\rho_i`.
+where:
 
-To illustrate how we can phrase and solve this problem in :code:`toqito`,
-consider the following example. Assume Alice has an ensemble of quantum states
+- :math:`\text{opt}(\eta)` represents the optimal probability of distinguishing using
+  positive measurements,
 
-.. math::
-    \eta = \{ (1/2, \rho_0), (1/2, \rho_1) \}
+-   :math:`\text{opt}_{\text{PPT}}(\eta)` represents the probability of distinguishing via PPT
+    measurements,
 
-such that 
+-   :math:`\text{opt}_{\text{SEP}}(\eta)` represents the probability of distinguishing via
+    separable measurements,
 
-.. math::
-    \rho_0 = | 0 \rangle \langle 0 | = \begin{pmatrix}
-                1 & 0 \\
-                0 & 0
-             \end{pmatrix} \quad \text{and} \quad
-    \rho_1 = | 1 \rangle \langle 1 | = \begin{pmatrix}
-                0 & 0 \\
-                0 & 1
-             \end{pmatrix}
-
-
-These states are completely orthogonal to each other, and it is known that Bob
-can optimally distinguish the state he is given perfectly, i.e. with probability
-:math:`1`.
-
-Using :code:`toqito`, we can calculate this probability directly as follows:
-
-.. code-block:: python
-
-    >>> from toqito.states import basis
-    >>> from toqito.state_opt import state_distinguishability
-    >>> 
-    >>> # Define the standard basis |0> and |1>
-    >>> e_0, e_1 = basis(2, 0), basis(2, 1)
-    >>>
-    >>> # Define the corresponding density matrices of |0> and |1> 
-    >>> # given as |0><0| and |1><1|, respectively.
-    >>> e_00 = e_0 * e_0.conj().T
-    >>> e_11 = e_1 * e_1.conj().T
-    >>>
-    >>> # Define a list of states and a corresponding list of 
-    >>> # probabilities with which those states are selected.
-    >>> states = [e_00, e_11] 
-    >>> probs = [1/2, 1/2]
-    >>>
-    >>> # Calculate the probability with which Bob can 
-    >>> # distinguish the state he is provided.
-    >>> state_distinguishability(states, probs)
-    1.000
-
-Specifying similar state distinguishability problems can be done so using this
-general pattern.
-
-Optimal probability of distinguishing a state via PPT measurements
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-We may consider the quantum state distinguishability scenario under somewhat
-different and more limited set of circumstances. Specifically, we may want to
-ask the same question but restrict to enforcing that in order to determine the
-state that Bob is provided, he is limited to using a certain class of
-measurement. There are a wider class of measurements with respect to the ones
-we considered in the previous example referred to as PPT (positive partial
-transpose).
-
-The problem of state distinguishability with respect to PPT measurements can
-also be framed as an SDP and was initially presented in this manner in
-[tCosentino13]_
-
-.. math::
-
-    \begin{equation}
-        \begin{aligned}
-            \text{minimize:} \quad & \frac{1}{k} \text{Tr}(Y) \\
-            \text{subject to:} \quad & Y \geq \text{T}_{\mathcal{A}}
-                                      (\rho_j), \quad j = 1, \ldots, k, \\
-                                     & Y \in \text{Herm}(\mathcal{A} \otimes
-                                      \mathcal{B}).
-        \end{aligned}
-    \end{equation}
-
-Using :code:`toqito`, we can determine the optimal probability for Bob to
-distinguish a given state from an ensemble if he is only given access to PPT
-measurements.
-
-Consider the following Bell states
-
-.. math::
-    \begin{equation}
-        \begin{aligned}
-            | \psi_0 \rangle = \frac{|00\rangle + |11\rangle}{\sqrt{2}}, &\quad
-            | \psi_1 \rangle = \frac{|01\rangle + |10\rangle}{\sqrt{2}}, \\
-            | \psi_2 \rangle = \frac{|01\rangle - |10\rangle}{\sqrt{2}}, &\quad
-            | \psi_3 \rangle = \frac{|00\rangle - |11\rangle}{\sqrt{2}}.
-        \end{aligned}
-    \end{equation}
-
-It was shown in [tCosentino13]_ and later extended in [tCR13]_ that for the following set of states
-
-.. math::
-    \begin{equation}
-        \begin{aligned}
-            \rho_1^{(2)} &= |\psi_0 \rangle | \psi_0 \rangle \langle \psi_0 | \langle \psi_0 |, \\
-            \rho_2^{(2)} &= |\psi_1 \rangle | \psi_3 \rangle \langle \psi_1 | \langle \psi_3 |, \\
-            \rho_3^{(2)} &= |\psi_2 \rangle | \psi_3 \rangle \langle \psi_2 | \langle \psi_3 |, \\
-            \rho_4^{(2)} &= |\psi_3 \rangle | \psi_3 \rangle \langle \psi_3 | \langle \psi_3 |, \\
-        \end{aligned}
-    \end{equation}
-
-that the optimal probability of distinguishing via a PPT measurement should yield
-:math:`7/8 \approx 0.875`.
-
-This ensemble of states and some of its properties with respect to
-distinguishability were initially considered in [tYDY12]_. In :code:`toqito`,
-we can calculate the probability with which Bob can distinguish these states
-via PPT measurements in the following manner.
-
-.. code-block:: python
-
-    >>> import numpy as np
-    >>> from toqito.states import bell
-    >>> from toqito.state_opt import ppt_distinguishability
-    >>> # Bell vectors:
-    >>> psi_0 = bell(0)
-    >>> psi_1 = bell(2)
-    >>> psi_2 = bell(3)
-    >>> psi_3 = bell(1)
-    >>>
-    >>> # YDY vectors from [tYDY12]_:
-    >>> x_1 = np.kron(psi_0, psi_0)
-    >>> x_2 = np.kron(psi_1, psi_3)
-    >>> x_3 = np.kron(psi_2, psi_3)
-    >>> x_4 = np.kron(psi_3, psi_3)
-    >>>
-    >>> # YDY density matrices:
-    >>> rho_1 = x_1 * x_1.conj().T
-    >>> rho_2 = x_2 * x_2.conj().T
-    >>> rho_3 = x_3 * x_3.conj().T
-    >>> rho_4 = x_4 * x_4.conj().T
-    >>>
-    >>> states = [rho_1, rho_2, rho_3, rho_4]
-    >>> probs = [1 / 4, 1 / 4, 1 / 4, 1 / 4]
-    >>> ppt_distinguishability(states, probs)
-    0.875
-
-Probability of distinguishing a state via separable measurements
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-As previously mentioned, optimizing over the set of separable measurements is
-NP-hard. However, there does exist a hierarchy of semidefinite programs which
-eventually does converge to the separable value. This hierarchy is based off
-the notion of symmetric extensions. More information about this hierarchy of
-SDPs can be found here [tNav08]_.
+-   :math:`\text{opt}_{\text{LOCC}}(\eta)` represents the probability of distinguishing via LOCC
+    measurements.
 
 References
 ------------------------------
-.. [tWatrousQI] Watrous, John
+.. [WatrousQI] Watrous, John
     "The theory of quantum information"
     Section: "A semidefinite program for optimal measurements"
     Cambridge University Press, 2018
 
-.. [tNav08] Navascués, Miguel.
-    "Pure state estimation and the characterization of entanglement."
-    Physical review letters 100.7 (2008): 070503.
-    https://arxiv.org/abs/0707.4398
-
-.. [tSikoraSDP] Sikora, Jamie
+.. [SikoraSDP] Sikora, Jamie
     "Semidefinite programming in quantum theory (lecture series)"
     Lecture 2: Semidefinite programs for nice problems and popular functions
     Perimeter Institute for Theoretical Physics, 2019
-
-.. [tCosentino13] Cosentino, Alessandro,
-    "Positive-partial-transpose-indistinguishable states via semidefinite programming",
-    Physical Review A 87.1 (2013): 012321.
-    https://arxiv.org/abs/1205.1031
-
-.. [tCR13] Cosentino, Alessandro and Russo, Vincent
-    "Small sets of locally indistinguishable orthogonal maximally entangled states",
-    Quantum Information & Computation, Volume 14, 
-    https://arxiv.org/abs/1307.3232
-
-.. [tYDY12] Yu, Nengkun, Runyao Duan, and Mingsheng Ying.
-    "Four locally indistinguishable ququad-ququad orthogonal
-    maximally entangled states."
-    Physical review letters 109.2 (2012): 020506.
-    https://arxiv.org/abs/1107.3224

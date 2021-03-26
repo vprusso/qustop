@@ -21,6 +21,14 @@ The `qustop` package is focused on problems pertaining to the following setting:
 
 ## Applications
 
+Specifically, `qustop` can be used to:
+
+- Calculate optimal probabilities of distinguishing quantum states.  
+
+- Optimize and approximate optimal values over positive, PPT, and separable measurements.
+
+- Calculate optimal probabilities of optimally excluding quantum states.
+
 ### State distinguishability
 
 1. Alice possesses an ensemble of `n` quantum states:

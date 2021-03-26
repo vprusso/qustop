@@ -53,7 +53,32 @@ class OptDist:
     def convert_measurements(measurements) -> list[np.ndarray]:
         return [measurements[i].value for i in range(len(measurements))]
 
+    def pre_optimize(self):
+        """For certain special cases of ensembles, we do not need to solve any SDP and can obtain
+        a result analytically.
+        """
+        # If there is only one state in the ensemble, the optimal value is trivially equal to
+        # one. The optimal measurement is simply the identity matrix.
+        if len(self.ensemble) == 1:
+            if self.return_optimal_meas:
+                return 1.0, np.identity(self.ensemble.shape[0])
+            else:
+                return 1.0
+
+        # There is a closed-form expression for the distinguishability of two density matrices.
+        if len(self.ensemble) == 2:
+            pass
+
+        # # If the states are mutually orthogonal, it is possible to perfectly distinguish.
+        # if self.ensemble.is_mutually_orthogonal:
+        #     pass
+
+        return None, []
+
     def solve(self):
+
+        self._optimal_value, self._optimal_measurements = self.pre_optimize()
+
         if self.dist_measurement == "ppt":
             opt = PPT(
                 self.ensemble,

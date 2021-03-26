@@ -33,8 +33,7 @@ PYTHON_VERSION = sys.version_info[0:3]
 
 
 def about() -> None:
-    """
-    Displays information about qustop, core/optional packages, and
+    """Displays information about qustop, core/optional packages, and
     Python version/platform information.
     """
 

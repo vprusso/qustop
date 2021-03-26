@@ -47,14 +47,6 @@ class Positive:
 
     def solve(self):
 
-        # If there is only one state in the ensemble, the optimal value is trivially equal to
-        # one. The optimal measurement is simply the identity matrix.
-        if len(self._ensemble) == 1:
-            if self._return_optimal_meas:
-                return 1.0, np.identity(self._ensemble.shape[0])
-            else:
-                return 1.0
-
         # # There is a closed-form expression for the distinguishability of two density matrices.
         # if len(self.ensemble) == 2:
         #     opt_val = (
@@ -123,7 +115,6 @@ class Positive:
         # Unambiguous state discrimination has an additional constraint on the states and
         # measurements.
         if self._dist_method == "unambiguous":
-            # This is an extra condition required for the unambiguous case.
             for i, _ in enumerate(self._states):
                 for j, _ in enumerate(self._states):
                     if i != j:

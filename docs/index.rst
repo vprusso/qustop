@@ -1,15 +1,13 @@
 .. figure:: figures/logo.svg
-   :alt: toqito logo
+   :alt: qustop logo
    :align: center
 
 qustop
 ======
 
-toqito is an open source library for studying various objects in quantum
-information, namely, states, channels, and measurements. toqito focuses on
-providing numerical tools to study problems pertaining to entanglement theory,
-nonlocal games, and other aspects of quantum information that are often
-associated with computer science.
+:code:`qustop` (QUantum STate OPtimizer) is a Python toolkit for studying various quantum state
+optimization scenarios including calculating optimal values for quantum state distinguishability,
+quantum state exclusion, quantum state cloning, and more.
 
 .. image:: http://img.shields.io/travis/vprusso/toqito.svg?style=plastic
    :alt: Build Status
@@ -39,15 +37,21 @@ User Documentation
 
 .. toctree::
     :maxdepth: 2
+    :caption: Quantum States and Ensembles
+
+    states_and_ensembles
+
+.. toctree::
+    :maxdepth: 2
     :caption: Quantum State Distinguishability
 
-    states
+    quantum_state_distinguishability
 
 .. toctree::
     :maxdepth: 2
     :caption: Quantum State Exclusion
 
-    matrices
+    quantum_state_exclusion
 
 .. toctree::
     :maxdepth: 2

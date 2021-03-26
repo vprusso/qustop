@@ -3,6 +3,7 @@ Distinguishing Quantum States via PPT Measurements
 
 Minimum-Error
 -------------
+TODO Cite [Cosentino13]_ [Cosentino15]_
 
 .. math::
     \begin{equation}
@@ -32,9 +33,12 @@ Minimum-Error
 Unambiguous
 -----------
 
+[Cosentino13]_
 
 Entanglement cost of distinguishing Bell states
 -----------------------------------------------
+
+[BCJRWY15]_
 
 Distinguishing three Bell states
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -45,8 +49,13 @@ Distinguishing four Bell states
 Distinguishing Yu-Duan-Ying states
 ----------------------------------
 
+[CR13]_ [YDY12]_
+
 Werner hiding pairs
 -------------------
+
+TODO Cite [TDL01]_, [DLT02]_
+
 A Werner hiding pair is defined by
 
 .. math::
@@ -74,3 +83,23 @@ References
     "Quantum state local distinguishability via convex optimization".
     University of Waterloo, Thesis
     https://uwspace.uwaterloo.ca/handle/10012/9572
+
+.. [Cosentino13] Cosentino, Alessandro,
+    "Positive-partial-transpose-indistinguishable states via semidefinite programming",
+    Physical Review A 87.1 (2013): 012321.
+    https://arxiv.org/abs/1205.1031
+
+.. [CR13] Cosentino, Alessandro and Russo, Vincent
+    "Small sets of locally indistinguishable orthogonal maximally entangled states",
+    Quantum Information & Computation, Volume 14,
+    https://arxiv.org/abs/1307.3232
+
+.. [YDY12] Yu, Nengkun, Runyao Duan, and Mingsheng Ying.
+    "Four locally indistinguishable ququad-ququad orthogonal
+    maximally entangled states."
+    Physical review letters 109.2 (2012): 020506.
+    https://arxiv.org/abs/1107.3224
+
+.. [BCJRWY15] Bandyopadhyay, Somshubhro, Cosentino, Alessandro, Johnston, Nathaniel, Russo, Vincent, Watrous, John, & Yu, Nengkun.
+    "Limitations on separable measurements by convex optimization".
+    IEEE Transactions on Information Theory 61.6 (2015): 3593-3604.

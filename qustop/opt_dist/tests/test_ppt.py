@@ -66,7 +66,7 @@ def test_ppt_distinguishability_yyd_density_matrices():
         State(rho_1, dims),
         State(rho_2, dims),
         State(rho_3, dims),
-        State(rho_4, dims)
+        State(rho_4, dims),
     ]
     probs = [1 / 4, 1 / 4, 1 / 4, 1 / 4]
     ensemble = Ensemble(states, probs)
@@ -146,7 +146,7 @@ def test_ppt_distinguishability_yyd_vectors():
         State(x_1, dims),
         State(x_2, dims),
         State(x_3, dims),
-        State(x_4, dims)
+        State(x_4, dims),
     ]
     probs = [1 / 4, 1 / 4, 1 / 4, 1 / 4]
     ensemble = Ensemble(states, probs)
@@ -196,7 +196,6 @@ def test_ppt_distinguishability_yyd_vectors():
     np.testing.assert_equal(
         np.isclose(unambig_dual_res.value, 3 / 4, atol=0.001), True
     )
-
 
 
 def test_ppt_distinguishability_yyd_states_no_probs():

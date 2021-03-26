@@ -14,7 +14,6 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import numpy as np
 
-from toqito.state_props import is_pure
 from qustop import State, Ensemble, OptDist
 
 # Define single-qubit |0> and |1> basis states.
@@ -25,15 +24,12 @@ v_1 = np.sqrt(3/4) * e_p + np.sqrt(1/4) * e_m
 # Define v_2 = sqrt(1/4)|+> - sqrt(3/4)|->
 v_2 = np.sqrt(1/4) * e_p - np.sqrt(3/4) * e_m
 
-rho_1 = v_1 * v_1.conj().T
-rho_2 = v_2 * v_2.conj().T
-
-print(f"Is rho_1 pure: {is_pure(rho_1)}")
-print(f"Is rho_2 pure: {is_pure(rho_2)}")
-
 dims = [2]
 rho_1 = State(v_1, dims)
 rho_2 = State(v_2, dims)
+
+print(f"Is rho_1 pure: {rho_1.is_pure}")
+print(f"Is rho_2 pure: {rho_2.is_pure}")
 
 ensemble = Ensemble([rho_1, rho_2])
 

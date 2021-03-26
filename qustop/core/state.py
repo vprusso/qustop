@@ -90,6 +90,11 @@ class State:
     def value(self) -> np.ndarray:
         return self._state
 
+    @property
+    def is_pure(self) -> bool:
+        eigs, _ = np.linalg.eig(self._state)
+        return np.allclose(np.max(np.diag(eigs)), 1)
+
     @staticmethod
     def _prepare_state(state: np.ndarray) -> Optional[np.ndarray]:
         """Returns the validated quantum state.
