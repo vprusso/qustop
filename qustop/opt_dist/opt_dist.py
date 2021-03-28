@@ -13,12 +13,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from typing import Any
+from typing import Any, List
 
 import numpy as np
 
 from qustop.core import Ensemble
-from qustop.opt_dist import Positive, PPT
+from qustop.opt_dist import Positive, PPT, Separable
 
 
 class OptDist:
@@ -34,9 +34,9 @@ class OptDist:
         self.dist_method = dist_method
 
         self.return_optimal_meas = kwargs.get("return_optimal_meas", False)
-        self.solver = kwargs.get("solver", "CVXOPT")
+        self.solver = kwargs.get("solver", "SCS")
         self.verbose = kwargs.get("verbose", False)
-        self.abstols = kwargs.get("abstol", 1e-5)
+        self.eps = kwargs.get("eps", 1e-4)
 
         self._optimal_value = None
         self._optimal_measurements = []
@@ -46,11 +46,11 @@ class OptDist:
         return self._optimal_value
 
     @property
-    def measurements(self) -> list[np.ndarray]:
+    def measurements(self) -> List[np.ndarray]:
         return self._optimal_measurements
 
     @staticmethod
-    def convert_measurements(measurements) -> list[np.ndarray]:
+    def convert_measurements(measurements) -> List[np.ndarray]:
         return [measurements[i].value for i in range(len(measurements))]
 
     def pre_optimize(self):
@@ -86,7 +86,7 @@ class OptDist:
                 self.return_optimal_meas,
                 self.solver,
                 self.verbose,
-                self.abstols,
+                self.eps,
             )
             if self.return_optimal_meas:
                 self._optimal_value, self._optimal_measurements = opt.solve()
@@ -100,7 +100,20 @@ class OptDist:
                 self.return_optimal_meas,
                 self.solver,
                 self.verbose,
-                self.abstols,
+                self.eps,
+            )
+            if self.return_optimal_meas:
+                self._optimal_value, self._optimal_measurements = opt.solve()
+            else:
+                self._optimal_value = opt.solve()
+        elif self.dist_measurement == "sep":
+            opt = Separable(
+                self.ensemble,
+                self.dist_method,
+                self.return_optimal_meas,
+                self.solver,
+                self.verbose,
+                self.eps,
             )
             if self.return_optimal_meas:
                 self._optimal_value, self._optimal_measurements = opt.solve()

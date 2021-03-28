@@ -14,7 +14,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 """Quantum state object."""
-from typing import Optional
+from typing import List, Optional, Tuple
 
 import numpy as np
 
@@ -25,7 +25,7 @@ from toqito.matrix_props import is_density
 class State:
     """A `State` object representing a quantum state."""
 
-    def __init__(self, state: np.ndarray, dims: list[int]) -> None:
+    def __init__(self, state: np.ndarray, dims: List[int]) -> None:
         """Initializes a quantum state.
 
         Args:
@@ -67,23 +67,23 @@ class State:
         return self.__str__()
 
     @property
-    def shape(self) -> tuple[int, int]:
+    def shape(self) -> Tuple[int, int]:
         return self._state.shape
 
     @property
-    def dims(self) -> list[int]:
+    def dims(self) -> List[int]:
         return self._dims
 
     @property
-    def systems(self) -> list[int]:
+    def systems(self) -> List[int]:
         return self._systems
 
     @property
-    def alice_systems(self) -> list[int]:
+    def alice_systems(self) -> List[int]:
         return [i for i in self._systems if i % 2 != 0]
 
     @property
-    def bob_systems(self) -> list[int]:
+    def bob_systems(self) -> List[int]:
         return [i for i in self._systems if i % 2 == 0]
 
     @property
@@ -117,7 +117,7 @@ class State:
 
         return state
 
-    def _prepare_dims(self, dims: list[int]) -> Optional[list[int]]:
+    def _prepare_dims(self, dims: List[int]) -> Optional[List[int]]:
         """Returns the validated list of dimensions to be used for the quantum state.
 
         Args:
@@ -144,7 +144,7 @@ class State:
         new_dims = self._dims + r_state.dims
         return State(new_state, new_dims)
 
-    def swap(self, sub_sys_swap: list[int]) -> None:
+    def swap(self, sub_sys_swap: List[int]) -> None:
         """Performs a swap between two subsystems of the state.
 
         Args:

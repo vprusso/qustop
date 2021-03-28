@@ -13,6 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+from typing import List, Tuple
 
 import cvxpy
 import numpy as np
@@ -30,14 +31,14 @@ class Positive:
         return_optimal_meas: bool,
         solver: str,
         verbose: bool,
-        abstol: float,
+        eps: float,
     ) -> None:
         self._ensemble = ensemble
         self._dist_method = dist_method
         self._return_optimal_meas = return_optimal_meas
         self._solver = solver
         self._verbose = verbose
-        self._abstol = abstol
+        self._eps = eps
 
         self._states = self._ensemble.density_matrices
         self._probs = self._ensemble.probs
@@ -83,7 +84,7 @@ class Positive:
         # Otherwise, it is often less computationally intensive to just solve the dual problem.
         return self.dual_problem()
 
-    def primal_problem(self) -> tuple[float, list[cvxpy.Variable]]:
+    def primal_problem(self) -> Tuple[float, List[cvxpy.Variable]]:
         """Calculate primal problem for the pos (global) distinguishability SDP.
 
         The primal problem for the min-error case is defined in equation-20 from arXiv:1707.02571
@@ -126,8 +127,7 @@ class Positive:
         objective = cvxpy.Maximize(sum(obj_func))
         problem = cvxpy.Problem(objective, constraints)
         opt_val = problem.solve(
-            solver=self._solver, verbose=self._verbose, abstol=self._abstol
-        )
+            solver=self._solver, verbose=self._verbose, eps=self._eps)
         return opt_val, meas
 
     def dual_problem(self) -> float:
@@ -152,7 +152,7 @@ class Positive:
         objective = cvxpy.Minimize(cvxpy.trace(cvxpy.real(y_var)))
         problem = cvxpy.Problem(objective, constraints)
         opt_val = problem.solve(
-            solver=self._solver, verbose=self._verbose, abstol=self._abstol
+            solver=self._solver, verbose=self._verbose, eps=self._eps
         )
 
         return opt_val

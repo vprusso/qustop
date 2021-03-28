@@ -16,4 +16,5 @@
 """Optimizations over quantum states."""
 from qustop.opt_dist.ppt import PPT
 from qustop.opt_dist.positive import Positive
+from qustop.opt_dist.separable import Separable
 from qustop.opt_dist.opt_dist import OptDist

@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from typing import Tuple, Union
+from typing import List, Tuple, Union
 
 import cvxpy
 import numpy as np
@@ -32,7 +32,7 @@ class PPT:
         return_optimal_meas: bool,
         solver: str,
         verbose: bool,
-        abstol: float,
+        eps: float,
     ) -> None:
         """Computes either the primal or dual problem of the PPT SDP.
 
@@ -42,14 +42,14 @@ class PPT:
             return_optimal_meas: Whether the optimal measurements are to be returned.
             solver: The SDP solver to use.
             verbose: Overrides the default of hiding the solver output.
-            abstol: Absolute accuracy of the SDP solver.
+            eps: Convergence tolerance.
         """
         self._ensemble = ensemble
         self._dist_method = dist_method
         self._return_optimal_meas = return_optimal_meas
         self._solver = solver
         self._verbose = verbose
-        self._abstol = abstol
+        self._eps = eps
 
         self._states = self._ensemble.density_matrices
         self._probs = self._ensemble.probs
@@ -57,7 +57,7 @@ class PPT:
         self._dims = self._ensemble.dims
         self._sys = [i for i in self._ensemble.systems if i % 2 != 0]
 
-    def solve(self) -> Union[float, Tuple[float, list[cvxpy.Variable]]]:
+    def solve(self) -> Union[float, Tuple[float, List[cvxpy.Variable]]]:
         """Solve either the primal or dual problem for the PPT SDP."""
 
         # Return the optimal value and the optimal measurements.
@@ -67,7 +67,7 @@ class PPT:
         # Otherwise, it is often less computationally intensive to just solve the dual problem.
         return self.dual_problem()
 
-    def primal_problem(self) -> tuple[float, list[cvxpy.Variable]]:
+    def primal_problem(self) -> Tuple[float, List[cvxpy.Variable]]:
         """Calculate primal problem for the PPT distinguishability SDP.
 
         The primal problem for the min-error case is defined in equation-1 from arXiv:1205.1031.
@@ -121,7 +121,7 @@ class PPT:
 
         problem = cvxpy.Problem(objective, constraints)
         opt_val = problem.solve(
-            solver=self._solver, verbose=self._verbose, abstol=self._abstol
+            solver=self._solver, verbose=self._verbose, eps=self._eps
         )
 
         return opt_val, meas
@@ -186,7 +186,7 @@ class PPT:
         objective = cvxpy.Minimize(cvxpy.trace(cvxpy.real(y_var)))
         problem = cvxpy.Problem(objective, constraints)
         opt_val = problem.solve(
-            solver=self._solver, verbose=self._verbose, abstol=self._abstol
+            solver=self._solver, verbose=self._verbose, eps=self._eps
         )
 
         return opt_val
