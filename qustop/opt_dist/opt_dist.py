@@ -37,6 +37,7 @@ class OptDist:
         self.solver = kwargs.get("solver", "SCS")
         self.verbose = kwargs.get("verbose", False)
         self.eps = kwargs.get("eps", 1e-4)
+        self.level = kwargs.get("level", 2)
 
         self._optimal_value = None
         self._optimal_measurements = []
@@ -77,7 +78,7 @@ class OptDist:
 
     def solve(self):
 
-        self._optimal_value, self._optimal_measurements = self.pre_optimize()
+        #self._optimal_value, self._optimal_measurements = self.pre_optimize()
 
         if self.dist_measurement == "ppt":
             opt = PPT(
@@ -114,6 +115,7 @@ class OptDist:
                 self.solver,
                 self.verbose,
                 self.eps,
+                self.level,
             )
             if self.return_optimal_meas:
                 self._optimal_value, self._optimal_measurements = opt.solve()

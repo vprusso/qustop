@@ -47,89 +47,90 @@ def test_state_distinguishability_one_state():
     primal_res.solve()
     np.testing.assert_equal(np.isclose(primal_res.value, 1), True)
 
-    # dual_res = OptDist(
-    #     ensemble=ensemble,
-    #     dist_measurement="pos",
-    #     dist_method="min-error",
-    #     return_optimal_meas=False,
-    # )
-    # dual_res.solve()
-    # np.testing.assert_equal(np.isclose(dual_res.value, 1), True)
-#
-#
-# def test_state_distinguishability_one_state_vec():
-#     """State distinguishability for single vector state."""
-#     dims = [2, 2]
-#     rho = [State(b_0, dims)]
-#     ensemble = Ensemble(rho)
-#
-#     primal_res = OptDist(
-#         ensemble=ensemble,
-#         dist_measurement="pos",
-#         dist_method="min-error",
-#         return_optimal_meas=True,
-#     )
-#     primal_res.solve()
-#     np.testing.assert_equal(np.isclose(primal_res.value, 1), True)
-#
-#     dual_res = OptDist(
-#         ensemble=ensemble,
-#         dist_measurement="pos",
-#         dist_method="min-error",
-#         return_optimal_meas=False,
-#     )
-#     dual_res.solve()
-#     np.testing.assert_equal(np.isclose(dual_res.value, 1), True)
-#
-#
-# def test_state_distinguishability_two_states():
-#     """State distinguishability for two state density matrices."""
-#     dims = [2, 2]
-#     states = [State(e_00, dims), State(e_11, dims)]
-#     probs = [1 / 2, 1 / 2]
-#     ensemble = Ensemble(states, probs)
-#
-#     primal_res = OptDist(
-#         ensemble=ensemble,
-#         dist_measurement="pos",
-#         dist_method="min-error",
-#         return_optimal_meas=True,
-#     )
-#     primal_res.solve()
-#     np.testing.assert_equal(np.isclose(primal_res.value, 1), True)
-#
-#     dual_res = OptDist(
-#         ensemble=ensemble,
-#         dist_measurement="pos",
-#         dist_method="min-error",
-#         return_optimal_meas=False,
-#     )
-#     dual_res.solve()
-#     np.testing.assert_equal(np.isclose(dual_res.value, 1), True)
-#
-#
-# def test_unambiguous_state_distinguishability_two_states():
-#     """Unambiguous state distinguishability for two state density matrices."""
-#     dims = [2, 2]
-#     states = [State(e_00, dims), State(e_11, dims)]
-#     probs = [1 / 2, 1 / 2]
-#     ensemble = Ensemble(states, probs)
-#
-#     primal_res = OptDist(
-#         ensemble=ensemble,
-#         dist_measurement="pos",
-#         dist_method="unambiguous",
-#         return_optimal_meas=True,
-#     )
-#     primal_res.solve()
-#     np.testing.assert_equal(np.isclose(primal_res.value, 0), True)
+    dual_res = OptDist(
+        ensemble=ensemble,
+        dist_measurement="pos",
+        dist_method="min-error",
+        return_optimal_meas=False,
+    )
+    dual_res.solve()
+    np.testing.assert_equal(np.isclose(dual_res.value, 1), True)
 
-    # dual_res = OptDist(ensemble=ensemble,
-    #                    dist_measurement="pos",
-    #                    dist_method="unambiguous",
-    #                    return_optimal_meas=False)
-    # dual_res.solve()
-    # np.testing.assert_equal(np.isclose(dual_res.value, 0), True)
+
+
+def test_state_distinguishability_one_state_vec():
+    """State distinguishability for single vector state."""
+    dims = [2, 2]
+    rho = [State(b_0, dims)]
+    ensemble = Ensemble(rho)
+
+    primal_res = OptDist(
+        ensemble=ensemble,
+        dist_measurement="pos",
+        dist_method="min-error",
+        return_optimal_meas=True,
+    )
+    primal_res.solve()
+    np.testing.assert_equal(np.isclose(primal_res.value, 1), True)
+
+    dual_res = OptDist(
+        ensemble=ensemble,
+        dist_measurement="pos",
+        dist_method="min-error",
+        return_optimal_meas=False,
+    )
+    dual_res.solve()
+    np.testing.assert_equal(np.isclose(dual_res.value, 1), True)
+
+
+def test_state_distinguishability_two_states():
+    """State distinguishability for two state density matrices."""
+    dims = [2, 2]
+    states = [State(e_00, dims), State(e_11, dims)]
+    probs = [1 / 2, 1 / 2]
+    ensemble = Ensemble(states, probs)
+
+    primal_res = OptDist(
+        ensemble=ensemble,
+        dist_measurement="pos",
+        dist_method="min-error",
+        return_optimal_meas=True,
+    )
+    primal_res.solve()
+    np.testing.assert_equal(np.isclose(primal_res.value, 1), True)
+
+    dual_res = OptDist(
+        ensemble=ensemble,
+        dist_measurement="pos",
+        dist_method="min-error",
+        return_optimal_meas=False,
+    )
+    dual_res.solve()
+    np.testing.assert_equal(np.isclose(dual_res.value, 1), True)
+
+
+def test_unambiguous_state_distinguishability_two_states():
+    """Unambiguous state distinguishability for two state density matrices."""
+    dims = [2, 2]
+    states = [State(e_00, dims), State(e_11, dims)]
+    probs = [1 / 2, 1 / 2]
+    ensemble = Ensemble(states, probs)
+
+    primal_res = OptDist(
+        ensemble=ensemble,
+        dist_measurement="pos",
+        dist_method="unambiguous",
+        return_optimal_meas=True,
+    )
+    primal_res.solve()
+    np.testing.assert_equal(np.isclose(primal_res.value, 1), True)
+
+# dual_res = OptDist(ensemble=ensemble,
+#                    dist_measurement="pos",
+#                    dist_method="unambiguous",
+#                    return_optimal_meas=False)
+# dual_res.solve()
+# np.testing.assert_equal(np.isclose(dual_res.value, 0), True)
 
 
 def test_state_distinguishability_yyd_density_matrices():

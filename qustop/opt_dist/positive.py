@@ -33,6 +33,16 @@ class Positive:
         verbose: bool,
         eps: float,
     ) -> None:
+        """Computes either the primal or dual problem of the positive (global) SDP.
+
+        Args:
+            ensemble:
+            dist_method:
+            return_optimal_meas: Whether the optimal measurements are to be returned.
+            solver: The SDP solver to use.
+            verbose: Overrides the default of hiding the solver output.
+            eps: Convergence tolerance.
+        """
         self._ensemble = ensemble
         self._dist_method = dist_method
         self._return_optimal_meas = return_optimal_meas
@@ -127,7 +137,8 @@ class Positive:
         objective = cvxpy.Maximize(sum(obj_func))
         problem = cvxpy.Problem(objective, constraints)
         opt_val = problem.solve(
-            solver=self._solver, verbose=self._verbose, eps=self._eps)
+            solver=self._solver, verbose=self._verbose, eps=self._eps
+        )
         return opt_val, meas
 
     def dual_problem(self) -> float:

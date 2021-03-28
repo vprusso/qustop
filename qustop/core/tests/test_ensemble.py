@@ -61,6 +61,10 @@ def test_invalid_ensemble():
     with np.testing.assert_raises(ValueError):
         Ensemble([])
 
+    with np.testing.assert_raises(TypeError):
+        states = [np.identity(4), np.identity(4)]
+        Ensemble(states)
+
 
 def test_invalid_state_distinguishability_probs():
     """Invalid probability vector for state distinguishability."""
