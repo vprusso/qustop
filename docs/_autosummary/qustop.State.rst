@@ -1,4 +1,4 @@
-﻿qustop.State
+qustop.State
 ============
 
 .. currentmodule:: qustop

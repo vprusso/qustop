@@ -18,7 +18,7 @@ from typing import List, Tuple, Union
 import cvxpy
 import numpy as np
 
-from qustop.core import Ensemble
+from qustop import Ensemble
 from toqito.channels import partial_trace, partial_transpose
 from toqito.perms import symmetric_projection
 from cvxpy.expressions.expression import Expression
@@ -109,8 +109,6 @@ class Separable:
 
     def primal_problem(self):
         r"""Compute optimal value of the symmetric extension hierarchy SDP."""
-        obj_func = []
-        x_var = []
         constraints = []
 
         dim = int(np.log2(self.dim_x))
@@ -125,6 +123,7 @@ class Separable:
 
         meas = [cvxpy.Variable((dim_xy, dim_xy), PSD=True) for i, _ in enumerate(self._states)]
         x_var = [cvxpy.Variable((dim_xyy, dim_xyy), PSD=True) for i, _ in enumerate(self._states)]
+        obj_func = [self._probs[i] * cvxpy.trace(self._states[i].conj().T @ meas[i]) for i, _ in enumerate(self._states)]
 
         for k, _ in enumerate(self._states):
             constraints.append(
@@ -141,12 +140,6 @@ class Separable:
                 constraints.append(
                     partial_transpose(x_var[k], sys + 3, dim_list) >> 0
                 )
-
-            obj_func.append(
-                self._probs[k]
-                * cvxpy.trace(self._states[k].conj().T @ meas[k])
-            )
-
         constraints.append(sum(meas) == np.identity(dim_xy))
 
         objective = cvxpy.Maximize(sum(obj_func))
@@ -180,18 +173,7 @@ class Separable:
         if self._level == 1:
             dim_yp = 1
         else:
-            dim_yp = 4 * (self._level - 1)
-
-        # h_var = cvxpy.Variable((dim_xy, dim_xy), hermitian=True)
-        # objective = cvxpy.Minimize(cvxpy.real(cvxpy.trace(h_var)))
-        # for i, _ in enumerate(states):
-        #     Q.append(cvxpy.Variable((dim_xy, dim_xy), hermitian=True))
-        #     R.append(cvxpy.Variable((dim_xyy, dim_xyy), hermitian=True))
-        #
-        #     constraints.append(h_var - Q[i] >> probs[i] * states[i])
-        #
-        #     constraints.append(A.conj().T @ (general_kron(np.identity(dim), Q[i]) - partial_transpose(R[i], 2, dim_list)) @ A >> 0)
-        #     constraints.append(R[i] >> 0)
+            dim_yp = dim * (self._level - 1)
 
         h_var = cvxpy.Variable((dim_xy, dim_xy), hermitian=True)
         objective = cvxpy.Minimize(cvxpy.real(cvxpy.trace(h_var)))
@@ -209,18 +191,9 @@ class Separable:
                                partial_transpose(S[k], 1, dim_list) -
                                partial_transpose(Z[k], 2, dim_list)) >> 0)
 
-
-            #constraints.append((A.conj().T @ (general_kron(Q[k], eye(dim_yp)) - partial_transpose(R[k], 2, dim_list)) @ A) >> 0)
-
             constraints.append(R[k] >> 0)
 
         problem = cvxpy.Problem(objective, constraints)
         sol_default = problem.solve(solver=cvxpy.SCS)
-
-        print(f"DIM: {dim}")
-        print(f"DIM_XY: {dim_xy}")
-        print(f"DIM_XYY: {dim_xyy}")
-        print(f"DIM_LIST: {dim_list}")
-
 
         return sol_default

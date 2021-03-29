@@ -1,8 +1,7 @@
 import numpy as np
 from toqito.states import bell
 
-from qustop.core import State, Ensemble
-from qustop.opt_dist import OptDist
+from qustop import State, Ensemble, OptDist
 
 
 psi_0 = bell(0)

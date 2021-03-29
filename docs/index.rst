@@ -30,7 +30,7 @@ User Documentation
 ------------------
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
 
     getting_started
     intro_tutorial

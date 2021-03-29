@@ -2,7 +2,7 @@
 
 ### Installing
 
-1. Ensure you have python 3.9 or greater.
+1. Ensure you have Python 3.8.
 
     See [The Official Python Website](https://www.python.org/downloads/) for a guide on how to
     install python.

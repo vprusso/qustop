@@ -1,8 +1,7 @@
 import numpy as np
 
 from toqito.states import basis, bell
-from qustop.core import Ensemble, State
-from qustop.opt_dist import OptDist
+from qustop import Ensemble, State, OptDist
 
 
 e_0, e_1 = basis(2, 0), basis(2, 1)

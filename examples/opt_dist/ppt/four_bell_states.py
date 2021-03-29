@@ -9,8 +9,7 @@ optimal probability of distinguishing the Bell states via PPT
 measurements is at most
 """
 from toqito.states import bell
-from qustop.core import Ensemble, State
-from qustop.opt_dist import OptDist
+from qustop import Ensemble, State, OptDist
 
 
 # Construct the corresponding density matrices of the Bell states.

@@ -1,4 +1,4 @@
-﻿qustop.Ensemble
+qustop.Ensemble
 ===============
 
 .. currentmodule:: qustop

@@ -15,22 +15,9 @@
 
 import numpy as np
 
+from toqito.states import bell
 from toqito.perms import swap_operator
 from qustop import Ensemble, State, OptDist
-
-
-# Define single-qubit |0> and |1> basis states.
-e_0, e_1 = np.array([[1, 0]]).T, np.array([[0, 1]]).T
-
-# Define two-qubit |00>, |01>, |10>, and |11> basis states.
-e_00, e_01 = np.kron(e_0, e_0), np.kron(e_0, e_1)
-e_10, e_11 = np.kron(e_1, e_0), np.kron(e_1, e_1)
-
-# Define the Bell state vectors.
-b_0 = 1 / np.sqrt(2) * (e_00 + e_11)
-b_1 = 1 / np.sqrt(2) * (e_00 - e_11)
-b_2 = 1 / np.sqrt(2) * (e_01 + e_10)
-b_3 = 1 / np.sqrt(2) * (e_01 - e_10)
 
 
 def test_ppt_distinguishability_yyd_density_matrices():
@@ -46,10 +33,10 @@ def test_ppt_distinguishability_yyd_density_matrices():
     Physical review letters 109.2 (2012): 020506.
     https://arxiv.org/abs/1107.3224
     """
-    psi_0 = b_0
-    psi_1 = b_2
-    psi_2 = b_3
-    psi_3 = b_1
+    psi_0 = bell(0)
+    psi_1 = bell(2)
+    psi_2 = bell(3)
+    psi_3 = bell(1)
 
     x_1 = np.kron(psi_0, psi_0)
     x_2 = np.kron(psi_1, psi_3)
@@ -131,10 +118,10 @@ def test_ppt_distinguishability_yyd_vectors():
     Physical review letters 109.2 (2012): 020506.
     https://arxiv.org/abs/1107.3224
     """
-    psi_0 = b_0
-    psi_1 = b_2
-    psi_2 = b_3
-    psi_3 = b_1
+    psi_0 = bell(0)
+    psi_1 = bell(2)
+    psi_2 = bell(3)
+    psi_3 = bell(1)
 
     x_1 = np.kron(psi_0, psi_0)
     x_2 = np.kron(psi_1, psi_3)
@@ -212,10 +199,10 @@ def test_ppt_distinguishability_yyd_states_no_probs():
     Physical review letters 109.2 (2012): 020506.
     https://arxiv.org/abs/1107.3224
     """
-    psi_0 = b_0
-    psi_1 = b_2
-    psi_2 = b_3
-    psi_3 = b_1
+    psi_0 = bell(0)
+    psi_1 = bell(2)
+    psi_2 = bell(3)
+    psi_3 = bell(1)
 
     x_1 = np.kron(psi_0, psi_0)
     x_2 = np.kron(psi_1, psi_3)
@@ -398,10 +385,16 @@ def test_ppt_min_error_four_bell_states():
     IEEE Transactions on Information Theory 61.6 (2015): 3593-3604.
     https://arxiv.org/abs/1408.6981
     """
-    rho_1 = b_0 * b_0.conj().T
-    rho_2 = b_1 * b_1.conj().T
-    rho_3 = b_2 * b_2.conj().T
-    rho_4 = b_3 * b_3.conj().T
+    # Define single-qubit |0> and |1> basis states.
+    e_0, e_1 = np.array([[1, 0]]).T, np.array([[0, 1]]).T
+
+    # Define two-qubit |00>, |01>, |10>, and |11> basis states.
+    e_00, e_11 = np.kron(e_0, e_0), np.kron(e_1, e_1)
+
+    rho_1 = bell(0) * bell(0).conj().T
+    rho_2 = bell(1) * bell(1).conj().T
+    rho_3 = bell(2) * bell(2).conj().T
+    rho_4 = bell(3) * bell(3).conj().T
 
     eps = 0.5
     resource_state = (

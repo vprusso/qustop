@@ -56,7 +56,8 @@ where
    \frac{1}{\sqrt{2}} \left( |00 \rangle + |11 \rangle \right) \in 
    \mathcal{A} \otimes \mathcal{B}
 
-such that :math:`\mathcal{A} = \mathbb{C}^2` and :math:`\mathcal{B} = \mathbb{C}^2`.
+such that :math:`\mathcal{A} = \mathbb{C}^2` and :math:`\mathcal{B} = \mathbb{C}^2`. We can use
+:code:`qustop` to encode this state as follows.
 
 .. code-block:: python
 
@@ -83,9 +84,9 @@ such that :math:`\mathcal{A} = \mathbb{C}^2` and :math:`\mathcal{B} = \mathbb{C}
      labels = A_1 ⊗ B_2,
      shape = (4, 4),
 
-printing the :code:`rho_0` variable gives some further information about the state. For instance,
+Printing the :code:`rho_0` variable gives some further information about the state. For instance,
 we see the :code:`shape` attribute gives information about the size of the density matrix of the
-state. There is also information about the subsystems
+state. There is also information about the subsystems...
 
 We can use the :code:`value` property of any :code:`State` object to obtain the :code:`numpy` matrix
 representation of the quantum state
@@ -114,6 +115,19 @@ that satisfies
 
 .. math::
     \text{Tr}\left( \sum_{a \in \Gamma} \eta(a) \right) = 1.
+
+Recall the four two-qubit Bell states
+
+.. math::
+    \begin{equation}
+        \begin{aligned}
+            | \psi_0 \rangle = \frac{|00\rangle + |11\rangle}{\sqrt{2}}, &\quad
+            | \psi_1 \rangle = \frac{|01\rangle + |10\rangle}{\sqrt{2}}, \\
+            | \psi_2 \rangle = \frac{|01\rangle - |10\rangle}{\sqrt{2}}, &\quad
+            | \psi_3 \rangle = \frac{|00\rangle - |11\rangle}{\sqrt{2}}.
+        \end{aligned}
+    \end{equation}
+
 
 Optimal quantum state discrimination
 ------------------------------------

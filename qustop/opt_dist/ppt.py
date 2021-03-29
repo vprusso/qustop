@@ -19,7 +19,7 @@ import cvxpy
 import numpy as np
 
 from toqito.channels import partial_transpose
-from qustop.core import Ensemble
+from qustop import Ensemble
 
 
 class PPT:
