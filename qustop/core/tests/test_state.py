@@ -22,12 +22,50 @@ e_0, e_1 = basis(2, 0), basis(2, 1)
 
 
 def test_state_shape():
-
-    # Ensure
+    """Test `shape` property of `State` object."""
+    # Ensure the state shape is properly set when vector is provided as argument.
     bell_vec = 1 / np.sqrt(2) * (np.kron(e_0, e_0) + np.kron(e_1, e_1))
     state_vec = State(bell_vec, [2, 2])
 
     assert state_vec.shape == (4, 4)
+
+    # Ensure the state shape is properly set when density matrix is provided as argument.
+    bell_state = bell_vec * bell_vec.conj().T
+    state_matrix = State(bell_state, [2, 2])
+
+    assert state_matrix.shape == (4, 4)
+
+
+def test_state_purity():
+    """Ensure pure states are flagged as pure and non-pure are flagged as mixed states."""
+    # Define single-qubit |0> and |1> basis states.
+    e_p, e_m = 1 / np.sqrt(2) * np.array([[1, 1]]).T, 1 / np.sqrt(2) * np.array([[1, -1]]).T
+
+    # Define v_1 = sqrt(3/4)|+> + sqrt(1/4)|->
+    v_1 = np.sqrt(3 / 4) * e_p + np.sqrt(1 / 4) * e_m
+    # Define v_2 = sqrt(1/4)|+> - sqrt(3/4)|->
+    v_2 = np.sqrt(1 / 4) * e_p - np.sqrt(3 / 4) * e_m
+
+    dims = [2]
+    rho_1 = State(v_1, dims)
+    rho_2 = State(v_2, dims)
+
+    assert rho_1.is_pure is True
+    assert rho_2.is_pure is True
+
+    # sigma_1 = 3/4 |+><+| + 1/4|-><-|
+    sigma_1 = 3 / 4 * (e_p * e_p.conj().T) + 1 / 4 * (e_m * e_m.conj().T)
+
+    # sigma_2 = 1/4 |+><+| - 3/4|-><-|
+    sigma_2 = 3 / 4 * (e_p * e_p.conj().T) + 1 / 4 * (e_m * e_m.conj().T)
+
+    dims = [2]
+
+    sigma_1 = State(sigma_1, dims)
+    sigma_2 = State(sigma_2, dims)
+
+    assert sigma_1.is_pure is False
+    assert sigma_2.is_pure is False
 
 
 def test_state_equality():

@@ -15,41 +15,28 @@
 
 import numpy as np
 
+from toqito.states import bell
 from qustop import State, Ensemble
-
-
-# Define single-qubit |0> and |1> basis states.
-e_0, e_1 = np.array([[1, 0]]).T, np.array([[0, 1]]).T
-
-# Define two-qubit |00>, |01>, |10>, and |11> basis states.
-e_00, e_01 = np.kron(e_0, e_0), np.kron(e_0, e_1)
-e_10, e_11 = np.kron(e_1, e_0), np.kron(e_1, e_1)
-
-# Define the Bell state vectors.
-b_0 = 1 / np.sqrt(2) * (e_00 + e_11)
-b_1 = 1 / np.sqrt(2) * (e_00 - e_11)
-b_2 = 1 / np.sqrt(2) * (e_01 + e_10)
-b_3 = 1 / np.sqrt(2) * (e_01 - e_10)
 
 
 def test_is_mutually_orthogonal():
     """Check if the states in the ensemble are mutually orthogonal or not."""
     dims = [2, 2]
     orthogonal_states = [
-        State(b_0, dims),
-        State(b_1, dims),
-        State(b_2, dims),
-        State(b_3, dims),
+        State(bell(0), dims),
+        State(bell(1), dims),
+        State(bell(2), dims),
+        State(bell(3), dims),
     ]
     orthogonal_ensemble = Ensemble(orthogonal_states)
 
     assert orthogonal_ensemble.is_mutually_orthogonal is True
 
     nonorthogonal_states = [
-        State(b_0, dims),
-        State(b_0, dims),
-        State(b_2, dims),
-        State(b_3, dims),
+        State(bell(0), dims),
+        State(bell(0), dims),
+        State(bell(2), dims),
+        State(bell(3), dims),
     ]
     nonorthogonal_ensemble = Ensemble(nonorthogonal_states)
 
@@ -69,7 +56,7 @@ def test_invalid_ensemble():
 def test_invalid_state_distinguishability_probs():
     """Invalid probability vector for state distinguishability."""
     with np.testing.assert_raises(ValueError):
-        rho1 = b_0 * b_0.conj().T
-        rho2 = b_1 * b_1.conj().T
+        rho1 = bell(0) * bell(0).conj().T
+        rho2 = bell(1) * bell(1).conj().T
         dims = [2, 2]
         Ensemble([State(rho1, dims), State(rho2, dims)], [1, 2, 3])

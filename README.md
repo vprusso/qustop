@@ -12,9 +12,8 @@ quantum state exclusion, quantum state cloning, and more.
 
 The `qustop` package can be used to:
 
-- Calculate optimal probabilities of distinguishing quantum states.  
-
-- Optimize and approximate optimal values over positive, PPT, and separable measurements.
+- Calculate and approximate optimal probabilities of distinguishing quantum states over positive, 
+PPT, and separable measurements.
 
 - Calculate optimal probabilities of optimally excluding quantum states.
 
