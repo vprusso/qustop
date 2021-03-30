@@ -33,7 +33,7 @@ class OptDist:
         self.dist_measurement = dist_measurement
         self.dist_method = dist_method
 
-        self.return_optimal_meas = kwargs.get("return_optimal_meas", False)
+        self.return_optimal_meas = kwargs.get("return_optimal_meas", True)
         self.solver = kwargs.get("solver", "SCS")
         self.verbose = kwargs.get("verbose", False)
         self.eps = kwargs.get("eps", 1e-4)
