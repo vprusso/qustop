@@ -1,17 +1,29 @@
 # ![logo](./docs/figures/logo.svg "logo") 
 
-# qustop
+# Qustop
 
 NOTE: The `qustop` package is still is under development. 
 
-qustop (QUantum STate OPtimizer) is a Python toolkit for studying various
-quantum state optimization scenarios including calculating optimal values for
-quantum state distinguishability, quantum state exclusion, quantum state
-cloning, and more.
+qustop (QUantum STate OPtimizer) is a Python toolkit for studying various quantum state
+optimization scenarios including calculating optimal values for quantum state distinguishability, 
+quantum state exclusion, quantum state cloning, and more.
 
 ## Installation
 
-TODO: Mention Python 3.9 (min)
+See the [installation guide](https://qustop.readthedocs.io/en/latest/getting_started.html).
+
+## Usage
+
+See the [documentation](https://toqito.readthedocs.io/en/latest/index.html) and 
+[tutorials](https://qustop.readthedocs.io/en/latest/tutorials.html).
+
+## Examples
+
+Consider the following Bell states:
+
+![\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2c}](https://latex.codecogs.com/svg.latex?\Large&space;|\psi_0\rangle=\frac{|00\rangle+|11\rangle}{\sqrt{2}},\quad|\psi_1\rangle=\frac{|01\rangle+|10\rangle}{\sqrt{2}},) 
+
+![\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2c}](https://latex.codecogs.com/svg.latex?\Large&space;|\psi_2\rangle=\frac{|01\rangle-|10\rangle}{\sqrt{2}},\quad|\psi_3\rangle=\frac{|00\rangle-|11\rangle}{\sqrt{2}}) 
 
 ## The setting
 

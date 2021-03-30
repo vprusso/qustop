@@ -57,7 +57,6 @@ def test_state_distinguishability_one_state():
     np.testing.assert_equal(np.isclose(dual_res.value, 1), True)
 
 
-
 def test_state_distinguishability_one_state_vec():
     """State distinguishability for single vector state."""
     dims = [2, 2]
