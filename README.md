@@ -42,6 +42,9 @@ Consider the following Bell states:
 
 ![\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2c}](https://latex.codecogs.com/svg.latex?\Large&space;|\psi_2\rangle=\frac{|01\rangle-|10\rangle}{\sqrt{2}},\quad|\psi_3\rangle=\frac{|00\rangle-|11\rangle}{\sqrt{2}}) 
 
+We will be using these states to consider a number of applications in the realm of quantum state
+ distinguishability.
+
 #### Distinguishing two orthogonal states
 
 A result of [arXiv:0007098](https://arxiv.org/abs/quant-ph/0007098) states that
@@ -75,7 +78,7 @@ pos_res.solve()
 
 Checking the respective values of the solved instances, we see that all of the
 values are equal to one, which indicate that the two pure states are indeed
-perfectly distinguishable.
+perfectly distinguishable under PPT, separable, and positive measurements.
 
 ```python
 >>> print(pos_res.value)
@@ -96,8 +99,8 @@ following set of states
 
 ![\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2c}](https://latex.codecogs.com/svg.latex?\Large&space;\rho_2=|\psi_2\rangle|\psi_3\rangle\langle\psi_2|\langle\psi_3|,\quad\rho_3=|\psi_3\rangle|\psi_3\rangle\langle\psi_3|\langle\psi_3|,) 
 
-that the optimal probability of distinguishing via a PPT measurement should yield 7/8.
-
+that the optimal probability of distinguishing via a PPT measurement should yield an optimal
+probability of 7/8.
 
 ```python
 import numpy as np
@@ -116,9 +119,7 @@ ensemble = Ensemble([
     State(rho_2, dims), State(rho_3, dims)
 ])
 
-sd = OptDist(ensemble=ensemble,
-             dist_measurement="ppt",
-             dist_method="min-error")
+sd = OptDist(ensemble, "ppt", "min-error")
 sd.solve()
 ```
 
@@ -128,10 +129,10 @@ sd.solve()
 0.8749769201568257
 ```
 
-#### Entanglement cost of discriminating Bell states
+#### Entanglement cost of distinguishing Bell states
 
 One may ask whether the ability to distinguish a state can be improved by
-making use of an auxillary resource state.
+making use of an auxiliary resource state.
 
 ![\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2c}](https://latex.codecogs.com/svg.latex?\Large&space;|\tau\rangle=\sqrt{\frac{1+\epsilon}{2}}|00\rangle+\sqrt{\frac{1-\epsilon}{2}}|11\rangle),
 
@@ -143,7 +144,7 @@ measurements or separable measurements is given by the closed-form expression
 
 ![\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2c}](https://latex.codecogs.com/svg.latex?\Large&space;\frac{1}{2}\left(1+\sqrt{1-\epsilon^2}\right)) 
 
-XXX
+Using `qustop`, we may encode this scenario as follows.
 
 ```python
 import numpy as np
@@ -177,7 +178,8 @@ ppt_res.solve()
 eq = 1 / 2 * (1 + np.sqrt(1 - eps ** 2))
 ```
 
-XXX
+Note that when we print out the optimal values for both separable and PPT measurements that the
+values obtained agree with the closed form expression.
 
 ```python
 >>> print(eq)
@@ -224,13 +226,6 @@ sep_res.solve()
 eq = 1 / 3 * (2 + np.sqrt(1 - eps**2))
 ```
 
-```python
->>> print(sep_res.value)
-0.9583057987150858
->>> print(eq)
-0.9553418012614794
-```
-
 Note that the value of `sep_res.value` is actually a bit higher than `eq`. This
 is because the separable value is calculated by a hierarchy of SDPs. At low
 levels of the SDP, the problem can often converge to the optimal value, but
@@ -239,6 +234,12 @@ arrive at the optimal value. While this is intractable in general, in practice,
 the SDP can often converge or at least get fairly close to the optimal value
 for small problem sizes.
 
+```python
+>>> print(sep_res.value)
+0.9583057987150858
+>>> print(eq)
+0.9553418012614794
+```
 
 ### State exclusion
 

@@ -356,7 +356,7 @@ def test_ppt_distinguishability_werner_hiding_pairs():
     )
 
 
-def test_ppt_min_error_four_bell_states():
+def test_entanglement_cost_ppt_four_bell_states():
     r"""
     PPT distinguishing the four Bell states.
     There exists a closed form formula for the probability with which one
