@@ -149,7 +149,7 @@ measurements or separable measurements is given by the closed-form expression
 
 where the ensemble is defined as
 
-![\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2c}](https://latex.codecogs.com/svg.latex?\Large&space;\eta=\left\{|\psi_1\rangle\otimes|\tau_{\epsilon}\rangle,\quad|\psi_2\rangle\otimes|\tau_{\epsilon}\rangle,\quad|\psi_3\rangle\otimes|\tau_{\epsilon}\rangle,\quad|\psi_4\rangle\otimes|\tau_{\epsilon}\rangle\right\}) 
+![\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2c}](https://latex.codecogs.com/svg.latex?\Large&space;\eta=\left\(|\psi_1\rangle\otimes|\tau_{\epsilon}\rangle,\quad|\psi_2\rangle\otimes|\tau_{\epsilon}\rangle,\quad|\psi_3\rangle\otimes|\tau_{\epsilon}\rangle,\quad|\psi_4\rangle\otimes|\tau_{\epsilon}\rangle\right\))
 
 
 Using `qustop`, we may encode this scenario as follows.
@@ -206,7 +206,7 @@ state using separable measurements to be given by the closed-form expression:
 
 where the ensemble is defined as
 
-![\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2c}](https://latex.codecogs.com/svg.latex?\Large&space;\eta=\left\{|\psi_1\rangle\otimes|\tau_{\epsilon}\rangle,\quad|\psi_2\rangle\otimes|\tau_{\epsilon}\rangle,\quad|\psi_3\rangle\otimes|\tau_{\epsilon}\rangle\right\})
+![\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2c}](https://latex.codecogs.com/svg.latex?\Large&space;\eta=\left\(|\psi_1\rangle\otimes|\tau_{\epsilon}\rangle,\quad|\psi_2\rangle\otimes|\tau_{\epsilon}\rangle,\quad|\psi_3\rangle\otimes|\tau_{\epsilon}\rangle\right\))
 
 Using `qustop`, we may encode this scenario as follows.
 
@@ -278,7 +278,7 @@ It was show in [hdl:10012/9572](https://uwspace.uwaterloo.ca/handle/10012/9572) 
 
 where the ensemble is defined as
 
-![\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2c}](https://latex.codecogs.com/svg.latex?\Large&space;\eta=\{\sigma_0,\sigma_1\})
+![\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2c}](https://latex.codecogs.com/svg.latex?\Large&space;\eta=\(\sigma_0,\sigma_1\))
 
 Using `qustop`, we may encode this scenario as follows.
 
@@ -315,11 +315,13 @@ print(expected_val)
 0.8333333333333333
 ```
 
-
-
 ### State exclusion
 
+(Coming soon).
+
 ### State cloning
+
+(Coming soon).
 
 ## License
 
