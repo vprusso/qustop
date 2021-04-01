@@ -19,4 +19,4 @@ sd = OptDist(ensemble=ensemble,
 sd.solve()
 
 print(sd.value)
-print(1/2 + 1/(dim+1))
+print(expected_val)

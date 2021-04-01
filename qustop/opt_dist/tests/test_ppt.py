@@ -438,3 +438,46 @@ def test_entanglement_cost_ppt_four_bell_states():
     np.testing.assert_equal(
         np.isclose(dual_res.value, exp_res, atol=0.001), True
     )
+
+
+def test_distinguish_four_bell_states_measurements():
+    """Check the measurements returned from distinguishing four Bell states."""
+    psi_1 = bell(0)
+    psi_2 = bell(1)
+    psi_3 = bell(2)
+    psi_4 = bell(3)
+
+    dims = [2, 2]
+    states = [
+        State(psi_1, dims),
+        State(psi_2, dims),
+        State(psi_3, dims),
+        State(psi_4, dims)
+    ]
+    ensemble = Ensemble(states)
+
+    res = OptDist(ensemble, "ppt", "min-error", return_optimal_meas=True, eps=1e-10, solver="SCS")
+    res.solve()
+
+    # Ensure that the optimal measurements have the following form:
+    expected_meas_0_1 = np.array([[1/3, 0, 0, 1/6],
+                                  [0, 1/6, 0, 0],
+                                  [0, 0, 1/6, 0],
+                                  [1/6, 0, 0, 1/3]])
+
+    expected_meas_2_3 = np.array([[1/6, 0, 0, 0],
+                                  [0, 1/3, 1/6, 0],
+                                  [0, 1/6, 1/3, 0],
+                                  [0, 0, 0, 1/6]])
+
+    bool_mat = np.isclose(expected_meas_0_1, res.measurements[0])
+    np.testing.assert_equal(np.all(bool_mat), True)
+
+    bool_mat = np.isclose(expected_meas_0_1, res.measurements[1])
+    np.testing.assert_equal(np.all(bool_mat), True)
+
+    bool_mat = np.isclose(expected_meas_2_3, res.measurements[2])
+    np.testing.assert_equal(np.all(bool_mat), True)
+
+    bool_mat = np.isclose(expected_meas_2_3, res.measurements[3])
+    np.testing.assert_equal(np.all(bool_mat), True)

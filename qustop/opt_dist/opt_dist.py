@@ -15,6 +15,7 @@
 
 from typing import Any, List
 
+import cvxpy
 import numpy as np
 
 from qustop.core import Ensemble
@@ -36,11 +37,11 @@ class OptDist:
         self.return_optimal_meas = kwargs.get("return_optimal_meas", True)
         self.solver = kwargs.get("solver", "SCS")
         self.verbose = kwargs.get("verbose", False)
-        self.eps = kwargs.get("eps", 1e-4)
+        self.eps = kwargs.get("eps", 1e-8)
         self.level = kwargs.get("level", 2)
 
         self._optimal_value = None
-        self._optimal_measurements = []
+        self._optimal_measurements: List[np.ndarray] = []
 
     @property
     def value(self) -> float:
@@ -48,6 +49,8 @@ class OptDist:
 
     @property
     def measurements(self) -> List[np.ndarray]:
+        if isinstance(self._optimal_measurements[0], cvxpy.Variable):
+            self._optimal_measurements = self.convert_measurements(self._optimal_measurements)
         return self._optimal_measurements
 
     @staticmethod
