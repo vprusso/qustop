@@ -132,6 +132,19 @@ Indeed the optimal value obtained via `qustop` is equal to 7/8:
 0.8749769201568257
 ```
 
+It was also shown in [arXiv:1205.1031](https://arxiv.org/abs/1205.1031) that the optimal
+probability of distinguishing amongst these same state unambiguously via PPT measurements was
+equal to 3/4.
+
+```python
+sd = OptDist(ensemble, "ppt", "unambiguous")
+sd.solve()
+
+# 3/4 = 0.75
+>>> print(sd.value)
+0.749999999939434
+```
+
 #### Entanglement cost of distinguishing Bell states
 
 One may ask whether the ability to distinguish a state can be improved by
@@ -317,7 +330,12 @@ print(expected_val)
 
 ### State exclusion
 
-(Coming soon).
+The primary difference between the quantum state distinguishability
+scenario and the quantum state exclusion scenario is that in the former,
+Bob want to guess which state he was given, and in the latter, Bob wants to
+guess which state he was *not* given.
+
+
 
 ### State cloning
 
