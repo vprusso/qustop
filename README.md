@@ -282,7 +282,7 @@ where the ensemble is defined as
 
 Using `qustop`, we may encode this scenario as follows.
 
-```
+```python
 import numpy as np
 from toqito.perms import swap_operator
 from qustop import Ensemble, State, OptDist
@@ -308,7 +308,7 @@ sd.solve()`
 We can verify that the closed-form expression matches that of the value
 returned from `qustop`.
 
-```
+```python
 print(sd.value)
 0.8333333333668715
 print(expected_val)
