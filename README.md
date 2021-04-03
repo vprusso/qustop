@@ -315,7 +315,7 @@ sd = OptDist(ensemble=ensemble,
              dist_method="min-error",
              eps=1e-8)
 
-sd.solve()`
+sd.solve()
 ```
 
 We can verify that the closed-form expression matches that of the value

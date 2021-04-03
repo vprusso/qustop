@@ -15,7 +15,7 @@
 
 import numpy as np
 
-from toqito.states import basis
+from toqito.states import basis, bell
 from qustop import State
 
 e_0, e_1 = basis(2, 0), basis(2, 1)
@@ -81,3 +81,19 @@ def test_invalid_state():
             ),
             dims=[2, 2],
         )
+
+
+def test_invalid_swap_vector_length():
+    """Too many entries in swap vector."""
+    with np.testing.assert_raises(ValueError):
+        dims = [2, 2]
+        psi = State(bell(0), dims)
+        psi.swap([1, 2, 3])
+
+
+def test_invalid_swap_vector_out_of_range():
+    """Swap vector contains values out of range."""
+    with np.testing.assert_raises(ValueError):
+        dims = [2, 2]
+        psi = State(bell(0), dims)
+        psi.swap([6, 7])

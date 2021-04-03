@@ -460,24 +460,34 @@ def test_distinguish_four_bell_states_measurements():
     res.solve()
 
     # Ensure that the optimal measurements have the following form:
-    expected_meas_0_1 = np.array([[1/3, 0, 0, 1/6],
-                                  [0, 1/6, 0, 0],
-                                  [0, 0, 1/6, 0],
-                                  [1/6, 0, 0, 1/3]])
+    expected_meas_0 = np.array([[1/3, 0, 0, 1/6],
+                                [0, 1/6, 0, 0],
+                                [0, 0, 1/6, 0],
+                                [1/6, 0, 0, 1/3]])
 
-    expected_meas_2_3 = np.array([[1/6, 0, 0, 0],
-                                  [0, 1/3, 1/6, 0],
-                                  [0, 1/6, 1/3, 0],
-                                  [0, 0, 0, 1/6]])
+    expected_meas_1 = np.array([[1/3, 0, 0, -1/6],
+                                [0, 1/6, 0, 0],
+                                [0, 0, 1/6, 0],
+                                [-1/6, 0, 0, 1/3]])
 
-    bool_mat = np.isclose(expected_meas_0_1, res.measurements[0])
+    expected_meas_2 = np.array([[1/6, 0, 0, 0],
+                                [0, 1/3, 1/6, 0],
+                                [0, 1/6, 1/3, 0],
+                                [0, 0, 0, 1/6]])
+
+    expected_meas_3 = np.array([[1/6, 0, 0, 0],
+                                [0, 1/3, -1/6, 0],
+                                [0, -1/6, 1/3, 0],
+                                [0, 0, 0, 1/6]])
+
+    bool_mat = np.isclose(expected_meas_0, res.measurements[0])
     np.testing.assert_equal(np.all(bool_mat), True)
 
-    bool_mat = np.isclose(expected_meas_0_1, res.measurements[1])
+    bool_mat = np.isclose(expected_meas_1, res.measurements[1])
     np.testing.assert_equal(np.all(bool_mat), True)
 
-    bool_mat = np.isclose(expected_meas_2_3, res.measurements[2])
+    bool_mat = np.isclose(expected_meas_2, res.measurements[2])
     np.testing.assert_equal(np.all(bool_mat), True)
 
-    bool_mat = np.isclose(expected_meas_2_3, res.measurements[3])
+    bool_mat = np.isclose(expected_meas_3, res.measurements[3])
     np.testing.assert_equal(np.all(bool_mat), True)
