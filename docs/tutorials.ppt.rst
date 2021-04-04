@@ -3,6 +3,21 @@ Distinguishing Quantum States via PPT Measurements
 
 Minimum-Error
 -------------
+
+It was shown in [arXiv:1205.1031](https://arxiv.org/abs/1205.1031)[Cosentino13]_ and later
+extended in [arXiv:1307.3232](https://arxiv.org/abs/1307.3232)[CR13]_ that for the
+following set of states
+
+.. math::
+    \rho_0 = |\psi_0\rangle |\psi_0 \rangle \langle \psi_0 | \langle \psi_0 |
+
+\rho_0=|\psi_0\rangle|\psi_0\rangle\langle\psi_0|\langle\psi_0|,\quad\rho_1=|\psi_1\rangle|\psi_3\rangle\langle\psi_1|\langle\psi_3|,)
+
+![\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2c}](https://latex.codecogs.com/svg.latex?\Large&space;\rho_2=|\psi_2\rangle|\psi_3\rangle\langle\psi_2|\langle\psi_3|,\quad\rho_3=|\psi_3\rangle|\psi_3\rangle\langle\psi_3|\langle\psi_3|,)
+
+that the optimal probability of distinguishing via a PPT measurement should
+yield an optimal probability of 7/8.
+
 TODO Cite [Cosentino13]_ [Cosentino15]_
 
 .. math::

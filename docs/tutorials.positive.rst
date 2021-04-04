@@ -5,30 +5,6 @@ In this tutorial, we are going to show how to make use of :code:`qustop` to calc
 probability of distinguishing a state from an ensemble of quantum states when Alice and Bob are
 allowed to use global (positive) measurements on their system.
 
-The optimal probability of distinguishing using positive measurements serves as an upper bound on
-the optimal probability of distinguishing using PPT, separable, and LOCC measurements.
-Specifically, given an ensemble of quantum states, :math:`\eta`, it holds that
-
-.. math::
-    \text{opt}_{\text{LOCC}}(\eta) \leq
-    \text{opt}_{\text{SEP}}(\eta) \leq
-    \text{opt}_{\text{PPT}}(\eta) \leq
-    \text{opt}(\eta),
-
-where:
-
-- :math:`\text{opt}(\eta)` represents the optimal probability of distinguishing using
-  positive measurements,
-
--   :math:`\text{opt}_{\text{PPT}}(\eta)` represents the probability of distinguishing via PPT
-    measurements,
-
--   :math:`\text{opt}_{\text{SEP}}(\eta)` represents the probability of distinguishing via
-    separable measurements,
-
--   :math:`\text{opt}_{\text{LOCC}}(\eta)` represents the probability of distinguishing via LOCC
-    measurements.
-
 Minimum-error distinguishability via positive measurements
 ----------------------------------------------------------
 
@@ -131,6 +107,9 @@ EXAMPLE
 
 Unambiguous distinguishability via positive measurements
 ---------------------------------------------------------
+
+The optimal probability with which Bob can distinguish the state he is given unambiguously may be
+obtained by solving the following semidefinite program (SDP).
 
 .. math::
     \begin{align*}
