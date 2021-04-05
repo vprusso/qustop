@@ -5,25 +5,22 @@
 qustop
 ======
 
-:code:`qustop` (QUantum STate OPtimizer) is a Python toolkit for studying various quantum state
+:code:`qustop` (QUantum STate OPtimizer) is a Python package for investigating various quantum state
 optimization scenarios including calculating optimal values for quantum state distinguishability,
 quantum state exclusion, quantum state cloning, and more.
 
 .. image:: http://img.shields.io/travis/vprusso/toqito.svg?style=plastic
    :alt: Build Status
-   :target: https://travis-ci.org/vprusso/toqito
-.. image:: https://readthedocs.org/projects/toqito/badge/?version=latest&style=plastic
+   :target: https://travis-ci.org/vprusso/qustop
+.. image:: https://readthedocs.org/projects/qustop/badge/?version=latest&style=plastic
    :alt: Documentation
-   :target: https://toqito.readthedocs.io/en/latest/
-.. image:: https://codecov.io/gh/vprusso/toqito/branch/master/graph/badge.svg?style=plastic
+   :target: https://qustop.readthedocs.io/en/latest/
+.. image:: https://codecov.io/gh/vprusso/qustop/branch/master/graph/badge.svg?style=plastic
    :alt: Codecov
-   :target: https://codecov.io/gh/vprusso/toqito
+   :target: https://codecov.io/gh/vprusso/qustop
 .. image:: https://zenodo.org/badge/235493396.svg?style=plastic
    :alt: DOI
-   :target: https://zenodo.org/badge/latestdoi/235493396
-.. image:: https://img.shields.io/badge/Supported%20By-UNITARY%20FUND-brightgreen.svg?style=plastic
-   :alt: Unitary Fund
-   :target: http://unitary.fund
+   :target: https://zenodo.org/badge/latestdoi/XXX
 
 
 User Documentation

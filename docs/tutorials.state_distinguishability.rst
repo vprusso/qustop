@@ -73,29 +73,23 @@ In general:
 * LOCC: These are difficult objects to handle mathematically; difficult to
   design protocols for and difficult to provide bounds on their power.
 
-* Separable: Separable measurements have a nicer structure than LOCC.
-  Unfortunately, optimizing over separable measurements in NP-hard.
+* `Separable <https://qustop.readthedocs.io/en/latest/tutorials.separable.html>_`:
+  Separable measurements have a nicer structure than LOCC.  Unfortunately,
+  optimizing over separable measurements in NP-hard.
 
-* PPT: PPT measurements offer a nice structure and there exists efficient
-  techniques that allow one to optimize over the set of PPT measurements via
-  semidefinite programming.
+* `PPT <https://qustop.readthedocs.io/en/latest/tutorials.ppt.html>_`:
+  PPT measurements offer a nice structure and there exists efficient techniques
+  that allow one to optimize over the set of PPT measurements via semidefinite
+  programming.
 
-* Positive (Global): These measurements are the most general and constitute the set
-  of all valid quantum operations that Alice and Bob can perform. The optimal value
-  of distinguishing via positive operations can be phrased as an SDP.
+* `Positive <https://qustop.readthedocs.io/en/latest/tutorials.positive.html>_`:
+  These measurements are the most general and constitute the set of all valid
+  quantum operations that Alice and Bob can perform. The optimal value of
+  distinguishing via positive operations can be phrased as an SDP.
 
-* `Distinguishaing Quantum States via Global Measurements <https://qustop.readthedocs.io/en/latest/tutorials.positive.html>`_
-
-* `Distinguishaing Quantum States via PPT Measurements <https://qustop.readthedocs.io/en/latest/tutorials.ppt.html>`_
-
-* `Distinguishaing Quantum States via Separable Measurements <https://qustop.readthedocs.io/en/latest/tutorials.separable.html>`_
 
 Optimal probability of distinguishing a quantum state
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-In this tutorial, we are going to show how to make use of :code:`qustop` to calculate the optimal
-probability of distinguishing a state from an ensemble of quantum states when Alice and Bob are
-allowed to use global (positive) measurements on their system.
 
 The optimal probability of distinguishing using positive measurements serves as an upper bound on
 the optimal probability of distinguishing using PPT, separable, and LOCC measurements.
@@ -105,11 +99,11 @@ Specifically, given an ensemble of quantum states, :math:`\eta`, it holds that
     \text{opt}_{\text{LOCC}}(\eta) \leq
     \text{opt}_{\text{SEP}}(\eta) \leq
     \text{opt}_{\text{PPT}}(\eta) \leq
-    \text{opt}(\eta),
+    \text{opt}_{\text{pos}}(\eta),
 
 where:
 
-- :math:`\text{opt}(\eta)` represents the optimal probability of distinguishing using
+- :math:`\text{opt}_{\text{pos}}(\eta)` represents the optimal probability of distinguishing using
   positive measurements,
 
 -   :math:`\text{opt}_{\text{PPT}}(\eta)` represents the probability of distinguishing via PPT

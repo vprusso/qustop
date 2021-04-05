@@ -32,6 +32,7 @@ dims = [2]
 rho_1 = State(rho_1, dims)
 rho_2 = State(rho_2, dims)
 
+# Verify that the states `rho_1` and `rho_2` are mixed:
 print(f"Is rho_1 pure: {rho_1.is_pure}")
 print(f"Is rho_2 pure: {rho_2.is_pure}")
 

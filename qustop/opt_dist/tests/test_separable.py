@@ -27,7 +27,7 @@ def test_symmetric_extension_hierarchy_four_bell_density_matrices():
         State(bell(0) * bell(0).conj().T, dims),
         State(bell(1) * bell(1).conj().T, dims),
         State(bell(2) * bell(2).conj().T, dims),
-        State(bell(3) * bell(3).conj().T, dims)
+        State(bell(3) * bell(3).conj().T, dims),
     ]
     ensemble = Ensemble(states)
 
@@ -40,7 +40,9 @@ def test_symmetric_extension_hierarchy_four_bell_density_matrices():
         level=2,
     )
     min_error_primal_res.solve()
-    np.testing.assert_equal(np.isclose(min_error_primal_res.value, 1 / 2), True)
+    np.testing.assert_equal(
+        np.isclose(min_error_primal_res.value, 1 / 2), True
+    )
 
     min_error_dual_res = OptDist(
         ensemble=ensemble,
@@ -60,7 +62,7 @@ def test_symmetric_extension_hierarchy_four_bell_states():
         State(bell(0), dims),
         State(bell(1), dims),
         State(bell(2), dims),
-        State(bell(3), dims)
+        State(bell(3), dims),
     ]
     ensemble = Ensemble(states)
 
@@ -73,7 +75,9 @@ def test_symmetric_extension_hierarchy_four_bell_states():
         level=2,
     )
     min_error_primal_res.solve()
-    np.testing.assert_equal(np.isclose(min_error_primal_res.value, 1 / 2), True)
+    np.testing.assert_equal(
+        np.isclose(min_error_primal_res.value, 1 / 2), True
+    )
 
     min_error_dual_res = OptDist(
         ensemble=ensemble,
@@ -100,7 +104,7 @@ def test_symmetric_extension_hierarchy_four_bell_with_resource_state_lvl_1():
         State(np.kron(bell(0) * bell(0).conj().T, eps_dm), dims),
         State(np.kron(bell(1) * bell(1).conj().T, eps_dm), dims),
         State(np.kron(bell(2) * bell(2).conj().T, eps_dm), dims),
-        State(np.kron(bell(3) * bell(3).conj().T, eps_dm), dims)
+        State(np.kron(bell(3) * bell(3).conj().T, eps_dm), dims),
     ]
     states[0].swap([2, 3])
     states[1].swap([2, 3])
@@ -121,7 +125,9 @@ def test_symmetric_extension_hierarchy_four_bell_with_resource_state_lvl_1():
         level=1,
     )
     min_error_primal_res.solve()
-    np.testing.assert_equal(np.isclose(min_error_primal_res.value, exp_res), True)
+    np.testing.assert_equal(
+        np.isclose(min_error_primal_res.value, exp_res), True
+    )
 
     min_error_dual_res = OptDist(
         ensemble=ensemble,
@@ -131,10 +137,14 @@ def test_symmetric_extension_hierarchy_four_bell_with_resource_state_lvl_1():
         level=1,
     )
     min_error_dual_res.solve()
-    np.testing.assert_equal(np.isclose(min_error_dual_res.value, exp_res), True)
+    np.testing.assert_equal(
+        np.isclose(min_error_dual_res.value, exp_res), True
+    )
 
 
-@pytest.mark.skip(reason="This test takes too much time.")  # pylint: disable=not-callable
+@pytest.mark.skip(
+    reason="This test takes too much time."
+)  # pylint: disable=not-callable
 def test_symmetric_extension_hierarchy_four_bell_with_resource_state():
     """Symmetric extension hierarchy for four Bell states and resource state."""
     e_0, e_1 = np.array([[1, 0]]).T, np.array([[0, 1]]).T
@@ -149,7 +159,7 @@ def test_symmetric_extension_hierarchy_four_bell_with_resource_state():
         State(np.kron(bell(0) * bell(0).conj().T, eps_dm), dims),
         State(np.kron(bell(1) * bell(1).conj().T, eps_dm), dims),
         State(np.kron(bell(2) * bell(2).conj().T, eps_dm), dims),
-        State(np.kron(bell(3) * bell(3).conj().T, eps_dm), dims)
+        State(np.kron(bell(3) * bell(3).conj().T, eps_dm), dims),
     ]
 
     # Ensure we are checking the correct partition of the states.
@@ -169,7 +179,9 @@ def test_symmetric_extension_hierarchy_four_bell_with_resource_state():
         level=2,
     )
     min_error_primal_res.solve()
-    np.testing.assert_equal(np.isclose(min_error_primal_res.value, exp_res), True)
+    np.testing.assert_equal(
+        np.isclose(min_error_primal_res.value, exp_res), True
+    )
 
     min_error_dual_res = OptDist(
         ensemble=ensemble,
@@ -179,10 +191,14 @@ def test_symmetric_extension_hierarchy_four_bell_with_resource_state():
         level=2,
     )
     min_error_dual_res.solve()
-    np.testing.assert_equal(np.isclose(min_error_dual_res.value, exp_res), True)
+    np.testing.assert_equal(
+        np.isclose(min_error_dual_res.value, exp_res), True
+    )
 
 
-@pytest.mark.skip(reason="This test takes too much time.")  # pylint: disable=not-callable
+@pytest.mark.skip(
+    reason="This test takes too much time."
+)  # pylint: disable=not-callable
 def test_symmetric_extension_hierarchy_three_bell_with_resource_state():
     """Symmetric extension hierarchy for three Bell and resource state."""
     e_0, e_1 = np.array([[1, 0]]).T, np.array([[0, 1]]).T
@@ -214,7 +230,9 @@ def test_symmetric_extension_hierarchy_three_bell_with_resource_state():
         level=2,
     )
     min_error_primal_res.solve()
-    np.testing.assert_equal(np.isclose(min_error_primal_res.value, 0.9583057), True)
+    np.testing.assert_equal(
+        np.isclose(min_error_primal_res.value, 0.9583057), True
+    )
 
     min_error_dual_res = OptDist(
         ensemble=ensemble,
@@ -224,4 +242,6 @@ def test_symmetric_extension_hierarchy_three_bell_with_resource_state():
         level=2,
     )
     min_error_dual_res.solve()
-    np.testing.assert_equal(np.isclose(min_error_dual_res.value, 0.9583057), True)
+    np.testing.assert_equal(
+        np.isclose(min_error_dual_res.value, 0.9583057), True
+    )

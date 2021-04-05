@@ -1,28 +1,40 @@
+# Copyright (C) 2021 Vincent Russo
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import numpy as np
 from toqito.states import bell
 
 from qustop import State, Ensemble, OptDist
 
 
-psi_0 = bell(0)
-psi_1 = bell(2)
-psi_2 = bell(3)
-psi_3 = bell(1)
+# Define the maximally entangled states from arXiv1107.3224
+dims = [2, 2, 2, 2]
+rho_0 = np.kron(bell(0), bell(0)) * np.kron(bell(0), bell(0)).conj().T
+rho_1 = np.kron(bell(2), bell(1)) * np.kron(bell(2), bell(1)).conj().T
+rho_2 = np.kron(bell(3), bell(1)) * np.kron(bell(3), bell(1)).conj().T
+rho_3 = np.kron(bell(1), bell(1)) * np.kron(bell(1), bell(1)).conj().T
 
-x_1 = np.kron(psi_0, psi_0)
-x_2 = np.kron(psi_1, psi_3)
-x_3 = np.kron(psi_2, psi_3)
-x_4 = np.kron(psi_3, psi_3)
-
-rho_1 = State(x_1 * x_1.conj().T, [2, 2, 2, 2])
-rho_2 = State(x_2 * x_2.conj().T, [2, 2, 2, 2])
-rho_3 = State(x_3 * x_3.conj().T, [2, 2, 2, 2])
-rho_4 = State(x_4 * x_4.conj().T, [2, 2, 2, 2])
-
-ensemble = Ensemble([rho_1, rho_2, rho_3, rho_4])
+ensemble = Ensemble([
+    State(rho_0, dims), State(rho_1, dims),
+    State(rho_2, dims), State(rho_3, dims)
+])
 
 sd = OptDist(ensemble=ensemble,
              dist_measurement="pos",
              dist_method="min-error")
 sd.solve()
+
+# The min-error probability of distinguishing via positive
+# measurements is equal to 1.
 print(sd.value)

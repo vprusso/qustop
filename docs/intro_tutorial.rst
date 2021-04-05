@@ -68,14 +68,14 @@ such that :math:`\mathcal{A} = \mathbb{C}^2` and :math:`\mathcal{B} = \mathbb{C}
     q_0 = np.array([[1, 0]]).T
     q_1 = np.array([[0, 1]]).T
 
-    # Define the respective dimensions of each complex Euclidean space
+    # Define the respective dimensions of each complex Euclidean space.
     dims = [2, 2]
 
-    # Define
+    # Define the Bell state vector.
     psi_0 = 1/np.sqrt(2) * np.kron(q_0, q_0) + 1/np.sqrt(2) * np.kron(q_1, q_1)
 
-    #
-    rho_0 = State(psi_0 * psi_0.conj().T, dims)
+    # Define a `State` object corresponding to the Bell vector.
+    rho_0 = State(psi_0, dims)
 
 
 Printing the :code:`rho_0` variable gives some further information about the state.
@@ -103,9 +103,6 @@ representation of the quantum state
      [0.  0.  0.  0. ]
      [0.5 0.  0.  0.5]]
 
-We can
-
-TODO: Tensor product
 
 Ensembles
 ^^^^^^^^^
@@ -140,7 +137,7 @@ selecting any one state from the ensemble is equal to 1/4:
                 \left(| \psi_0 \rangle, \frac{1}{4} \right),
                 \left(| \psi_1 \rangle, \frac{1}{4} \right),
                 \left(| \psi_2 \rangle, \frac{1}{4} \right),
-                \left(| \psi_3 \rangle, \frac{1}{4} \right),
+                \left(| \psi_3 \rangle, \frac{1}{4} \right)
                \right\}
     \end{equation}
 
@@ -174,11 +171,6 @@ for some finite and nonempty set :math:`\Sigma` and some complex Euclidean space
 .. math::
     \sum_{a \in \Sigma} \mu(a) = \mathbb{I}_{\mathcal{X}}.
 
-.. figure:: figures/measurement_inclusions.svg
-   :alt: measurement inclusion diagram
-   :align: center
-
-   The measurement inclusion diagram.
 
 LOCC Measurements
 ^^^^^^^^^^^^^^^^^
@@ -226,3 +218,9 @@ This setting is depicted in the following figure.
 
    The quantum state distinguishability setting.
 
+
+.. figure:: figures/measurement_inclusions.svg
+   :alt: measurement inclusion diagram
+   :align: center
+
+   The measurement inclusion diagram.

@@ -2,13 +2,10 @@
 
 ### Installing
 
-1. Ensure you have Python 3.8.
+1. Ensure you have Python 3.8. See [The Official Python Website](https://www.python.org/downloads/) 
+   for a guide on how to install python.
 
-    See [The Official Python Website](https://www.python.org/downloads/) for a guide on how to
-    install python.
-
-2. Consider using a 
-   [virtual environment](https://packaging.python.org/guides/installing-using-pip-and-virtualenv/).
+2. Consider using a [virtual environment](https://packaging.python.org/guides/installing-using-pip-and-virtualenv/).
 
 3. The preferred way to install the `qustop` package is via `pip`.
 
@@ -18,7 +15,6 @@ pip install qustop
 
 Alternatively, to install, you may also run the following command from the
 top-level package directory.
-
 
 ```
 python setup.py install
@@ -32,7 +28,7 @@ more information. To run the suite of tests for `toqito`, run the following comm
 directory of this project:
 
 ```
-pytest -v --cov=qustop --cov-report=term --cov-report=xml qustop
+pytest --cov-report term-missing --cov=qustop 
 ```
     
 ### Contributing
@@ -60,9 +56,9 @@ A BibTeX entry that you can use to cite :code:`toqito` is provided here:
 
     @misc{qustop,
        author       = {Vincent Russo},
-       title        = {qustop: A {P}ython toolkit for quantum state optimization, version 0.0.1},
+       title        = {qustop: A {P}ython package for investigating quantum state optimization, version 1.0},
        howpublished = {\url{https://github.com/vprusso/qustop}},
-       month        = Mar,
+       month        = May,
        year         = 2021,
        doi          = {10.5281/zenodo.3699578}
      }

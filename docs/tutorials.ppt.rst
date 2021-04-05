@@ -9,7 +9,10 @@ extended in [arXiv:1307.3232](https://arxiv.org/abs/1307.3232)[CR13]_ that for t
 following set of states
 
 .. math::
-    \rho_0 = |\psi_0\rangle |\psi_0 \rangle \langle \psi_0 | \langle \psi_0 |
+    \rho_0 = |\psi_0\rangle |\psi_0 \rangle \langle \psi_0 | \langle \psi_0 |, \quad
+    \rho_1 = |\psi_1 \rangle |\psi_3 \rangle \langle \psi_1 | \langle \psi_3 |, \\
+    \rho_0 = |\psi_0\rangle |\psi_0 \rangle \langle \psi_0 | \langle \psi_0 |, \quad
+    \rho_1 = |\psi_1 \rangle |\psi_3 \rangle \langle \psi_1 | \langle \psi_3 |, \\
 
 \rho_0=|\psi_0\rangle|\psi_0\rangle\langle\psi_0|\langle\psi_0|,\quad\rho_1=|\psi_1\rangle|\psi_3\rangle\langle\psi_1|\langle\psi_3|,)
 
@@ -80,7 +83,7 @@ A Werner hiding pair is defined by
         \sigma_1^{(n)} = \frac{\mathbb{I} \otimes \mathbb{I} - W_n}{n(n-1)}
     \end{equation}
 
-.. literalinclude:: ../examples/opt_dist/ppt/werner_hiding_pair.py
+.. literalinclude:: ../examples/opt_dist/ppt/min_error/werner_hiding_pair.py
    :language: python
    :linenos:
 

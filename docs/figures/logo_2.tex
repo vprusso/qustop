@@ -36,8 +36,6 @@
 \usepackage[T1]{fontenc}
 \usepackage{graphicx}
 
-\usepackage[sfdefault]{FiraSans} %% option 'sfdefault' activates Fira Sans as the default text font
-
 %-----------------------------------------------------------------------------%
 % Margins and page layout:
 %-----------------------------------------------------------------------------%
@@ -306,10 +304,25 @@
 		\begin{tikzpicture}[text depth=1pt,bend angle=45]
 
 			\tikzstyle{AB}=[shape=rectangle,rounded corners,dotted,draw=black!50,thick,fill=gray!15,minimum height=10mm,minimum width=10mm]
-			\tikzstyle{Charlie}=[shape=regular polygon, regular polygon sides=8, draw, minimum height=20mm, minimum width=20mm,draw=black!50, thick, fill=red!70]			
+			\tikzstyle{Charlie}=[shape=regular polygon, regular polygon sides=8, draw, minimum height=20mm, minimum width=20mm,draw=black!50, thick, fill=black!20]			
+		    %\node[Charlie] (A-1) at (3,2) {\small $A$};		
 
-				\node[Charlie] (Charlie) at (5,0) {\textcolor{white}{\huge{QUSTOP}}};
-				\node (name) at (5, -1) {\huge{\textcolor{white}{$\ket{\psi}$}}};
+				\tikzstyle {AliceBob} = [shape=rectangle, rounded corners, draw=black!50, thick, fill=black!20, minimum height=15mm, minimum width=15mm,
+				 inner sep=1ex]
+   		 		\tikzstyle {AliceLab} = [shape=circle, rounded corners, dotted, draw=blue!50, thick,fill=black!35, minimum height=25mm, minimum width=25mm] 
+   		 		\tikzstyle {BobLab} = [shape=circle, rounded corners, dotted, draw=black!50, thick,fill=black!35, minimum height=25mm, minimum width=25mm] 
+%				\tikzstyle {Charlie} = [shape=ellipse, rounded corners, dotted, draw=black!50, thick,fill=black!35, minimum height=15mm, minimum width=50mm] 
+
+				\node[Charlie] (Charlie) at (5,0) {$\rho$};
+				\node[AliceBob] (Alice) at (0,-5) {A}; 
+				\node[AliceBob] (Bob) at (10,-5) {B};
+			
+				% Remove side things and remove psi from lab thing
+	%			\draw[<->, dashed, orange] (Alice) -- node[above]{\textcolor{orange}{$b \in \{0,1\}^n$}} (Bob);
+				\draw[-, line width = 1pt, draw=black!100 ] (Charlie) -- node[above left] {} (Alice);
+				\draw[-, line width = 1pt, draw=black!100 ] (Charlie) -- node[above right] {} (Bob);
+				\draw[-, line width = 1pt, draw=black!100 ] (Alice) -- node[above left] {} (Bob);
+				\node (name) at (5, -2) {$\ket{\psi}$};
 
 		\end{tikzpicture}
 	\end{center}	

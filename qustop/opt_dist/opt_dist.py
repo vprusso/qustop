@@ -50,7 +50,9 @@ class OptDist:
     @property
     def measurements(self) -> List[np.ndarray]:
         if isinstance(self._optimal_measurements[0], cvxpy.Variable):
-            self._optimal_measurements = self.convert_measurements(self._optimal_measurements)
+            self._optimal_measurements = self.convert_measurements(
+                self._optimal_measurements
+            )
         return self._optimal_measurements
 
     @staticmethod
@@ -81,7 +83,7 @@ class OptDist:
 
     def solve(self):
 
-        #self._optimal_value, self._optimal_measurements = self.pre_optimize()
+        # self._optimal_value, self._optimal_measurements = self.pre_optimize()
 
         if self.dist_measurement == "ppt":
             opt = PPT(

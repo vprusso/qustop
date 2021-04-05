@@ -39,7 +39,10 @@ def test_state_shape():
 def test_state_purity():
     """Ensure pure states are flagged as pure and non-pure are flagged as mixed states."""
     # Define single-qubit |0> and |1> basis states.
-    e_p, e_m = 1 / np.sqrt(2) * np.array([[1, 1]]).T, 1 / np.sqrt(2) * np.array([[1, -1]]).T
+    e_p, e_m = (
+        1 / np.sqrt(2) * np.array([[1, 1]]).T,
+        1 / np.sqrt(2) * np.array([[1, -1]]).T,
+    )
 
     # Define v_1 = sqrt(3/4)|+> + sqrt(1/4)|->
     v_1 = np.sqrt(3 / 4) * e_p + np.sqrt(1 / 4) * e_m

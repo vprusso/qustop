@@ -452,33 +452,56 @@ def test_distinguish_four_bell_states_measurements():
         State(psi_1, dims),
         State(psi_2, dims),
         State(psi_3, dims),
-        State(psi_4, dims)
+        State(psi_4, dims),
     ]
     ensemble = Ensemble(states)
 
-    res = OptDist(ensemble, "ppt", "min-error", return_optimal_meas=True, eps=1e-10, solver="SCS")
+    res = OptDist(
+        ensemble,
+        "ppt",
+        "min-error",
+        return_optimal_meas=True,
+        eps=1e-10,
+        solver="SCS",
+    )
     res.solve()
 
     # Ensure that the optimal measurements have the following form:
-    expected_meas_0 = np.array([[1/3, 0, 0, 1/6],
-                                [0, 1/6, 0, 0],
-                                [0, 0, 1/6, 0],
-                                [1/6, 0, 0, 1/3]])
+    expected_meas_0 = np.array(
+        [
+            [1 / 3, 0, 0, 1 / 6],
+            [0, 1 / 6, 0, 0],
+            [0, 0, 1 / 6, 0],
+            [1 / 6, 0, 0, 1 / 3],
+        ]
+    )
 
-    expected_meas_1 = np.array([[1/3, 0, 0, -1/6],
-                                [0, 1/6, 0, 0],
-                                [0, 0, 1/6, 0],
-                                [-1/6, 0, 0, 1/3]])
+    expected_meas_1 = np.array(
+        [
+            [1 / 3, 0, 0, -1 / 6],
+            [0, 1 / 6, 0, 0],
+            [0, 0, 1 / 6, 0],
+            [-1 / 6, 0, 0, 1 / 3],
+        ]
+    )
 
-    expected_meas_2 = np.array([[1/6, 0, 0, 0],
-                                [0, 1/3, 1/6, 0],
-                                [0, 1/6, 1/3, 0],
-                                [0, 0, 0, 1/6]])
+    expected_meas_2 = np.array(
+        [
+            [1 / 6, 0, 0, 0],
+            [0, 1 / 3, 1 / 6, 0],
+            [0, 1 / 6, 1 / 3, 0],
+            [0, 0, 0, 1 / 6],
+        ]
+    )
 
-    expected_meas_3 = np.array([[1/6, 0, 0, 0],
-                                [0, 1/3, -1/6, 0],
-                                [0, -1/6, 1/3, 0],
-                                [0, 0, 0, 1/6]])
+    expected_meas_3 = np.array(
+        [
+            [1 / 6, 0, 0, 0],
+            [0, 1 / 3, -1 / 6, 0],
+            [0, -1 / 6, 1 / 3, 0],
+            [0, 0, 0, 1 / 6],
+        ]
+    )
 
     bool_mat = np.isclose(expected_meas_0, res.measurements[0])
     np.testing.assert_equal(np.all(bool_mat), True)
