@@ -2,14 +2,14 @@ Quantum state distinguishability
 =================================
 
 In this tutorial we are going to cover the problem of *quantum state
-distinguishability* (sometimes analogously referred to as quantum state
-discrimination). We are going to briefly describe the problem setting and then
-describe how one may use :code:`qustop` to calculate the optimal probability
-with which this problem can be solved when given access to certain
-measurements.
+distinguishability* (sometimes analogously referred to as *quantum state
+discrimination*). We are going to briefly describe the problem setting and
+then describe how one may use :code:`qustop` to calculate the optimal
+probability with which this problem can be solved when given access to
+certain measurements.
 
-Further information beyond the scope of this tutorial can be found in the text
-[WatrousQI]_ as well as the course [SikoraSDP]_.
+Further information beyond the scope of this tutorial can be found in the
+text [WatrousQI]_ as well as the course [SikoraSDP]_.
 
 The state distinguishability problem
 -------------------------------------
@@ -73,16 +73,16 @@ In general:
 * LOCC: These are difficult objects to handle mathematically; difficult to
   design protocols for and difficult to provide bounds on their power.
 
-* `Separable <https://qustop.readthedocs.io/en/latest/tutorials.separable.html>_`:
+* `Separable <https://qustop.readthedocs.io/en/latest/tutorials.separable.html>`_:
   Separable measurements have a nicer structure than LOCC.  Unfortunately,
   optimizing over separable measurements in NP-hard.
 
-* `PPT <https://qustop.readthedocs.io/en/latest/tutorials.ppt.html>_`:
+* `PPT <https://qustop.readthedocs.io/en/latest/tutorials.ppt.html>`_:
   PPT measurements offer a nice structure and there exists efficient techniques
   that allow one to optimize over the set of PPT measurements via semidefinite
   programming.
 
-* `Positive <https://qustop.readthedocs.io/en/latest/tutorials.positive.html>_`:
+* `Positive <https://qustop.readthedocs.io/en/latest/tutorials.positive.html>`_:
   These measurements are the most general and constitute the set of all valid
   quantum operations that Alice and Bob can perform. The optimal value of
   distinguishing via positive operations can be phrased as an SDP.
@@ -91,9 +91,10 @@ In general:
 Optimal probability of distinguishing a quantum state
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The optimal probability of distinguishing using positive measurements serves as an upper bound on
-the optimal probability of distinguishing using PPT, separable, and LOCC measurements.
-Specifically, given an ensemble of quantum states, :math:`\eta`, it holds that
+The optimal probability of distinguishing using positive measurements serves
+as an upper bound on the optimal probability of distinguishing using PPT,
+separable, and LOCC measurements. Specifically, given an ensemble of quantum
+states, :math:`\eta`, it holds that
 
 .. math::
     \text{opt}_{\text{LOCC}}(\eta) \leq

@@ -24,7 +24,7 @@ python setup.py install
 
 The `pytest` module is used for testing. In order to run and `pytest`, you will need to ensure it 
 is installed on your machine. Consult the [pytest](https://docs.pytest.org/en/latest/) website for 
-more information. To run the suite of tests for `toqito`, run the following command in the root
+more information. To run the suite of tests for `qustop`, run the following command in the root
 directory of this project:
 
 ```

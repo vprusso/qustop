@@ -12,7 +12,7 @@ Quantum Computing"
 by John Watrous.
 
 More advanced tutorials can be found on the `tutorials page
-<https://toqito.readthedocs.io/en/latest/tutorials.html>`_.
+<https://qustop.readthedocs.io/en/latest/tutorials.html>`_.
 
 This tutorial assumes you have :code:`qustop` installed on your machine. If you
 do not, please consult the `installation instructions
@@ -21,8 +21,8 @@ do not, please consult the `installation instructions
 States, ensembles, and measurements
 -----------------------------------
 
-Quantum states, and collections of those quantum states that form ensembles, are the core
-building blocks of :code:`qustop`.
+Quantum states, and collections of those quantum states that form ensembles,
+are the core building blocks of :code:`qustop`.
 
 States
 ^^^^^^
@@ -32,16 +32,17 @@ A *quantum state* is a density operator
 .. math::
     \rho \in \text{D}(\mathbb{C}^d)
 
-where :math:`\mathbb{C}^d` is a complex Euclidean space of dimension :math:`d` and where
-:math:`\text{D}(\cdot)` represents the set of density matrices, that is, the set of matrices that
-are positive semidefinite with trace equal to :math:`1`. We will typically represent complex
-Euclidean spaces using the scripted capital letters :math:`\mathcal{A}, \mathcal{B}, \mathcal{X},
+where :math:`\mathbb{C}^d` is a complex Euclidean space of dimension :math:`d`
+and where :math:`\text{D}(\cdot)` represents the set of density matrices, that
+is, the set of matrices that are positive semidefinite with trace equal to
+:math:`1`. We will typically represent complex Euclidean spaces using the
+scripted capital letters :math:`\mathcal{A}, \mathcal{B}, \mathcal{X},
 \mathcal{Y}`, etc.
 
 Consider the density matrix corresponding to one of the four Bell states
 
 .. math::
-   \rho_0 = |\psi_0 \rangle \langle \psi_0 | = \frac{1}{2}
+   \rho_0 = | \psi_0 \rangle \langle \psi_0 | = \frac{1}{2}
    \begin{pmatrix}
     1 & 0 & 0 & 1 \\
     0 & 0 & 0 & 0 \\
@@ -52,12 +53,12 @@ Consider the density matrix corresponding to one of the four Bell states
 where
 
 .. math::
-    |\psi_0\rangle = 
-   \frac{1}{\sqrt{2}} \left( |00 \rangle + |11 \rangle \right) \in 
+    | \psi_0 \rangle = \frac{1}{\sqrt{2}} 
+   \left( | 00 \rangle + | 11 \rangle \right) \in 
    \mathcal{A} \otimes \mathcal{B}
 
-such that :math:`\mathcal{A} = \mathbb{C}^2` and :math:`\mathcal{B} = \mathbb{C}^2`. We can use
-:code:`qustop` to encode this state as follows.
+such that :math:`\mathcal{A} = \mathbb{C}^2` and :math:`\mathcal{B} =
+\mathbb{C}^2`. We can use :code:`qustop` to encode this state as follows.
 
 .. code-block:: python
 
@@ -78,7 +79,8 @@ such that :math:`\mathcal{A} = \mathbb{C}^2` and :math:`\mathcal{B} = \mathbb{C}
     rho_0 = State(psi_0, dims)
 
 
-Printing the :code:`rho_0` variable gives some further information about the state.
+Printing the :code:`rho_0` variable gives some further information about the
+state.
 
 .. code-block:: python
 
@@ -89,11 +91,13 @@ Printing the :code:`rho_0` variable gives some further information about the sta
      labels = A_1 ⊗ B_2,
      shape = (4, 4),
 
-For instance, we see the :code:`shape` attribute gives information about the size of the density
-matrix of the state. There is also information about the subsystems...
+For instance, we see the :code:`shape` attribute gives information about the
+size of the density matrix of the state. There is also information about the
+subsystems along with which party the subsystems belong to (either Alice or
+Bob), etc.
 
-We can use the :code:`value` property of any :code:`State` object to obtain the :code:`numpy` matrix
-representation of the quantum state
+We can use the :code:`value` property of any :code:`State` object to obtain the
+:code:`numpy` matrix representation of the quantum state
 
 .. code-block:: python
 
@@ -107,29 +111,30 @@ representation of the quantum state
 Ensembles
 ^^^^^^^^^
 
-An *ensemble* is a collection of :math:`N` quantum states defined over some complex Euclidean
-space :math:`\mathcal{X}` as
+An *ensemble* is a collection of :math:`N` quantum states defined over some
+complex Euclidean space :math:`\mathcal{X}` as
 
 .. math::
     \eta = \left\{(p_1, \rho_1), \ldots, (p_N, \rho_N) \right\},
 
-where :math:`(p_1, \ldots, p_N)` is a vector of probability values and where :math:`\rho_1,
-\ldots, \rho_N \in \text{D}(\mathcal{X})` are quantum states.
+where :math:`(p_1, \ldots, p_N)` is a vector of probability values and where
+:math:`\rho_1, \ldots, \rho_N \in \text{D}(\mathcal{X})` are quantum states.
 
 Recall the four two-qubit Bell states
 
 .. math::
     \begin{equation}
         \begin{aligned}
-            | \psi_0 \rangle = \frac{|00\rangle + |11\rangle}{\sqrt{2}}, &\quad
-            | \psi_1 \rangle = \frac{|01\rangle + |10\rangle}{\sqrt{2}}, \\
-            | \psi_2 \rangle = \frac{|01\rangle - |10\rangle}{\sqrt{2}}, &\quad
-            | \psi_3 \rangle = \frac{|00\rangle - |11\rangle}{\sqrt{2}}.
+            | \psi_0 \rangle = \frac{| 00 \rangle + | 11 \rangle}{\sqrt{2}}, &\quad
+            | \psi_1 \rangle = \frac{| 01 \rangle + | 10 \rangle}{\sqrt{2}}, \\
+            | \psi_2 \rangle = \frac{| 01 \rangle - | 10 \rangle}{\sqrt{2}}, &\quad
+            | \psi_3 \rangle = \frac{| 00 \rangle - | 11 \rangle}{\sqrt{2}}.
         \end{aligned}
     \end{equation}
 
-We can define the following ensemble consisting of the Bell states where the probability of
-selecting any one state from the ensemble is equal to 1/4:
+We can define the following ensemble consisting of the Bell states where the
+probability of selecting any one state from the ensemble is equal to
+:math:`1/4`:
 
 .. math::
     \begin{equation}
@@ -138,7 +143,7 @@ selecting any one state from the ensemble is equal to 1/4:
                 \left(| \psi_1 \rangle, \frac{1}{4} \right),
                 \left(| \psi_2 \rangle, \frac{1}{4} \right),
                 \left(| \psi_3 \rangle, \frac{1}{4} \right)
-               \right\}
+               \right\}.
     \end{equation}
 
 In :code:`qustop`, we would define this ensemble like so
@@ -149,11 +154,12 @@ In :code:`qustop`, we would define this ensemble like so
     from qustop import State, Ensemble
 
     # Construct the corresponding density matrices of the Bell states.
+    dims = [2, 2]
     states = [
-        State(bell(0) * bell(0).conj().T, dims=[2, 2]),
-        State(bell(1) * bell(1).conj().T, dims=[2, 2]),
-        State(bell(2) * bell(2).conj().T, dims=[2, 2]),
-        State(bell(3) * bell(3).conj().T, dims=[2, 2])
+        State(bell(0) * bell(0).conj().T, dims),
+        State(bell(1) * bell(1).conj().T, dims),
+        State(bell(2) * bell(2).conj().T, dims),
+        State(bell(3) * bell(3).conj().T, dims)
     ]
     ensemble = Ensemble(states=states, probs=[1/4, 1/4, 1/4, 1/4])
 
@@ -165,62 +171,49 @@ A *measurement* is defined as a function
 .. math::
     \mu : \Sigma \rightarrow \text{Pos}(\mathcal{X})
 
-for some finite and nonempty set :math:`\Sigma` and some complex Euclidean space
-:math:`\mathcal{X}` satisfying the constraint that
+for some finite and nonempty set :math:`\Sigma` and some complex Euclidean
+space :math:`\mathcal{X}` satisfying the constraint that
 
 .. math::
     \sum_{a \in \Sigma} \mu(a) = \mathbb{I}_{\mathcal{X}}.
 
+There are many different classes of measurements.
 
-LOCC Measurements
+LOCC measurements
 ^^^^^^^^^^^^^^^^^
 
-Separable Measurements
+Separable measurements
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-PPT Measurements
+PPT measurements
 ^^^^^^^^^^^^^^^^
 
-Positive (global) Measurements
+Positive (global) measurements
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Optimal quantum state discrimination
-------------------------------------
+Quantum state distinguishability
+---------------------------------
 
-Given an ensemble of quantum states, we can consider the setting of *quantum state
-discrimination*. This setting can be considered as an interaction between two parties--typically
-denoted as *Alice* and *Bob*.
+Given an ensemble of quantum states, we can consider the setting of *quantum
+state distinguishability*. This setting can be considered as an interaction between
+two parties--typically denoted as *Alice* and *Bob*.
 
-1. Alice possesses an ensemble of :math:`n` quantum states:
+A more in-depth description and tutorial on this setting in :code:`qustop` can
+be found in:
 
-    .. math::
-        \begin{equation}
-            \eta = \left( (p_0, \rho_0), \ldots, (p_n, \rho_n)  \right),
-        \end{equation}
+- `Tutorial : Quantum State Distinguishability <https://qustop.readthedocs.io/en/latest/tutorials.quantum_state_distinguishabiliy.html>`_.
 
-where :math:`p_i` is the probability with which state :math:`\rho_i` is
-selected from the ensemble. Alice picks :math:`\rho_i` with probability
-:math:`p_i` from her ensemble and sends :math:`\rho_i` to Bob.
+More in-depth descriptions pertaining to quantum state distinguishability under PPT, separable, and positive measurements can be found in:
 
-2. Bob receives :math:`\rho_i`. Both Alice and Bob are aware of how the
-   ensemble is defined but he does *not* know what index :math:`i`
-   corresponding to the state :math:`\rho_i` he receives from Alice is.
+- `Tutorial: Quantum State Distinguishability using PPT Measurements
+  <https://qustop.readthedocs.io/en/latest/tutorials.ppt.html>`_.
 
-3. Bob wants to guess which of the states from the ensemble he was given. In
-   order to do so, he may measure :math:`\rho_i` to guess the index :math:`i`
-   for which the state in the ensemble corresponds.
+- `Tutorial: Quantum State Distinguishability using Separable Measurements
+  <https://qustop.readthedocs.io/en/latest/tutorials.separable.html>`_.
 
-This setting is depicted in the following figure.
+- `Tutorial: Quantum State Distinguishability using Positive Measurements
+  <https://qustop.readthedocs.io/en/latest/tutorials.positive.html>`_.
 
-.. figure:: figures/quantum_state_distinguish.svg
-   :alt: quantum state distinguishability
-   :align: center
-
-   The quantum state distinguishability setting.
-
-
-.. figure:: figures/measurement_inclusions.svg
-   :alt: measurement inclusion diagram
-   :align: center
-
-   The measurement inclusion diagram.
+Quantum state exclusion
+-----------------------
+(Coming soon).

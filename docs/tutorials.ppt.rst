@@ -1,27 +1,16 @@
 Distinguishing Quantum States via PPT Measurements
 ==================================================
 
+In this section we will be investigatin how to make use of the :code:`qustop`
+package to optimally distinguish quantum states via PPT measurements.
+
 Minimum-Error
 -------------
 
-It was shown in [arXiv:1205.1031](https://arxiv.org/abs/1205.1031)[Cosentino13]_ and later
-extended in [arXiv:1307.3232](https://arxiv.org/abs/1307.3232)[CR13]_ that for the
-following set of states
-
-.. math::
-    \rho_0 = |\psi_0\rangle |\psi_0 \rangle \langle \psi_0 | \langle \psi_0 |, \quad
-    \rho_1 = |\psi_1 \rangle |\psi_3 \rangle \langle \psi_1 | \langle \psi_3 |, \\
-    \rho_0 = |\psi_0\rangle |\psi_0 \rangle \langle \psi_0 | \langle \psi_0 |, \quad
-    \rho_1 = |\psi_1 \rangle |\psi_3 \rangle \langle \psi_1 | \langle \psi_3 |, \\
-
-\rho_0=|\psi_0\rangle|\psi_0\rangle\langle\psi_0|\langle\psi_0|,\quad\rho_1=|\psi_1\rangle|\psi_3\rangle\langle\psi_1|\langle\psi_3|,)
-
-![\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2c}](https://latex.codecogs.com/svg.latex?\Large&space;\rho_2=|\psi_2\rangle|\psi_3\rangle\langle\psi_2|\langle\psi_3|,\quad\rho_3=|\psi_3\rangle|\psi_3\rangle\langle\psi_3|\langle\psi_3|,)
-
-that the optimal probability of distinguishing via a PPT measurement should
-yield an optimal probability of 7/8.
-
-TODO Cite [Cosentino13]_ [Cosentino15]_
+In [Cosentino15]_, an semidefinite program formulation whose optimal value
+corresponds to the optimal probability of distinguishing a quantum state from
+an ensemble using PPT measurements was provided. The primal and dual problems
+of this SDP are defined as follows.
 
 .. math::
     \begin{equation}
@@ -48,10 +37,40 @@ TODO Cite [Cosentino13]_ [Cosentino15]_
         \end{aligned}
     \end{equation}
 
+
+
 Unambiguous
 -----------
 
 [Cosentino13]_
+
+Four indistinguishable orthogonal maximally entangled states
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+It was shown in [Cosentino13]_ and later extended in [CR13]_ that for the
+following set of states
+
+.. math::
+    \rho_0 = |\psi_0\rangle |\psi_0 \rangle \langle \psi_0 | \langle \psi_0 |, \quad
+    \rho_1 = |\psi_1 \rangle |\psi_3 \rangle \langle \psi_1 | \langle \psi_3 |, \\
+    \rho_0 = |\psi_0\rangle |\psi_0 \rangle \langle \psi_0 | \langle \psi_0 |, \quad
+    \rho_1 = |\psi_1 \rangle |\psi_3 \rangle \langle \psi_1 | \langle \psi_3 |, \\
+
+that the optimal probability of distinguishing via a PPT measurement should
+yield an optimal probability of 7/8.
+
+.. literalinclude:: ../examples/opt_dist/ppt/min_error/indstinguishable_mes.py
+   :language: python
+   :linenos:
+   :start-after: # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+XXX
+
+.. literalinclude:: ../examples/opt_dist/ppt/unambiguous/indstinguishable_mes.py
+   :language: python
+   :linenos:
+   :start-after: # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 
 Entanglement cost of distinguishing Bell states
 -----------------------------------------------
