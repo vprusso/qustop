@@ -1,4 +1,4 @@
-Distinguishing Quantum States via Positive Measurements
+Distinguishing quantum states via positive measurements
 =======================================================
 
 In this tutorial, we are going to show how to make use of :code:`qustop` to calculate the optimal

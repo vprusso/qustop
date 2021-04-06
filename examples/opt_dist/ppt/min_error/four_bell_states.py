@@ -1,13 +1,17 @@
-"""
-Define the following sets of states:
-
-|ϕ_1> = 1/√2|00> + 1/√2|11>, |ϕ_2> = 1/√2|00> - 1/√2|11>,
-|ϕ_3> = 1/√2|01> + 1/√2|10>, |ϕ_4> = 1/√2|01> - 1/√2|10>.
-
-Assuming a uniform distribution p_1 = p_2 = p_3 = p_4 = 1/4, the
-optimal probability of distinguishing the Bell states via PPT
-measurements is at most
-"""
+# Copyright (C) 2021 Vincent Russo
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from toqito.states import bell
 from qustop import Ensemble, State, OptDist
 

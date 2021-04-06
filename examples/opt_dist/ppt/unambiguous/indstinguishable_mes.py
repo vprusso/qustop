@@ -38,6 +38,3 @@ sd.solve()
 # The unambiguous probability of distinguishing via PPT
 # is equal to 3/4.
 print(sd.value)
-
-
-

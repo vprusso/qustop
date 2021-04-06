@@ -13,28 +13,30 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import numpy as np
-from toqito.states import bell
 
+from toqito.states import basis, bell
 from qustop import State, Ensemble, OptDist
 
 
-# Define the maximally entangled states from arXiv1107.3224
+e_0, e_1 = basis(2, 0), basis(2, 1)
+
+eps = 0.5
+tau = np.sqrt((1 + eps) / 2) * np.kron(e_0, e_0) + np.sqrt((1 - eps) / 2) * np.kron(e_1, e_1)
+
 dims = [2, 2, 2, 2]
-rho_0 = np.kron(bell(0), bell(0)) * np.kron(bell(0), bell(0)).conj().T
-rho_1 = np.kron(bell(2), bell(1)) * np.kron(bell(2), bell(1)).conj().T
-rho_2 = np.kron(bell(3), bell(1)) * np.kron(bell(3), bell(1)).conj().T
-rho_3 = np.kron(bell(1), bell(1)) * np.kron(bell(1), bell(1)).conj().T
+states = [
+    State(np.kron(bell(0), tau), dims),
+    State(np.kron(bell(1), tau), dims),
+    State(np.kron(bell(2), tau), dims),
+]
+probs = [1 / 3, 1 / 3, 1 / 3]
+ensemble = Ensemble(states, probs)
+ensemble.swap([2, 3])
 
-ensemble = Ensemble([
-    State(rho_0, dims), State(rho_1, dims),
-    State(rho_2, dims), State(rho_3, dims)
-])
+sep_res = OptDist(ensemble, "sep", "min-error")
+sep_res.solve()
 
-sd = OptDist(ensemble=ensemble, 
-             dist_measurement="ppt",
-             dist_method="min-error")
-sd.solve()
+eq = 1/3 * (2 + np.sqrt(1 - eps**2))
 
-# The min-error probability of distinguishing via PPT
-# is equal to 7/8.
-print(sd.value)
+print(eq)
+print(sep_res.value)

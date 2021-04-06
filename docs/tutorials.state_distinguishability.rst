@@ -43,14 +43,14 @@ This setting is depicted in the following figure.
 
    The quantum state distinguishability setting.
 
-Distinguishability Methods
+Distinguishability methods
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 * Minimum-error discrimination
 
 * Unambiguous discrimination
 
-Distinguishability Measurements
+Distinguishability measurements
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Depending on the sets of measurements that Alice and Bob are allowed to use,
