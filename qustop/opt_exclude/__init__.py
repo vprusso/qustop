@@ -13,8 +13,4 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-"""Optimal distinguishability of quantum states."""
-from qustop.opt_dist.ppt import PPT
-from qustop.opt_dist.positive import Positive
-from qustop.opt_dist.separable import Separable
-from qustop.opt_dist.opt_dist import OptDist
+"""Optimal exclusion of quantum states."""

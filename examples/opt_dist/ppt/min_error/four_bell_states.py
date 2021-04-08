@@ -17,11 +17,12 @@ from qustop import Ensemble, State, OptDist
 
 
 # Construct the corresponding density matrices of the Bell states.
+dims = [2, 2]
 states = [
-    State(bell(0) * bell(0).conj().T, dims=[2, 2]),
-    State(bell(1) * bell(1).conj().T, dims=[2, 2]),
-    State(bell(2) * bell(2).conj().T, dims=[2, 2]),
-    State(bell(3) * bell(3).conj().T, dims=[2, 2])
+    State(bell(0) * bell(0).conj().T, dims),
+    State(bell(1) * bell(1).conj().T, dims),
+    State(bell(2) * bell(2).conj().T, dims),
+    State(bell(3) * bell(3).conj().T, dims)
 ]
 ensemble = Ensemble(states=states, probs=[1/4, 1/4, 1/4, 1/4])
 sd = OptDist(ensemble=ensemble, 
