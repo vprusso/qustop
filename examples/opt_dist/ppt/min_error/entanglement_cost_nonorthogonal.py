@@ -35,11 +35,12 @@ eps = 0.215
 tau_state = np.sqrt((1 + eps) / 2) * np.kron(e_0, e_0) + np.sqrt((1 - eps) / 2) * np.kron(e_1, e_1)
 tau = tau_state * tau_state.conj().T
 
+dims = [2, 2, 2, 2]
 states = [
-    State(np.kron(rho_1, tau), [2, 2, 2, 2]),
-    State(np.kron(rho_2, tau), [2, 2, 2, 2]),
-    State(np.kron(rho_3, tau), [2, 2, 2, 2]),
-    State(np.kron(rho_4, tau), [2, 2, 2, 2])
+    State(np.kron(rho_1, tau), dims),
+    State(np.kron(rho_2, tau), dims),
+    State(np.kron(rho_3, tau), dims),
+    State(np.kron(rho_4, tau), dims)
 ]
 
 ensemble = Ensemble(states)

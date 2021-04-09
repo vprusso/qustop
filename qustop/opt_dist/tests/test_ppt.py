@@ -20,6 +20,22 @@ from toqito.perms import swap_operator
 from qustop import Ensemble, State, OptDist
 
 
+def test_ppt_distinguishability_one_state():
+    """PPT state distinguishability for single state."""
+    dims = [2, 2]
+    rho = [State(bell(0) * bell(0).conj().T, dims)]
+    ensemble = Ensemble(rho)
+
+    primal_res = OptDist(
+        ensemble=ensemble,
+        dist_measurement="pos",
+        dist_method="min-error",
+        return_optimal_meas=True,
+    )
+    primal_res.solve()
+    np.testing.assert_equal(np.isclose(primal_res.value, 1), True)
+
+
 def test_ppt_distinguishability_yyd_density_matrices():
     """
     PPT distinguishing the YYD states from [1] should yield `7/8 ~ 0.875`

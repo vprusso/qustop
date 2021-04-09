@@ -69,7 +69,7 @@ class OptDist:
             if self.return_optimal_meas:
                 return 1.0, np.identity(self.ensemble.shape[0])
             else:
-                return 1.0
+                return 1.0, []
 
         # There is a closed-form expression for the distinguishability of two density matrices.
         if len(self.ensemble) == 2:
@@ -82,8 +82,18 @@ class OptDist:
         return None, []
 
     def solve(self):
+        """Depending on the measurement method selected, solve the appropriate optimization problem.
+        """
 
-        # self._optimal_value, self._optimal_measurements = self.pre_optimize()
+        # If `value` and `meas` were solved in the pre-optimization step, there's no need to
+        # perform any further calculations.
+        value, meas = self.pre_optimize()
+        if value is not None and self.return_optimal_meas is False:
+            self._optimal_value = value
+            return
+        elif value is not None and self.return_optimal_meas:
+            self._optimal_value, self._optimal_measurements = value, meas
+            return
 
         if self.dist_measurement == "ppt":
             opt = PPT(
@@ -126,3 +136,5 @@ class OptDist:
                 self._optimal_value, self._optimal_measurements = opt.solve()
             else:
                 self._optimal_value = opt.solve()
+        else:
+            raise ValueError(f"Measurement type {self.dist_method} not supported.")
