@@ -1,2 +1,2 @@
-Quantum State Exclusion
+Quantum state exclusion
 ========================

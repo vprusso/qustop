@@ -1,7 +1,7 @@
-States and Ensembles
+States and ensembles
 ====================
 
-Quantum States
+Quantum states
 ---------------
 
 A *quantum state* is a density operator

@@ -1,4 +1,4 @@
-Introductory Tutorial
+Introductory tutorial
 ======================
 
 This tutorial will illustrate the basics of how to use :code:`qustop`.

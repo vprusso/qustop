@@ -1,4 +1,4 @@
-Quantum State Distinguishability
+Quantum state distinguishability
 ================================
 
 Distinguishability
@@ -11,7 +11,7 @@ Distinguishability
 
     qustop.OptDist
 
-Distinguishability Measurements
+Distinguishability measurements
 -------------------------------
 
 .. toctree::

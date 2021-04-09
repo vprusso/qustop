@@ -3,32 +3,25 @@
 \BOOKMARK [1][-]{section*.3}{Introduction}{section*.2}% 3
 \BOOKMARK [1][-]{section*.4}{Fundamental objects}{section*.2}% 4
 \BOOKMARK [2][-]{section*.5}{States}{section*.4}% 5
-\BOOKMARK [3][-]{section*.6}{Quantum states}{section*.5}% 6
-\BOOKMARK [3][-]{section*.7}{Properties of quantum states}{section*.5}% 7
-\BOOKMARK [3][-]{section*.8}{Distance metrics for quantum states}{section*.5}% 8
-\BOOKMARK [2][-]{section*.9}{Channels}{section*.4}% 9
-\BOOKMARK [3][-]{section*.10}{Quantum channels}{section*.9}% 10
-\BOOKMARK [3][-]{section*.11}{Properties of quantum states}{section*.9}% 11
-\BOOKMARK [3][-]{section*.12}{Operations on quantum states}{section*.9}% 12
-\BOOKMARK [2][-]{section*.13}{Measurements}{section*.4}% 13
-\BOOKMARK [1][-]{section*.14}{Examples and Applications}{section*.2}% 14
-\BOOKMARK [2][-]{section*.15}{Nonlocal games}{section*.14}% 15
-\BOOKMARK [3][-]{section*.16}{Classical strategies for nonlocal games}{section*.15}% 16
-\BOOKMARK [3][-]{section*.17}{Quantum strategies for nonlocal games}{section*.15}% 17
-\BOOKMARK [3][-]{section*.18}{Non-signaling strategies for nonlocal games}{section*.15}% 18
-\BOOKMARK [3][-]{section*.19}{Parallel repetition for nonlocal games}{section*.15}% 19
-\BOOKMARK [2][-]{section*.20}{XOR nonlocal games}{section*.14}% 20
-\BOOKMARK [3][-]{section*.21}{Example: The CHSH game}{section*.20}% 21
-\BOOKMARK [2][-]{section*.22}{Extended nonlocal games}{section*.14}% 22
-\BOOKMARK [3][-]{section*.23}{The extended nonlocal game model}{section*.22}% 23
-\BOOKMARK [3][-]{section*.24}{Strategies for extended nonlocal games}{section*.22}% 24
-\BOOKMARK [3][-]{section*.25}{The BB84 extended nonlocal game}{section*.22}% 25
-\BOOKMARK [3][-]{section*.26}{Standard quantum strategies for extended nonlocal games}{section*.22}% 26
-\BOOKMARK [3][-]{section*.27}{Unentangled strategies for extended nonlocal games}{section*.22}% 27
-\BOOKMARK [3][-]{section*.28}{Non-signaling strategies for extended nonlocal games}{section*.22}% 28
-\BOOKMARK [3][-]{section*.29}{Parallel repetition for extended nonlocal games}{section*.22}% 29
-\BOOKMARK [2][-]{section*.30}{Quantum state discrimination}{section*.14}% 30
-\BOOKMARK [3][-]{section*.31}{Quantum state discrimination via PPT measurements}{section*.30}% 31
-\BOOKMARK [3][-]{section*.32}{Quantum state discrimination via separable measurements}{section*.30}% 32
-\BOOKMARK [1][-]{section*.33}{Conclusion}{section*.2}% 33
-\BOOKMARK [1][-]{section*.34}{Acknowledgements}{section*.2}% 34
+\BOOKMARK [2][-]{section*.6}{Measurements}{section*.4}% 6
+\BOOKMARK [1][-]{section*.7}{Examples and Applications}{section*.2}% 7
+\BOOKMARK [2][-]{section*.8}{Nonlocal games}{section*.7}% 8
+\BOOKMARK [3][-]{section*.9}{Classical strategies for nonlocal games}{section*.8}% 9
+\BOOKMARK [3][-]{section*.10}{Quantum strategies for nonlocal games}{section*.8}% 10
+\BOOKMARK [3][-]{section*.11}{Non-signaling strategies for nonlocal games}{section*.8}% 11
+\BOOKMARK [3][-]{section*.12}{Parallel repetition for nonlocal games}{section*.8}% 12
+\BOOKMARK [2][-]{section*.13}{XOR nonlocal games}{section*.7}% 13
+\BOOKMARK [3][-]{section*.14}{Example: The CHSH game}{section*.13}% 14
+\BOOKMARK [2][-]{section*.15}{Extended nonlocal games}{section*.7}% 15
+\BOOKMARK [3][-]{section*.16}{The extended nonlocal game model}{section*.15}% 16
+\BOOKMARK [3][-]{section*.17}{Strategies for extended nonlocal games}{section*.15}% 17
+\BOOKMARK [3][-]{section*.18}{The BB84 extended nonlocal game}{section*.15}% 18
+\BOOKMARK [3][-]{section*.19}{Standard quantum strategies for extended nonlocal games}{section*.15}% 19
+\BOOKMARK [3][-]{section*.20}{Unentangled strategies for extended nonlocal games}{section*.15}% 20
+\BOOKMARK [3][-]{section*.21}{Non-signaling strategies for extended nonlocal games}{section*.15}% 21
+\BOOKMARK [3][-]{section*.22}{Parallel repetition for extended nonlocal games}{section*.15}% 22
+\BOOKMARK [2][-]{section*.23}{Quantum state discrimination}{section*.7}% 23
+\BOOKMARK [3][-]{section*.24}{Quantum state discrimination via PPT measurements}{section*.23}% 24
+\BOOKMARK [3][-]{section*.25}{Quantum state discrimination via separable measurements}{section*.23}% 25
+\BOOKMARK [1][-]{section*.26}{Conclusion}{section*.2}% 26
+\BOOKMARK [1][-]{section*.27}{Acknowledgements}{section*.2}% 27

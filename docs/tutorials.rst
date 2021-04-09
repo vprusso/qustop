@@ -3,7 +3,7 @@ Tutorials
 
 Tutorials for :code:`qustop`.
 
-Quantum State Distinguishability
+Quantum state distinguishability
 --------------------------------
 
 .. toctree::
@@ -14,7 +14,7 @@ Quantum State Distinguishability
    tutorials.ppt
    tutorials.separable
 
-Quantum State Exclusion
+Quantum state exclusion
 -----------------------
 
 .. toctree::

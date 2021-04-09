@@ -23,7 +23,7 @@ quantum state exclusion, quantum state cloning, and more.
    :target: https://zenodo.org/badge/latestdoi/XXX
 
 
-User Documentation
+User documentation
 ------------------
 
 .. toctree::
@@ -34,19 +34,19 @@ User Documentation
 
 .. toctree::
     :maxdepth: 2
-    :caption: Quantum States and Ensembles
+    :caption: Quantum states and ensembles
 
     states_and_ensembles
 
 .. toctree::
     :maxdepth: 2
-    :caption: Quantum State Distinguishability
+    :caption: Quantum state distinguishability
 
     quantum_state_distinguishability
 
 .. toctree::
     :maxdepth: 2
-    :caption: Quantum State Exclusion
+    :caption: Quantum state exclusion
 
     quantum_state_exclusion
 

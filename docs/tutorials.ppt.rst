@@ -5,7 +5,7 @@ In this section we will be investigation how to make use of the
 :code:`qustop` package to optimally distinguish quantum states via PPT
 measurements.
 
-Minimum-Error
+Minimum-error
 -------------
 
 In [Cosentino13]_, an semidefinite program formulation whose optimal value
