@@ -73,16 +73,22 @@ class OptDist:
 
         # There is a closed-form expression for the distinguishability of two density matrices.
         if len(self.ensemble) == 2:
+            # TODO:
             pass
 
         # # If the states are mutually orthogonal, it is possible to perfectly distinguish.
-        # if self.ensemble.is_mutually_orthogonal:
-        #     pass
+        if self.ensemble.is_mutually_orthogonal:
+            # TODO
+            pass
 
         return None, []
 
-    def solve(self):
+    def solve(self) -> None:
         """Depending on the measurement method selected, solve the appropriate optimization problem.
+
+        Raises:
+            ValueError:
+                * If the `dist_measurement` argument is not supported.
         """
 
         # If `value` and `meas` were solved in the pre-optimization step, there's no need to
