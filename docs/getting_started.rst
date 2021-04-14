@@ -57,7 +57,7 @@ A BibTeX entry that you can use to cite :code:`qustop` is provided here:
 
 .. code-block:: bash
 
-    @misc{toqito,
+    @misc{qustop,
        author       = {Vincent Russo},
        title        = {qustop: A {P}ython package for investigating quantum state optimization, version 1.0.0},
        howpublished = {\url{https://github.com/vprusso/qustop}},

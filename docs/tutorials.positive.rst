@@ -69,7 +69,7 @@ Consider now the following two mixed states
 .. math::
     | \phi_1 \rangle = \frac{3}{4} |+ \rangle \langle + | + \frac{1}{4} |- \rangle \langle - |
     \quad \text{and} \quad
-    | \phi_2 \rangle = \frac{1}{4} |+ \rangle \langle + | - \frac{3}{4} |- \rangle \langle - |
+    | \phi_2 \rangle = \frac{1}{4} |+ \rangle \langle + | + \frac{3}{4} |- \rangle \langle - |
 
 The following code sample shows that the closed-form equation matches the result obtained from
 :code:`qustop`, however, since they are mixed states and not pure, we are not able to perfectly
@@ -88,10 +88,10 @@ As a prototypical example, consider the four Bell states
 .. math::
     \begin{equation}
         \begin{aligned}
-            | \psi_0 \rangle = \frac{|00\rangle + |11\rangle}{\sqrt{2}}, &\quad
-            | \psi_1 \rangle = \frac{|01\rangle + |10\rangle}{\sqrt{2}}, \\
-            | \psi_2 \rangle = \frac{|01\rangle - |10\rangle}{\sqrt{2}}, &\quad
-            | \psi_3 \rangle = \frac{|00\rangle - |11\rangle}{\sqrt{2}}.
+            | \psi_0 \rangle = \frac{| 00 \rangle + | 11 \rangle}{\sqrt{2}}, &\quad
+            | \psi_1 \rangle = \frac{| 01 \rangle + | 10 \rangle}{\sqrt{2}}, \\
+            | \psi_2 \rangle = \frac{| 01 \rangle - | 10 \rangle}{\sqrt{2}}, &\quad
+            | \psi_3 \rangle = \frac{| 00 \rangle - | 11 \rangle}{\sqrt{2}}.
         \end{aligned}
     \end{equation}
 
@@ -103,7 +103,21 @@ As a prototypical example, consider the four Bell states
 If there are more than two states and those states are not mutually orthogonal, no closed-form
 equation is known to exist, so we resort to solving the SDP.
 
-EXAMPLE
+For instance, consider the following set of three non-mutually-orthogonal states
+
+.. math::
+    \begin{equation}
+        \begin{aligned}
+            | \phi_0 \rangle = \frac{3}{4}| + \rangle \langle + | + \frac{1}{4} | - \rangle \langle - |, &\quad
+            | \phi_1 \rangle = \frac{1}{4}| + \rangle \langle + | + \frac{3}{4} | - \rangle \langle - |, \\
+            | \phi_2 \rangle = , &\quad
+        \end{aligned}
+    \end{equation}
+
+.. literalinclude:: ../examples/opt_dist/positive/min_error/three_nonorthogonal_states.py
+   :language: python
+   :linenos:
+   :start-after: # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 Unambiguous distinguishability via positive measurements
 ---------------------------------------------------------

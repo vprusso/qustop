@@ -26,23 +26,27 @@ rho_1 = 3/4 * (e_p * e_p.conj().T) + 1/4 * (e_m * e_m.conj().T)
 # rho_2 = 1/4 |+><+| + 3/4|-><-|
 rho_2 = 1/4 * (e_p * e_p.conj().T) + 3/4 * (e_m * e_m.conj().T)
 
+# rho_3 = 1/2 |+><+| + 1/2 |-><-|
+rho_3 = 1/2 * (e_p * e_p.conj().T) + 1/2 * (e_m * e_m.conj().T)
+
 dims = [2]
 rho_1 = State(rho_1, dims)
 rho_2 = State(rho_2, dims)
+rho_3 = State(rho_3, dims)
 
-# Verify that the states `rho_1` and `rho_2` are mixed:
-print(f"Is rho_1 pure: {rho_1.is_pure}")
-print(f"Is rho_2 pure: {rho_2.is_pure}")
+ensemble = Ensemble([rho_1, rho_2, rho_3])
 
-ensemble = Ensemble([rho_1, rho_2])
+# Verify that ensemble consists of non-mutually-orthogonal states.:
+print(f"Is ensemble mutually orthogonal: {ensemble.is_mutually_orthogonal}")
 
+
+# For any set of more than two states that are non-mutually orthogonal, no closed-form expression for optimal
+# distinguishability is known to exist. Therefore, we must resort to solving the SDP to determine what the optimal
+# probability is.
 sd = OptDist(ensemble=ensemble,
              dist_measurement="pos",
              dist_method="min-error")
 
-# 0.5000000000000002
+# 0.4166666666697986
 sd.solve()
 print(sd.value)
-
-# The closed-form equation yields: 1/2
-print(1/2 + 1/4 * np.linalg.norm(rho_1.value - rho_2.value, ord="nuc"))
