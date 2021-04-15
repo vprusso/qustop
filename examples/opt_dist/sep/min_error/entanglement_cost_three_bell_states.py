@@ -33,7 +33,7 @@ probs = [1 / 3, 1 / 3, 1 / 3]
 ensemble = Ensemble(states, probs)
 ensemble.swap([2, 3])
 
-sep_res = OptDist(ensemble, "sep", "min-error")
+sep_res = OptDist(ensemble, "sep", "min-error", level=2)
 sep_res.solve()
 
 eq = 1/3 * (2 + np.sqrt(1 - eps**2))

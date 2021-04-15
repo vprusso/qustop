@@ -110,7 +110,7 @@ For instance, consider the following set of three non-mutually-orthogonal states
         \begin{aligned}
             | \phi_0 \rangle = \frac{3}{4}| + \rangle \langle + | + \frac{1}{4} | - \rangle \langle - |, &\quad
             | \phi_1 \rangle = \frac{1}{4}| + \rangle \langle + | + \frac{3}{4} | - \rangle \langle - |, \\
-            | \phi_2 \rangle = , &\quad
+            | \phi_2 \rangle = \frac{1}{2}| + \rangle \langle + | + \frac{1}{2} | - \rangle \langle - |.
         \end{aligned}
     \end{equation}
 
@@ -136,6 +136,25 @@ obtained by solving the following semidefinite program (SDP).
                                     \forall i \not= j = 1, \ldots, n \\
                                  & M_1, \ldots, M_n \in \text{Pos}(\mathcal{A} \otimes \mathcal{B}).
     \end{align*}
+
+As an example, consider the set of three non-mutually-orthogonal states we considered earlier
+
+.. math::
+    \begin{equation}
+        \begin{aligned}
+            | \phi_0 \rangle = \frac{3}{4}| + \rangle \langle + | + \frac{1}{4} | - \rangle \langle - |, &\quad
+            | \phi_1 \rangle = \frac{1}{4}| + \rangle \langle + | + \frac{3}{4} | - \rangle \langle - |, \\
+            | \phi_2 \rangle = \frac{1}{2}| + \rangle \langle + | + \frac{1}{2} | - \rangle \langle - |.
+        \end{aligned}
+    \end{equation}
+
+The probability to distinguish amongst these states unambiguously gives a value of zero, while the minimum-error
+case, as we saw, gave a value of :math:`0.4166666`.
+
+.. literalinclude:: ../examples/opt_dist/positive/unambiguous/three_nonorthogonal_states.py
+   :language: python
+   :linenos:
+   :start-after: # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 References
 ------------------------------

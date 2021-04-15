@@ -41,6 +41,41 @@ Minimum-error distinguishability via separable measurements
         \end{aligned}
     \end{equation}
 
+.. math::
+
+    \begin{equation}
+        \begin{aligned}
+            \textbf{Dual:} \quad & \\
+            \text{minimize:} \quad & \text{Tr}(H), \\
+            \text{subject to:} \quad & H - Q_k \geq p_k \rho_k, \\
+                                    & Q_k \otimes \mathbb{I}_{\mathcal{Y}_2
+                                    \otimes \ldots \otimes \mathcal{Y}_s} +
+                                    \left(\mathbb{I}_{\mathcal{X}} \otimes
+                                    \Pi_{\mathcal{Y} \ovee \mathcal{Y}_2 \ldots
+                                    \ovee \mathcal{Y_s}} \right) R_k
+                                    \left(\mathbb{I}_{\mathcal{X}} \otimes
+                                    \Pi_{\mathcal{Y} \ovee \mathcal{Y}_2 \ldots
+                                    \ovee \mathcal{Y_s}} \right) \\
+                                    & \quad - R_k - \text{T}_{\mathcal{X}}(S_k)
+                                    - \text{T}_{\mathcal{Y}}(Z_k) \in
+                                      \text{Pos}(\mathcal{X} \otimes
+                                      \mathcal{Y} \otimes \mathcal{Y}_2 \otimes
+                                      \ldots \otimes \mathcal{Y}_s) \\
+                                    & H, Q_1, \ldots, Q_N \in
+                                    \text{Herm}(\mathcal{X} \otimes
+                                    \mathcal{Y}), \\
+                                    & R_1, \ldots R_N \in
+                                    \text{Herm}(\mathcal{X} \otimes \mathcal{Y}
+                                    \otimes \mathcal{Y}_2 \otimes \ldots
+                                    \otimes \mathcal{Y}_s), \\ & S_1, \ldots,
+                                    S_N, Z_1, \ldots, Z_N \in
+                                    \text{Pos}(\mathcal{X} \otimes \mathcal{Y}
+                                    \otimes \mathcal{Y}_2 \otimes \ldots
+                                    \otimes \mathcal{Y}_s).
+        \end{aligned}
+    \end{equation}
+
+
 Entanglement cost of distinguishing Bell states
 -----------------------------------------------
 
@@ -96,7 +131,36 @@ separable measurements). More on that in the
 
 Distinguishing three Bell states
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-(TODO)
+It was also shown in [BCJRWY15]_ that the closed-form probability of distinguishing three Bell states with a resource
+state using separable measurements to be given by the closed-form expression:
+
+.. math::
+    \begin{equation}
+        \text{opt}_{\text{SEP}}(\eta) = \frac{1}{3} \left( 2 + \sqrt{1 - \epsilon^2} \right)
+    \end{equation}
+
+where the ensemble is defined as
+
+.. math::
+    \begin{equation}
+        \eta = \left( | \psi_0 \rangle \otimes | \tau_{\epsilon} \rangle,
+                      | \psi_1 \rangle \otimes | \tau_{\epsilon} \rangle,
+                      | \psi_2 \rangle \otimes | \tau_{\epsilon} \rangle
+        \right).
+    \end{equation}
+
+Using :code:`qustop`, we may encode this scenario as follows.
+
+.. literalinclude:: ../examples/opt_dist/sep/min_error/entanglement_cost_three_bell_states.py
+   :language: python
+   :linenos:
+   :start-after: # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+Note that the value of :code:`sep_res.value` is actually a bit higher than :code:`eq`. This is because the separable
+value is calculated by a hierarchy of SDPs. At low levels of the SDP, the problem can often converge to the optimal
+value, but other times it is necessary to compute higher levels of the SDP to eventually arrive at the optimal value.
+While this is intractable in general, in practice, the SDP can often converge, or at least get fairly close to the
+optimal value for small problem sizes.
 
 References
 -----------
