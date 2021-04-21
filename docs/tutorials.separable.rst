@@ -242,7 +242,7 @@ XXXX
 XXX
 ^^^
 
-It was shown in [Cosentino15]_ that if we consider an ensemble of states consisting of a UPB along with a pure state
+It was shown in [BCJRWY15]_ that if we consider an ensemble of states consisting of a UPB along with a pure state
 that is orthogonal to all states in said ensemble, then it is impossible to perfectly distinguish this ensemble.
 
 .. math::
