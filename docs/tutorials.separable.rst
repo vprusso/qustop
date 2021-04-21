@@ -162,9 +162,121 @@ value, but other times it is necessary to compute higher levels of the SDP to ev
 While this is intractable in general, in practice, the SDP can often converge, or at least get fairly close to the
 optimal value for small problem sizes.
 
+Unextendible product bases and separable measurements
+-----------------------------------------------------
+
+For complex Euclidean spaces :math:`\mathcal{X}` and :math:`\mathcal{Y}`, an *unextendable product basis* is defined as
+an orthonormal collection of vectors
+
+.. math::
+    \begin{equation}
+        \mathcal{U} = \left\{u_1 \otimes v_1, \ldots, u_m \otimes v_m \right\}
+        \subset \mathcal{X} \otimes \mathcal{Y},
+    \end{equation}
+
+for unit vectors :math:`u_1, \ldots, u_m \in \mathcal{X}` and :math:`v_1, \ldots, v_m \in \mathcal{Y}` where:
+
+1. :math:`m < \text{dim}(\mathcal{X} \otimes \mathcal{Y})`.
+
+2. For every :math:`x \in \mathcal{X}` and :math:`y \in \mathcal{Y}` satisfying :math:`x \otimes y \perp \mathcal{U}`
+it holds that :math:`x \otimes y = 0`.
+
+All UPBs are known to be indistinguishable by LOCC measurements and all UPBs are distinguishable by PPT measurements.
+As separable measurements lie in between LOCC and PPT measurements, it is of interest to know which UPBs are
+distinguishable by separable measurements.
+
+For instance, in [DMSST99]_, it was shown that all UPBs in :math:`\mathbb{C}^3 \otimes \mathbb{C}^3` are
+perfectly distinguishable via separable measurements.
+
+Consider the "Tiles" UPB
+
+.. math::
+    \begin{equation}
+      \begin{array}{llll}
+        | \phi_0 \rangle = | 0 \rangle \left(\frac{| 0 \rangle - | 1 \rangle}{\sqrt{2}}\right),
+        &| \phi_1 \rangle = | 2 \rangle\left(\frac{| 1 \rangle - | 2 \rangle }{\sqrt{2}}\right), \\
+        | \phi_2 \rangle = \left(\frac{| 0 \rangle - | 1 \rangle}{\sqrt{2}}\right)| 2 \rangle,
+        &| \phi_3 \rangle = \left(\frac{| 1 \rangle - | 2 \rangle}{\sqrt{2}}\right)| 0 \rangle,\\
+        | \phi_4 \rangle = \frac{1}{3}\left(| 0 \rangle + | 1 \rangle + | 2 \rangle\right),
+                  \left(| 0 \rangle + | 1 \rangle + | 2 \rangle \right).
+      \end{array}
+    \end{equation}
+
+Note that the "Tiles" states are contained in :math:`\mathbb{C}^3 \otimes \mathbb{C}^3`. We can use :code:`qustop` to
+indeed verify that these states are perfectly distinguishable via separable measurements.
+
+.. literalinclude:: ../examples/opt_dist/sep/min_error/tile_upb.py
+   :language: python
+   :linenos:
+   :start-after: # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+In [BCJRWY15]_, it was shown that the 8-state UPB contained in :math:`\mathbb{C}^4 \otimes \mathbb{C}^4` introduced in
+[Feng06]_ defined as
+
+.. math::
+    \begin{equation}
+      \begin{array}{ll}
+        | \phi_1 \rangle = | 0 \rangle | 0 \rangle, &
+        | \phi_5 \rangle = \left(| 1 \rangle + | 2 \rangle + | 3 \rangle \right)\left(| 0 \rangle
+        - | 1 \rangle + | 2 \rangle \right)/3, \\
+        | \phi_2 \rangle = | 1 \rangle \left(| 0 \rangle - | 2 \rangle + | 3 \rangle \right)/\sqrt{3},
+        \quad &
+        | \phi_6 \rangle = \left(| 0 \rangle - | 2 \rangle + | 3 \rangle \right)| 2 \rangle/\sqrt{3}, \\
+        | \phi_3 \rangle = | 2 \rangle \left(| 0 \rangle + | 1 \rangle - | 3 \rangle \right)/\sqrt{3}, &
+        | \phi_7 \rangle = \left(| 0 \rangle + | 1 \rangle - | 3 \rangle \right)| 1 \rangle/\sqrt{3}, \\
+        | \phi_4 \rangle = | 3 \rangle | 3 \rangle, &
+        | \phi_8 \rangle = \left(| 0 \rangle - | 1 \rangle + | 2 \rangle \right)\left(| 1 \rangle
+        + | 2 \rangle + | 3 \rangle \right)/3.
+      \end{array}
+    \end{equation}
+
+is not perfectly distinguishable via separable measurements. This can be observed using :code:`qustop` as follows.
+
+.. literalinclude:: ../examples/opt_dist/sep/min_error/feng_upb.py
+   :language: python
+   :linenos:
+   :start-after: # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+XXXX
+
+XXX
+^^^
+
+It was shown in [Cosentino15]_ that if we consider an ensemble of states consisting of a UPB along with a pure state
+that is orthogonal to all states in said ensemble, then it is impossible to perfectly distinguish this ensemble.
+
+.. math::
+    \begin{equation}
+      \begin{array}{llll}
+        | \phi_0 \rangle = | 0 \rangle \left(\frac{| 0 \rangle - | 1 \rangle}{\sqrt{2}}\right),
+        &| \phi_1 \rangle = | 2 \rangle\left(\frac{| 1 \rangle - | 2 \rangle }{\sqrt{2}}\right), \\
+        | \phi_2 \rangle = \left(\frac{| 0 \rangle - | 1 \rangle}{\sqrt{2}}\right)| 2 \rangle,
+        &| \phi_3 \rangle = \left(\frac{| 1 \rangle - | 2 \rangle}{\sqrt{2}}\right)| 0 \rangle,\\
+        | \phi_4 \rangle = \frac{1}{3}\left(| 0 \rangle + | 1 \rangle + | 2 \rangle\right)
+                  \left(| 0 \rangle + | 1 \rangle + | 2 \rangle \right),
+        & | \phi_5 \rangle = \frac{1}{2} \left( | 0 \rangle | 0 \rangle + | 0 \rangle | 1 \rangle - 
+                             | 0 \rangle | 2 \rangle - | 1 \rangle | 2 \rangle \right)
+      \end{array}
+    \end{equation}
+
+.. literalinclude:: ../examples/opt_dist/sep/min_error/tile_upb_plus_pure.py
+   :language: python
+   :linenos:
+   :start-after: # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+XXX
+
 References
 -----------
 .. [Nav08] Navascués, Miguel.
     "Pure state estimation and the characterization of entanglement."
     Physical review letters 100.7 (2008): 070503.
     https://arxiv.org/abs/0707.4398
+
+.. [DMSST99] DiVincenzo, David P., et al.
+     "Unextendible product bases, uncompletable product bases and bound entanglement."
+     Communications in Mathematical Physics 238.3 (2003): 379-410.
+
+.. [Feng06] Feng, Keqin.
+            "Unextendible product bases and 1-factorization of complete graphs."
+            Discrete applied mathematics 154.6 (2006): 942-949.
