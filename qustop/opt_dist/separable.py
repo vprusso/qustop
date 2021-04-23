@@ -123,7 +123,7 @@ class Separable:
 
         meas = [cvxpy.Variable((dim_xy, dim_xy), PSD=True) for i, _ in enumerate(self._states)]
         x_var = [cvxpy.Variable((dim_xyy, dim_xyy), PSD=True) for i, _ in enumerate(self._states)]
-        obj_func = [self._probs[i] * cvxpy.trace(self._states[i].conj().T @ meas[i]) for i, _ in enumerate(self._states)]
+        obj_func = [self._probs[i] * cvxpy.trace(cvxpy.real(self._states[i].conj().T) @ meas[i]) for i, _ in enumerate(self._states)]
 
         for k, _ in enumerate(self._states):
             constraints.append(
@@ -140,9 +140,9 @@ class Separable:
                 constraints.append(
                     partial_transpose(x_var[k], sys + 3, dim_list) >> 0
                 )
-        constraints.append(sum(meas) == np.identity(dim_xy))
+        constraints.append(cvxpy.sum(meas) == np.identity(dim_xy))
 
-        objective = cvxpy.Maximize(sum(obj_func))
+        objective = cvxpy.Maximize(cvxpy.sum(obj_func))
         problem = cvxpy.Problem(objective, constraints)
         opt_val = problem.solve(
             solver=self._solver, verbose=self._verbose, eps=self._eps

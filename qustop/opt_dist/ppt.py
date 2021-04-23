@@ -114,7 +114,7 @@ class PPT:
         # each of the measurement variables scaled by the corresponding probability of the given
         # state being selected by the ensemble.
         obj_func = [
-            self._probs[i] * cvxpy.trace(self._states[i].conj().T @ meas[i])
+            self._probs[i] * cvxpy.trace(cvxpy.real(self._states[i].conj().T) @ meas[i])
             for i, _ in enumerate(self._states)
         ]
         objective = cvxpy.Maximize(sum(obj_func))
@@ -183,7 +183,7 @@ class PPT:
                 >> partial_transpose(dual_vars[-1], self._sys, self._dims)
             )
 
-        objective = cvxpy.Minimize(cvxpy.trace(cvxpy.real(y_var)))
+        objective = cvxpy.Minimize(cvxpy.real(cvxpy.trace(cvxpy.real(y_var))))
         problem = cvxpy.Problem(objective, constraints)
         opt_val = problem.solve(
             solver=self._solver, verbose=self._verbose, eps=self._eps
