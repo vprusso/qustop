@@ -60,8 +60,7 @@ class OptClone:
         return [measurements[i].value for i in range(len(measurements))]
 
     def solve(self) -> None:
-        """Depending on the measurement method selected, solve the appropriate optimization problem.
-        """
+        """Depending on the measurement method selected, solve the appropriate optimization problem."""
         dim = len(self._states[0]) ** 3
 
         # Construct the following operator:

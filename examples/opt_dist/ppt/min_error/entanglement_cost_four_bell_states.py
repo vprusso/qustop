@@ -21,7 +21,9 @@ from qustop import State, Ensemble, OptDist
 e_0, e_1 = basis(2, 0), basis(2, 1)
 
 eps = 0.5
-tau = np.sqrt((1 + eps) / 2) * np.kron(e_0, e_0) + np.sqrt((1 - eps) / 2) * np.kron(e_1, e_1)
+tau = np.sqrt((1 + eps) / 2) * np.kron(e_0, e_0) + np.sqrt(
+    (1 - eps) / 2
+) * np.kron(e_1, e_1)
 
 dims = [2, 2, 2, 2]
 states = [

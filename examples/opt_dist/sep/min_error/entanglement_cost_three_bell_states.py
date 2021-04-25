@@ -21,7 +21,9 @@ from qustop import State, Ensemble, OptDist
 e_0, e_1 = basis(2, 0), basis(2, 1)
 
 eps = 0.5
-tau = np.sqrt((1 + eps) / 2) * np.kron(e_0, e_0) + np.sqrt((1 - eps) / 2) * np.kron(e_1, e_1)
+tau = np.sqrt((1 + eps) / 2) * np.kron(e_0, e_0) + np.sqrt(
+    (1 - eps) / 2
+) * np.kron(e_1, e_1)
 
 dims = [2, 2, 2, 2]
 states = [
@@ -36,7 +38,7 @@ ensemble.swap([2, 3])
 sep_res = OptDist(ensemble, "sep", "min-error", level=2)
 sep_res.solve()
 
-eq = 1/3 * (2 + np.sqrt(1 - eps**2))
+eq = 1 / 3 * (2 + np.sqrt(1 - eps ** 2))
 
 print(eq)
 print(sep_res.value)

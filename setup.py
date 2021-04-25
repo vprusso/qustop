@@ -3,7 +3,15 @@ import setuptools
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
-requirements = ["cvx", "cvxpy", "numpy", "picos", "scipy", "scikit-image", "toqito"]
+requirements = [
+    "cvx",
+    "cvxpy",
+    "numpy",
+    "picos",
+    "scipy",
+    "scikit-image",
+    "toqito",
+]
 
 setuptools.setup(
     name="qustop",

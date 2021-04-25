@@ -143,4 +143,6 @@ class OptDist:
             else:
                 self._optimal_value = opt.solve()
         else:
-            raise ValueError(f"Measurement type {self.dist_method} not supported.")
+            raise ValueError(
+                f"Measurement type {self.dist_method} not supported."
+            )

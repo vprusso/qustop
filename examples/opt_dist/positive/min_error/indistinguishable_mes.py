@@ -12,26 +12,33 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+import numpy as np
 from toqito.states import bell
 
 from qustop import State, Ensemble, OptDist
 
-dims = [2, 2]
-rho_1 = State(bell(0), dims)
-rho_2 = State(bell(1), dims)
-rho_3 = State(bell(2), dims)
-rho_4 = State(bell(3), dims)
 
-ensemble = Ensemble([rho_1, rho_2, rho_3, rho_4])
+# Define the maximally entangled states from arXiv1107.3224
+dims = [2, 2, 2, 2]
+rho_0 = np.kron(bell(0), bell(0)) * np.kron(bell(0), bell(0)).conj().T
+rho_1 = np.kron(bell(2), bell(1)) * np.kron(bell(2), bell(1)).conj().T
+rho_2 = np.kron(bell(3), bell(1)) * np.kron(bell(3), bell(1)).conj().T
+rho_3 = np.kron(bell(1), bell(1)) * np.kron(bell(1), bell(1)).conj().T
 
-# Verify that states in the ensemble are mutually orthogonal:
-print(f"Are states mutually orthogonal: {ensemble.is_mutually_orthogonal}")
+ensemble = Ensemble(
+    [
+        State(rho_0, dims),
+        State(rho_1, dims),
+        State(rho_2, dims),
+        State(rho_3, dims),
+    ]
+)
 
 sd = OptDist(
     ensemble=ensemble, dist_measurement="pos", dist_method="min-error"
 )
-
-# Mutually orthogonal states are optimally distinguishable--giving
-# an optimal value of one.
 sd.solve()
+
+# The min-error probability of distinguishing via positive
+# measurements is equal to 1.
 print(sd.value)

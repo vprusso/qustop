@@ -25,16 +25,26 @@ rho_1 = np.kron(bell(2), bell(1)) * np.kron(bell(2), bell(1)).conj().T
 rho_2 = np.kron(bell(3), bell(1)) * np.kron(bell(3), bell(1)).conj().T
 rho_3 = np.kron(bell(1), bell(1)) * np.kron(bell(1), bell(1)).conj().T
 
-ensemble = Ensemble([
-    State(rho_0, dims), State(rho_1, dims),
-    State(rho_2, dims), State(rho_3, dims)
-])
+ensemble = Ensemble(
+    [
+        State(rho_0, dims),
+        State(rho_1, dims),
+        State(rho_2, dims),
+        State(rho_3, dims),
+    ]
+)
+ensemble.swap([2, 3])
 
-sd = OptDist(ensemble=ensemble,
-             dist_measurement="pos",
-             dist_method="min-error")
-sd.solve()
+res = OptDist(ensemble,
+              "sep",
+              "min-error",
+              return_optimal_meas=True,
+              solver="SCS",
+              verbose=True,
+              eps=1e-6,
+              level=2)
+res.solve()
 
-# The min-error probability of distinguishing via positive
-# measurements is equal to 1.
-print(sd.value)
+# The min-error probability of distinguishing via
+# separable measurements is equal to 3/4.
+print(res.value)

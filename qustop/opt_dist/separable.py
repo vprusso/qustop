@@ -25,7 +25,8 @@ from cvxpy.expressions.expression import Expression
 
 
 def cvx_kron(
-    expr_1: Union[np.ndarray, Expression], expr_2: Union[np.ndarray, Expression]
+    expr_1: Union[np.ndarray, Expression],
+    expr_2: Union[np.ndarray, Expression],
 ) -> Expression:
     """
     Compute Kronecker product between CVXPY objects.
@@ -105,7 +106,7 @@ class Separable:
 
         # Otherwise, it is often less computationally intensive to just solve the dual problem.
         return self.dual_problem()
-        #return None
+        # return None
 
     def primal_problem(self):
         r"""Compute optimal value of the symmetric extension hierarchy SDP."""
@@ -121,9 +122,19 @@ class Separable:
         dim_xy = self.dim_x
         dim_xyy = np.prod(dim_list)
 
-        meas = [cvxpy.Variable((dim_xy, dim_xy), PSD=True) for i, _ in enumerate(self._states)]
-        x_var = [cvxpy.Variable((dim_xyy, dim_xyy), PSD=True) for i, _ in enumerate(self._states)]
-        obj_func = [self._probs[i] * cvxpy.trace(cvxpy.real(self._states[i].conj().T) @ meas[i]) for i, _ in enumerate(self._states)]
+        meas = [
+            cvxpy.Variable((dim_xy, dim_xy), PSD=True)
+            for i, _ in enumerate(self._states)
+        ]
+        x_var = [
+            cvxpy.Variable((dim_xyy, dim_xyy), PSD=True)
+            for i, _ in enumerate(self._states)
+        ]
+        obj_func = [
+            self._probs[i]
+            * cvxpy.trace(cvxpy.real(self._states[i].conj().T) @ meas[i])
+            for i, _ in enumerate(self._states)
+        ]
 
         for k, _ in enumerate(self._states):
             constraints.append(
@@ -183,13 +194,24 @@ class Separable:
             S.append(cvxpy.Variable((dim_xyy, dim_xyy), PSD=True))
             Z.append(cvxpy.Variable((dim_xyy, dim_xyy), PSD=True))
 
-            constraints.append(h_var - Q[k] >> self._probs[k] * self._states[k])
+            constraints.append(
+                h_var - Q[k] >> self._probs[k] * self._states[k]
+            )
 
-            constraints.append((cvx_kron(Q[k], np.identity(dim_yp)) +
-                               (np.kron(np.identity(dim), sym) @ R[k] @ np.kron(np.identity(dim), sym)) -
-                               R[k] -
-                               partial_transpose(S[k], 1, dim_list) -
-                               partial_transpose(Z[k], 2, dim_list)) >> 0)
+            constraints.append(
+                (
+                    cvx_kron(Q[k], np.identity(dim_yp))
+                    + (
+                        np.kron(np.identity(dim), sym)
+                        @ R[k]
+                        @ np.kron(np.identity(dim), sym)
+                    )
+                    - R[k]
+                    - partial_transpose(S[k], 1, dim_list)
+                    - partial_transpose(Z[k], 2, dim_list)
+                )
+                >> 0
+            )
 
             constraints.append(R[k] >> 0)
 

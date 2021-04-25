@@ -25,14 +25,19 @@ rho_1 = np.kron(bell(2), bell(1)) * np.kron(bell(2), bell(1)).conj().T
 rho_2 = np.kron(bell(3), bell(1)) * np.kron(bell(3), bell(1)).conj().T
 rho_3 = np.kron(bell(1), bell(1)) * np.kron(bell(1), bell(1)).conj().T
 
-ensemble = Ensemble([
-    State(rho_0, dims), State(rho_1, dims),
-    State(rho_2, dims), State(rho_3, dims)
-])
+ensemble = Ensemble(
+    [
+        State(rho_0, dims),
+        State(rho_1, dims),
+        State(rho_2, dims),
+        State(rho_3, dims),
+    ]
+)
+ensemble.swap([2, 3])
 
-sd = OptDist(ensemble=ensemble, 
-             dist_measurement="ppt",
-             dist_method="unambiguous")
+sd = OptDist(
+    ensemble=ensemble, dist_measurement="ppt", dist_method="unambiguous"
+)
 sd.solve()
 
 # The unambiguous probability of distinguishing via PPT

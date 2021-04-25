@@ -114,7 +114,8 @@ class PPT:
         # each of the measurement variables scaled by the corresponding probability of the given
         # state being selected by the ensemble.
         obj_func = [
-            self._probs[i] * cvxpy.trace(cvxpy.real(self._states[i].conj().T) @ meas[i])
+            self._probs[i]
+            * cvxpy.trace(cvxpy.real(self._states[i].conj().T) @ meas[i])
             for i, _ in enumerate(self._states)
         ]
         objective = cvxpy.Maximize(sum(obj_func))

@@ -18,6 +18,6 @@ rho_3 = pure_to_mixed(x_3)
 
 # Calculate PPT optimal value:
 states = [rho_0, rho_1, rho_2, rho_3]
-probs = [1/4, 1/4, 1/4, 1/4]
+probs = [1 / 4, 1 / 4, 1 / 4, 1 / 4]
 
 ppt_distinguishability(states, probs)

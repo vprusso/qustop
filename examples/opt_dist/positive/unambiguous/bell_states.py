@@ -26,10 +26,12 @@ ensemble = Ensemble([rho_1, rho_2, rho_3, rho_4])
 
 print(f"Are states mutually orthogonal: {ensemble.is_mutually_orthogonal}")
 
-sd = OptDist(ensemble=ensemble,
-             dist_measurement="pos",
-             dist_method="unambiguous",
-             return_optimal_meas=True)
+sd = OptDist(
+    ensemble=ensemble,
+    dist_measurement="pos",
+    dist_method="unambiguous",
+    return_optimal_meas=True,
+)
 
 # Mutually orthogonal states are optimally distinguishable--giving an optimal value of one.
 sd.solve()
