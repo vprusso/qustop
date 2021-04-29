@@ -18,6 +18,7 @@ from typing import List, Tuple
 import cvxpy
 import numpy as np
 
+
 from qustop import Ensemble
 
 
@@ -53,40 +54,7 @@ class Positive:
         self._states = self._ensemble.density_matrices
         self._probs = self._ensemble.probs
 
-        self._dims = self._ensemble.dims
-        self._sys = [i for i in self._ensemble.systems if i % 2 != 0]
-
     def solve(self):
-
-        # # There is a closed-form expression for the distinguishability of two density matrices.
-        # if len(self.ensemble) == 2:
-        #     opt_val = (
-        #         1 / 2
-        #         + np.linalg.norm(
-        #             self.probs[0] * self.states[0]
-        #             - self.probs[1] * self.states[1]
-        #         )
-        #         / 2
-        #     )
-        #     D, V = np.linalg.eig(
-        #         self.probs[0]
-        #         * self.states[0][:, [0]]
-        #         @ self.states[0][:, [0]].conj().T
-        #         - self.probs[1]
-        #         * self.states[1][:, [0]]
-        #         @ self.states[1][:, [0]].conj().T
-        #     )
-        #     D = np.diag(D)
-        #     pind = np.argwhere(np.asarray(D) >= 0)
-        #     print(V[:, [pind]] @ V[:, [pind]].conj().T)
-        #     # pind = (D >= 0).nonzero()
-        #     #            print(V[:, pind])
-        #     #            meas_1 = V[:, pind] @ V[:, pind].conj().T
-        #     #            print(V[:, pind])
-        #
-        #     # Construct optimal measurements:
-        #     return opt_val, []
-
         # Return the optimal value and the optimal measurements.
         if self._return_optimal_meas:
             return self.primal_problem()
@@ -110,7 +78,7 @@ class Positive:
 
         # Define each measurement variable to be a PSD variable of appropriate dimension.
         meas = [
-            cvxpy.Variable(self._ensemble.shape, PSD=True)
+            cvxpy.Variable(self._ensemble.shape, hermitian=True)
             for _ in range(num_measurements)
         ]
 
@@ -121,7 +89,9 @@ class Positive:
         ]
 
         # Valid collection of measurements need to sum to the identity operator.
-        constraints = [sum(meas) == np.identity(self._ensemble.shape[0])]
+        constraints = [cvxpy.sum(meas) == np.identity(self._ensemble.shape[0])]
+        for i in range(num_measurements):
+            constraints.append(meas[i] >> 0)
 
         # Unambiguous state discrimination has an additional constraint on the states and
         # measurements.
@@ -134,7 +104,8 @@ class Positive:
                             == 0
                         )
 
-        objective = cvxpy.Maximize(sum(obj_func))
+        obj_sum = cvxpy.sum(obj_func)
+        objective = cvxpy.Maximize(cvxpy.real(obj_sum))
         problem = cvxpy.Problem(objective, constraints)
         opt_val = problem.solve(
             solver=self._solver, verbose=self._verbose, eps=self._eps
@@ -142,7 +113,7 @@ class Positive:
         return opt_val, meas
 
     def dual_problem(self) -> float:
-        """Calculate dual problem for the pos (global) distinguishability SDP.
+        """Calculate dual problem for the positive (global) distinguishability SDP.
 
         The dual problem for the min-error case is defined in equation-21 from arXiv:1707.02571.
         The dual problem for the unambiguous case is defined in equation- from arXiv:.
@@ -156,7 +127,7 @@ class Positive:
         y_var = cvxpy.Variable(self._ensemble.shape, hermitian=True)
 
         constraints = [
-            cvxpy.real(y_var - self._probs[i] * self._states[i]) >> 0
+            (y_var - self._probs[i] * self._states[i]) >> 0
             for i in range(num_measurements)
         ]
 

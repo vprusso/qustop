@@ -132,7 +132,7 @@ class Separable:
         ]
         obj_func = [
             self._probs[i]
-            * cvxpy.trace(cvxpy.real(self._states[i].conj().T) @ meas[i])
+            * cvxpy.trace(self._states[i].conj().T @ meas[i])
             for i, _ in enumerate(self._states)
         ]
 
@@ -153,7 +153,8 @@ class Separable:
                 )
         constraints.append(cvxpy.sum(meas) == np.identity(dim_xy))
 
-        objective = cvxpy.Maximize(cvxpy.sum(obj_func))
+        obj_sum = cvxpy.sum(obj_func)
+        objective = cvxpy.Maximize(cvxpy.real(obj_sum))
         problem = cvxpy.Problem(objective, constraints)
         opt_val = problem.solve(
             solver=self._solver, verbose=self._verbose, eps=self._eps

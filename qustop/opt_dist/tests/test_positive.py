@@ -121,8 +121,8 @@ def test_unambiguous_state_distinguishability_two_states():
 # np.testing.assert_equal(np.isclose(dual_res.value, 0), True)
 
 
-def test_state_distinguishability_yyd_density_matrices():
-    """Global distinguishability of the YYD states should yield 1."""
+def test_state_distinguishability_ydy_density_matrices():
+    """Global distinguishability of the YDY states should yield 1."""
     psi_0 = bell(0) * bell(0).conj().T
     psi_1 = bell(1) * bell(1).conj().T
     psi_2 = bell(2) * bell(2).conj().T

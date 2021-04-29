@@ -84,7 +84,7 @@ class PPT:
 
         # Define each measurement variable to be a PSD variable of appropriate dimension.
         meas = [
-            cvxpy.Variable(self._ensemble.shape, PSD=True)
+            cvxpy.Variable(self._ensemble.shape, hermitian=True)
             for _ in range(num_measurements)
         ]
 
@@ -93,6 +93,8 @@ class PPT:
             partial_transpose(meas[i], self._sys, self._dims) >> 0
             for i in range(num_measurements)
         ]
+        for i in range(num_measurements):
+            constraints.append(meas[i] >> 0)
 
         # For all states, the inner product between each state with index `i` with each measurement
         # of index `j` must be equal to zero.
@@ -108,17 +110,18 @@ class PPT:
 
         # Valid collection of measurements need to sum to the identity
         # operator.
-        constraints.append(sum(meas) == np.identity(self._ensemble.shape[0]))
+        constraints.append(cvxpy.sum(meas) == np.identity(self._ensemble.shape[0]))
 
         # Construct the objective function by taking the inner product of each of the states with
         # each of the measurement variables scaled by the corresponding probability of the given
         # state being selected by the ensemble.
         obj_func = [
             self._probs[i]
-            * cvxpy.trace(cvxpy.real(self._states[i].conj().T) @ meas[i])
+            * cvxpy.trace(self._states[i].conj().T @ meas[i])
             for i, _ in enumerate(self._states)
         ]
-        objective = cvxpy.Maximize(sum(obj_func))
+        obj_sum = cvxpy.sum(obj_func)
+        objective = cvxpy.Maximize(cvxpy.real(obj_sum))
 
         problem = cvxpy.Problem(objective, constraints)
         opt_val = problem.solve(
@@ -146,8 +149,7 @@ class PPT:
                 for _ in range(num_measurements)
             ]
             constraints = [
-                cvxpy.real(y_var - self._probs[i] * self._states[i])
-                >> partial_transpose(dual_vars[i], self._sys, self._dims)
+                y_var - self._probs[i] * self._states[i] >> partial_transpose(dual_vars[i], self._sys, self._dims)
                 for i in range(num_measurements)
             ]
 
@@ -173,18 +175,10 @@ class PPT:
                             * self._probs[i]
                             * self._states[i]
                         )
-                constraints.append(
-                    cvxpy.real(
-                        y_var - self._probs[j] * self._states[j] + sum_val
-                    )
-                    >> partial_transpose(dual_vars[j], self._sys, self._dims)
-                )
-            constraints.append(
-                cvxpy.real(y_var)
-                >> partial_transpose(dual_vars[-1], self._sys, self._dims)
-            )
+                constraints.append(y_var - self._probs[j] * self._states[j] + sum_val >> partial_transpose(dual_vars[j], self._sys, self._dims))
+            constraints.append(y_var >> partial_transpose(dual_vars[-1], self._sys, self._dims))
 
-        objective = cvxpy.Minimize(cvxpy.real(cvxpy.trace(cvxpy.real(y_var))))
+        objective = cvxpy.Minimize(cvxpy.trace(cvxpy.real(y_var)))
         problem = cvxpy.Problem(objective, constraints)
         opt_val = problem.solve(
             solver=self._solver, verbose=self._verbose, eps=self._eps

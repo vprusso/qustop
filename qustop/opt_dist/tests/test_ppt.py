@@ -73,7 +73,6 @@ def test_ppt_distinguishability_ydy_density_matrices():
     ]
     probs = [1 / 4, 1 / 4, 1 / 4, 1 / 4]
     ensemble = Ensemble(states, probs)
-    ensemble.swap([2, 3])
 
     # Test primal and dual problems on minimum-error method:
     min_error_primal_res = OptDist(
@@ -154,7 +153,6 @@ def test_ppt_distinguishability_ydy_vectors():
     ]
     probs = [1 / 4, 1 / 4, 1 / 4, 1 / 4]
     ensemble = Ensemble(states, probs)
-    ensemble.swap([2, 3])
 
     # Test primal and dual problems on minimum-error method:
     min_error_primal_res = OptDist(
@@ -234,7 +232,6 @@ def test_ppt_distinguishability_ydy_states_no_probs():
     rho_4 = State(x_4 * x_4.conj().T, dims)
 
     ensemble = Ensemble([rho_1, rho_2, rho_3, rho_4])
-    ensemble.swap([2, 3])
 
     # Test primal and dual problems on minimum-error method:
     min_error_primal_res = OptDist(
@@ -430,7 +427,6 @@ def test_entanglement_cost_ppt_four_bell_states():
     ]
     probs = [1 / 4, 1 / 4, 1 / 4, 1 / 4]
     ensemble = Ensemble(states, probs)
-    ensemble.swap([2, 3])
 
     exp_res = 1 / 2 * (1 + np.sqrt(1 - eps ** 2))
 
