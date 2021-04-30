@@ -34,7 +34,6 @@ states = [
 ]
 probs = [1 / 4, 1 / 4, 1 / 4, 1 / 4]
 ensemble = Ensemble(states, probs)
-ensemble.swap([2, 3])
 
 ppt_res = OptDist(ensemble, "ppt", "min-error")
 ppt_res.solve()

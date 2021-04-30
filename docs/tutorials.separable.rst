@@ -30,8 +30,11 @@ Minimum-error distinguishability via separable measurements
                                     & \text{T}_{\mathcal{X}}(X_k) \in \text{Pos}\left(
                                         \mathcal{X} \otimes \mathcal{Y} \otimes \mathcal{Y}_2
                                         \otimes \ldots \otimes \mathcal{Y}_s \right), \\
-                                    & \text{T}_{\mathcal{Y}_2 \otimes \ldots \otimes
-                                        \mathcal{Y}_s}(X_k) \in \text{Pos}\left(
+                                    & \text{T}_{\mathcal{Y}_2 (X_k) \in \text{Pos}\left(
+                                        \mathcal{X} \otimes \mathcal{Y} \otimes \mathcal{Y}_2
+                                        \otimes \ldots \otimes \mathcal{Y}_s \right), \\
+                                    & \cdots \\
+                                    & \text{T}_{\mathcal{Y}_s (X_k) \in \text{Pos}\left(
                                         \mathcal{X} \otimes \mathcal{Y} \otimes \mathcal{Y}_2
                                         \otimes \ldots \otimes \mathcal{Y}_s \right), \\
                                     & X_1, \ldots, X_N \in

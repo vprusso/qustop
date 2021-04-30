@@ -46,8 +46,8 @@ sd = OptDist(
     "min-error",
     return_optimal_meas=True,
     solver="SCS",
-    verbose=False,
-    eps=1e-6,
+    verbose=True,
+    eps=1e-4,
     level=2,
 )
 sd.solve()

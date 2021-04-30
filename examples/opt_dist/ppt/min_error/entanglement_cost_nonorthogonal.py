@@ -46,7 +46,6 @@ states = [
 ]
 
 ensemble = Ensemble(states)
-ensemble.swap([2, 3])
 sd = OptDist(
     ensemble=ensemble, dist_measurement="ppt", dist_method="min-error"
 )

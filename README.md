@@ -188,7 +188,6 @@ states = [
 ]
 probs = [1 / 4, 1 / 4, 1 / 4, 1 / 4]
 ensemble = Ensemble(states, probs)
-ensemble.swap([2, 3])
 
 sep_res = OptDist(ensemble, "sep", "min-error")
 sep_res.solve()
@@ -243,7 +242,6 @@ states = [
 ]
 probs = [1 / 3, 1 / 3, 1 / 3]
 ensemble = Ensemble(states, probs)
-ensemble.swap([2, 3])
 
 sep_res = OptDist(ensemble, "sep", "min-error", level=2)
 sep_res.solve()

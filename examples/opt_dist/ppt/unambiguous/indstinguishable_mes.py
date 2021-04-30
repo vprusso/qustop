@@ -33,7 +33,6 @@ ensemble = Ensemble(
         State(rho_3, dims),
     ]
 )
-ensemble.swap([2, 3])
 
 sd = OptDist(
     ensemble=ensemble, dist_measurement="ppt", dist_method="unambiguous"

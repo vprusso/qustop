@@ -14,10 +14,13 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import numpy as np
+import pytest
 
+from toqito.matrices import gen_pauli
 from toqito.states import bell
 from toqito.perms import swap_operator
 from qustop import Ensemble, State, OptDist
+from toqito.matrix_ops import vec
 
 
 def test_ppt_distinguishability_one_state():
@@ -369,6 +372,113 @@ def test_ppt_distinguishability_werner_hiding_pairs():
     )
     np.testing.assert_equal(
         np.isclose(unambig_dual_res.value, 1 / 3, atol=0.001), True
+    )
+
+
+def test_ppt_five_mes_generalized_bell():
+    r"""
+    It was initially shown in [1] and computationally shown in [2] that the minimum-error probability of
+    distinguishing 5 maximally entangled states in :math:`\mathbb{C}^5 \otimes \mathbb{C}^5` is :math:`\approx 0.9898`.
+
+    References:
+    [1]: Ghosh, Sibasish, Guruprasad Kar, Anirban Roy, and Debasis Sarkar.
+    "Distinguishability of maximally entangled states."
+    Physical Review A 70, no. 2 (2004): 022304.
+    https://arxiv.org/pdf/quant-ph/0205105
+
+    [2]: Cosentino, Alessandro.
+    "Quantum State Local Distinguishability via Convex Optimization."
+    (2015).
+    https://uwspace.uwaterloo.ca/bitstream/handle/10012/9572/Cosentino_Alessandro.pdf;sequence=3
+    """
+    n = 5
+    dims = [5, 5]
+
+    rho_1 = State(1 / n * (vec(gen_pauli(0, 0, n)) @ vec(gen_pauli(0, 0, n)).conj().T), dims)
+    rho_2 = State(1 / n * (vec(gen_pauli(1, 1, n)) @ vec(gen_pauli(1, 1, n)).conj().T), dims)
+    rho_3 = State(1 / n * (vec(gen_pauli(1, 2, n)) @ vec(gen_pauli(1, 2, n)).conj().T), dims)
+    rho_4 = State(1 / n * (vec(gen_pauli(3, 1, n)) @ vec(gen_pauli(3, 1, n)).conj().T), dims)
+    rho_5 = State(1 / n * (vec(gen_pauli(3, 2, n)) @ vec(gen_pauli(3, 2, n)).conj().T), dims)
+
+    ensemble = Ensemble([rho_1, rho_2, rho_3, rho_4, rho_5])
+
+    primal_res = OptDist(ensemble,
+                         "ppt",
+                         "min-error",
+                         return_optimal_meas=True,
+                         solver="SCS",
+                         verbose=False,
+                         eps=1e-6)
+    primal_res.solve()
+    np.testing.assert_equal(
+        np.isclose(primal_res.value, 0.9898, atol=0.001), True
+    )
+
+    dual_res = OptDist(ensemble,
+                       "ppt",
+                       "min-error",
+                       return_optimal_meas=False,
+                       solver="SCS",
+                       verbose=False,
+                       eps=1e-6)
+    dual_res.solve()
+    np.testing.assert_equal(
+        np.isclose(dual_res.value, 0.9898, atol=0.001), True
+    )
+
+
+@pytest.mark.skip(
+    reason="This test takes too much time."
+)  # pylint: disable=not-callable
+def test_ppt_six_mes_generalized_bell():
+    r"""
+    It was initially shown in [1] and computationally shown in [2] that the minimum-error probability of
+    distinguishing 5 maximally entangled states in :math:`\mathbb{C}^6 \otimes \mathbb{C}^6` is :math:`\approx 0.9905`.
+
+    References:
+    [1]: Ghosh, Sibasish, Guruprasad Kar, Anirban Roy, and Debasis Sarkar.
+    "Distinguishability of maximally entangled states."
+    Physical Review A 70, no. 2 (2004): 022304.
+    https://arxiv.org/pdf/quant-ph/0205105
+
+    [2]: Cosentino, Alessandro.
+    "Quantum State Local Distinguishability via Convex Optimization."
+    (2015).
+    https://uwspace.uwaterloo.ca/bitstream/handle/10012/9572/Cosentino_Alessandro.pdf;sequence=3
+    """
+    n = 6
+    dims = [6, 6]
+    rho_1 = State(1 / n * (vec(gen_pauli(0, 0, n)) @ vec(gen_pauli(0, 0, n)).conj().T), dims)
+    rho_2 = State(1 / n * (vec(gen_pauli(1, 1, n)) @ vec(gen_pauli(1, 1, n)).conj().T), dims)
+    rho_3 = State(1 / n * (vec(gen_pauli(0, 2, n)) @ vec(gen_pauli(0, 2, n)).conj().T), dims)
+    rho_4 = State(1 / n * (vec(gen_pauli(0, 3, n)) @ vec(gen_pauli(0, 3, n)).conj().T), dims)
+    rho_5 = State(1 / n * (vec(gen_pauli(0, 4, n)) @ vec(gen_pauli(0, 4, n)).conj().T), dims)
+    rho_6 = State(1 / n * (vec(gen_pauli(3, 0, n)) @ vec(gen_pauli(3, 0, n)).conj().T), dims)
+
+    ensemble = Ensemble([rho_1, rho_2, rho_3, rho_4, rho_5, rho_6])
+
+    primal_res = OptDist(ensemble,
+                         "ppt",
+                         "min-error",
+                         return_optimal_meas=True,
+                         solver="SCS",
+                         verbose=False,
+                         eps=1e-6)
+    primal_res.solve()
+    np.testing.assert_equal(
+        np.isclose(primal_res.value, 0.9905, atol=0.001), True
+    )
+
+    dual_res = OptDist(ensemble,
+                       "ppt",
+                       "min-error",
+                       return_optimal_meas=False,
+                       solver="SCS",
+                       verbose=False,
+                       eps=1e-6)
+    dual_res.solve()
+    np.testing.assert_equal(
+        np.isclose(dual_res.value, 0.9905, atol=0.001), True
     )
 
 
