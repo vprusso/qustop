@@ -116,20 +116,41 @@ class Positive:
         """Calculate dual problem for the positive (global) distinguishability SDP.
 
         The dual problem for the min-error case is defined in equation-21 from arXiv:1707.02571.
-        The dual problem for the unambiguous case is defined in equation- from arXiv:.
+        The dual problem for the unambiguous case is defined in equation-4.73
+        from https://uwspace.uwaterloo.ca/bitstream/handle/10012/9572/Cosentino_Alessandro.pdf.
         """
         num_measurements = (
             len(self._states) + 1
             if self._dist_method == "unambiguous"
             else len(self._states)
         )
-
+        constraints = []
         y_var = cvxpy.Variable(self._ensemble.shape, hermitian=True)
 
-        constraints = [
-            (y_var - self._probs[i] * self._states[i]) >> 0
-            for i in range(num_measurements)
-        ]
+        if self._dist_method == "min-error":
+            constraints = [
+                (y_var - self._probs[i] * self._states[i]) >> 0
+                for i in range(num_measurements)
+            ]
+
+        # This implements the dual problem (equation-4.73) from
+        # https://uwspace.uwaterloo.ca/bitstream/handle/10012/9572/Cosentino_Alessandro.pdf:
+        if self._dist_method == "unambiguous":
+            scalar_vars = [
+                [cvxpy.Variable() for i, _ in enumerate(self._states)]
+                for j, _ in enumerate(self._states)
+            ]
+
+            for j, _ in enumerate(self._states):
+                sum_val = 0
+                for i, _ in enumerate(self._states):
+                    if i != j:
+                        sum_val += (
+                            cvxpy.real(scalar_vars[i][j])
+                            * self._probs[i]
+                            * self._states[i]
+                        )
+                constraints.append(y_var - self._probs[j] * self._states[j] + sum_val >> 0)
 
         objective = cvxpy.Minimize(cvxpy.trace(cvxpy.real(y_var)))
         problem = cvxpy.Problem(objective, constraints)

@@ -1,0 +1,1919 @@
+% pdflatex -s state_dist && bibtex state_dist && pdflatex -s state_dist -o
+% state_dist.pdf && open state_dist.pdf
+\documentclass[11pt]{article}
+
+%-----------------------------------------------------------------------------%
+% Fonts and symbols:
+%-----------------------------------------------------------------------------%
+
+\usepackage{mathpazo}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{latexsym}
+\usepackage{mathtools}
+\usepackage{listings}
+
+%-----------------------------------------------------------------------------%
+% Margins and page layout:
+%-----------------------------------------------------------------------------%
+
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{pdfpagemode=UseNone}
+\frenchspacing
+
+%-----------------------------------------------------------------------------%
+% Theorem-like environments:
+%-----------------------------------------------------------------------------%
+
+\usepackage{amsthm}
+\newtheorem{theorem}{Theorem}
+\newtheorem{observation}{Observation}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{prop}[theorem]{Proposition}
+\newtheorem{cor}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+
+%-----------------------------------------------------------------------------%
+% Other packages:
+%-----------------------------------------------------------------------------%
+
+\usepackage{authblk}
+\usepackage{tikz}
+\usetikzlibrary{calc,positioning}
+\usepackage{mdframed}
+
+\mdfdefinestyle{figstyle}{
+  linecolor=black!7,
+  backgroundcolor=black!7,
+  innertopmargin=10pt,
+  innerleftmargin=25pt,
+  innerrightmargin=25pt,
+  innerbottommargin=10pt
+}
+
+\definecolor{White}{rgb}{1,1,1}
+\definecolor{Black}{rgb}{0,0,0}
+\definecolor{LightGray}{rgb}{.81,.81,.81}
+\colorlet{ChannelColor}{LightGray}
+\colorlet{ChannelTextColor}{Black}
+\colorlet{ReadoutColor}{White}
+
+%-----------------------------------------------------------------------------%
+% Macros:
+%-----------------------------------------------------------------------------%
+
+\newcommand{\comment}[1]{\begin{quote}\sf 
+    \textcolor{blue}{[#1]}\end{quote}}
+\newcommand{\linecomment}[1]{\textcolor{blue}{\sf[#1]}}
+
+\newcommand{\tinyspace}{\mspace{1mu}}
+\newcommand{\microspace}{\mspace{0.5mu}}
+\newcommand{\negsmallspace}{\mspace{-1.5mu}}
+\newcommand{\op}[1]{\operatorname{#1}}
+\newcommand{\tr}{\operatorname{Tr}}
+\newcommand{\pt}{\operatorname{T}}
+\newcommand{\ppt}{\operatorname{PPT}}
+\newcommand{\sep}{\operatorname{Sep}}
+\newcommand{\rank}{\operatorname{rank}}
+\renewcommand{\int}{\operatorname{int}}
+\renewcommand{\det}{\operatorname{Det}}
+\renewcommand{\vec}{\operatorname{vec}}
+\newcommand{\fid}{\operatorname{F}}
+\newcommand{\im}{\operatorname{im}}
+
+\renewcommand{\t}{{\scriptscriptstyle\mathsf{T}}}
+
+\newcommand{\abs}[1]{\lvert #1 \rvert}
+\newcommand{\bigabs}[1]{\bigl\lvert #1 \bigr\rvert}
+\newcommand{\Bigabs}[1]{\Bigl\lvert #1 \Bigr\rvert}
+\newcommand{\biggabs}[1]{\biggl\lvert #1 \biggr\rvert}
+\newcommand{\Biggabs}[1]{\Biggl\lvert #1 \Biggr\rvert}
+
+\newcommand{\ip}[2]{\langle #1 , #2\rangle}
+\newcommand{\bigip}[2]{\bigl\langle #1, #2 \bigr\rangle}
+\newcommand{\Bigip}[2]{\Bigl\langle #1, #2 \Bigr\rangle}
+\newcommand{\biggip}[2]{\biggl\langle #1, #2 \biggr\rangle}
+\newcommand{\Biggip}[2]{\Biggl\langle #1, #2 \Biggr\rangle}
+
+\newcommand{\ceil}[1]{\lceil #1 \rceil}
+\newcommand{\bigceil}[1]{\bigl\lceil #1 \bigr\rceil}
+\newcommand{\Bigceil}[1]{\Bigl\lceil #1 \Bigr\rceil}
+\newcommand{\biggceil}[1]{\biggl\lceil #1 \biggr\rceil}
+\newcommand{\Biggceil}[1]{\Biggl\lceil #1 \Biggr\rceil}
+
+\newcommand{\floor}[1]{\lfloor #1 \rfloor}
+\newcommand{\bigfloor}[1]{\bigl\lfloor #1 \bigr\rfloor}
+\newcommand{\Bigfloor}[1]{\Bigl\lfloor #1 \Bigr\rfloor}
+\newcommand{\biggfloor}[1]{\biggl\lfloor #1 \biggr\rfloor}
+\newcommand{\Biggfloor}[1]{\Biggl\lfloor #1 \Biggr\rfloor}
+
+\newcommand{\norm}[1]{\lVert\tinyspace #1 \tinyspace\rVert}
+\newcommand{\bignorm}[1]{\bigl\lVert\tinyspace #1 \tinyspace\bigr\rVert}
+\newcommand{\Bignorm}[1]{\Bigl\lVert\tinyspace #1 \tinyspace\Bigr\rVert}
+\newcommand{\biggnorm}[1]{\biggl\lVert\tinyspace #1 \tinyspace\biggr\rVert}
+\newcommand{\Biggnorm}[1]{\Biggl\lVert\tinyspace #1 \tinyspace\Biggr\rVert}
+
+\newcommand{\bigtriplenorm}[1]{
+  \bigl\lvert\!\microspace\bigl\lvert\!\microspace\bigl\lvert #1 
+  \bigr\rvert\!\microspace\bigr\rvert\!\microspace\bigr\rvert}
+
+\newcommand{\Bigtriplenorm}[1]{
+  \Bigl\lvert\!\microspace\Bigl\lvert\!\microspace\Bigl\lvert #1 
+  \Bigr\rvert\!\microspace\Bigr\rvert\!\microspace\Bigr\rvert}
+
+\newcommand{\biggtriplenorm}[1]{
+  \biggl\lvert\!\microspace\biggl\lvert\!\microspace\biggl\lvert #1 
+  \biggr\rvert\!\microspace\biggr\rvert\!\microspace\biggr\rvert}
+
+\newcommand{\Biggtriplenorm}[1]{
+  \Biggl\lvert\!\microspace\Biggl\lvert\!\microspace\Biggl\lvert #1 
+  \Biggr\rvert\!\microspace\Biggr\rvert\!\microspace\Biggr\rvert}
+
+\newcommand{\triplenorm}[1]{
+  \left\lvert\!\microspace\left\lvert\!\microspace\left\lvert #1 
+  \right\rvert\!\microspace\right\rvert\!\microspace\right\rvert}
+\def\iso{\cong}
+\newcommand{\defeq}{\triangleq}
+
+\newcommand{\ket}[1]{
+  \lvert\microspace #1 \microspace \rangle}
+
+\newcommand{\bigket}[1]{
+  \bigl\lvert\microspace #1 \microspace \bigr\rangle}
+
+\newcommand{\Bigket}[1]{
+  \Bigl\lvert\microspace #1 \microspace \Bigr\rangle}
+
+\newcommand{\biggket}[1]{
+  \biggl\lvert\microspace #1 \microspace \biggr\rangle}
+
+\newcommand{\Biggket}[1]{
+  \Biggl\lvert\microspace #1 \microspace \Biggr\rangle}
+
+\newcommand{\bra}[1]{
+  \langle\microspace #1 \microspace \rvert}
+
+\newcommand{\bigbra}[1]{
+  \bigl\langle\microspace #1 \microspace \bigr\rvert}
+
+\newcommand{\Bigbra}[1]{
+  \Bigl\langle\microspace #1 \microspace \Bigr\rvert}
+
+\newcommand{\biggbra}[1]{
+  \biggl\langle\microspace #1 \microspace \biggr\rvert}
+
+\newcommand{\Biggbra}[1]{
+  \Biggl\langle\microspace #1 \microspace \Biggr\rvert}
+
+\newcommand{\I}{\mathbb{1}}
+
+\newcommand{\setft}[1]{\mathrm{#1}}
+\newcommand{\Density}{\setft{D}}
+\newcommand{\Pos}{\setft{Pos}}
+\newcommand{\Unitary}{\setft{U}}
+\newcommand{\Herm}{\setft{Herm}}
+\newcommand{\Lin}{\setft{L}}
+
+\newcommand{\complex}{\mathbb{C}}
+\newcommand{\real}{\mathbb{R}}
+\renewcommand{\natural}{\mathbb{N}}
+\newcommand{\integer}{\mathbb{Z}}
+
+\newcommand{\poly}{\mathit{poly}}
+
+\newenvironment{mylist}[1]{\begin{list}{}{
+	\setlength{\leftmargin}{#1}
+	\setlength{\rightmargin}{0mm}
+	\setlength{\labelsep}{2mm}
+	\setlength{\labelwidth}{8mm}
+	\setlength{\itemsep}{0mm}}}
+	{\end{list}}
+
+\newenvironment{namedtheorem}[1]
+	       {\begin{trivlist}\item {\bf #1.}\em}{\end{trivlist}}
+
+\newcommand{\X}{\mathcal{X}}
+\newcommand{\Y}{\mathcal{Y}}
+\newcommand{\Z}{\mathcal{Z}}
+\newcommand{\W}{\mathcal{W}}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\V}{\mathcal{V}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\C}{\mathcal{C}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\R}{\mathcal{R}}
+\newcommand{\Q}{\mathcal{Q}}
+\renewcommand{\P}{\mathcal{P}}
+\renewcommand{\S}{\mathcal{S}}
+\newcommand{\T}{\mathcal{T}}
+\newcommand{\K}{\mathcal{K}}
+\renewcommand{\L}{\mathcal{L}}
+
+\newcommand{\yes}{\text{yes}}
+\newcommand{\no}{\text{no}}
+
+\newcommand{\class}[1]{\textup{#1}}
+\newcommand{\reg}[1]{\textsf{#1}}
+
+\DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{10}
+\DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{10}
+\definecolor{deepblue}{rgb}{0,0,0.5}
+\definecolor{deepred}{rgb}{0.6,0,0}
+\definecolor{deepgreen}{rgb}{0,0.5,0}
+\newcommand\cppstyle{\lstset{
+language=C++,
+basicstyle=\ttm,
+otherkeywords={uint8_t, __m256i, size_t, ASSERT_TRUE, EXPECT_TRUE, TEST, BENCHMARK},
+keywordstyle=\ttb\color{deepblue},
+emphstyle=\ttb\color{deepblue},
+stringstyle=\color{deepgreen},
+commentstyle=\fontfamily{txtt}\selectfont\color{gray},
+showstringspaces=false,
+literate={*}{{\char42}}1
+         {-}{{\char45}}1
+}}
+\lstnewenvironment{cpp}[1][]
+{\cppstyle\lstset{#1}}{}
+\newcommand\pythonstyle{\lstset{
+language=python,
+basicstyle=\ttm,
+morekeywords={assert,as,echo},
+keywordstyle=\ttb\color{deepblue},
+emphstyle=\ttb\color{deepblue},
+stringstyle=\color{deepgreen},
+commentstyle=\fontfamily{txtt}\selectfont\color{gray},
+showstringspaces=false,
+literate={*}{{\char42}}1
+         {-}{{\char45}}1
+}}
+\lstnewenvironment{python}[1][]
+{\pythonstyle\lstset{#1}}{}
+
+\makeatletter
+\let\@fnsymbol\@arabic
+\makeatother
+
+%-----------------------------------------------------------------------------%
+% Main document
+%-----------------------------------------------------------------------------%
+
+\begin{document}
+
+\title{\LARGE\bf Entanglement cost of discriminating qubit ensembles via
+cone programming}
+
+\author[1]{}
+  
+\renewcommand\Affilfont{\normalsize\itshape}
+\renewcommand\Authfont{\large}
+\setlength{\affilsep}{6mm}
+\renewcommand\Authand{\rule{10mm}{0mm}}
+
+\maketitle
+
+\begin{abstract}
+\comment{A list here of the main contributions would be a helpful first pass at
+    writing the abstract.}
+\end{abstract}
+
+%------------------------------------------------------------------------------%
+\section{Introduction}
+\label{sec:intro}
+%------------------------------------------------------------------------------%
+
+%------------------------------------------------------------------------------%
+\section{Definitions}
+\label{sec:definitions}
+%------------------------------------------------------------------------------%
+
+We assume the reader is familiar with the notions of quantum information as
+contained in~\cite{nielsen2002quantum} and~\cite{wilde2013quantum}. We will
+make use of the notation and terminology found in~\cite{watrous2018theory}.
+
+
+\begin{figure}
+    \centering
+\begin{cpp}
+    int inplace_pauli_string_multiplication(
+            int n, __m256i *x1, __m256i *z1 __m256i *x2, __m256i *z2) {
+        // The 1s and 2s bits of 256 two-bit counters.
+        __m256i c1{};
+        __m256i c2{};
+        // Iterate over data in 256 bit chunks.
+        for (int k = 0; k < n; k++) {
+            __m256i old_x1 = x1[k];
+            __m256i old_z1 = z1[k];
+            // Update the left hand side Paulis.
+            x1[k] ^= x2[k];
+            z1[k] ^= z2[k];
+            // Accumulate anti-commutation counts.
+            __m256i x1z2 = old_x1 & z2[k];
+            __m256i anti_commutes = (x2[k] & old_z1) ^ x1z2;
+            c2 ^= (c1 ^ x1[k] ^ z1[k] ^ x1z2) & anti_commutes;
+            c1 ^= anti_commutes;
+        }
+        // Determine final anti-commutation phase tally.
+        return (popcount(c1) + 2 * popcount(c2)) % 4;
+    }
+\end{cpp}
+    \caption{
+        Vectorized Pauli string multiplication.
+        Multiplies one fixed length xz-encoded Pauli string into another while computing the base-$i$ logarithm of the resulting scalar phase.
+        The loop body contains 4 SIMD loads, 4 SIMD stores, and 11 bitwise SIMD operations (after trivial compiler optimizations).
+        I believe the number of bitwise SIMD operations is optimal, and would be very interested to hear if anyone can achieve the same effect with fewer.
+    }
+    \label{fig:pauli_mult_code}
+\end{figure}
+
+Let $\X = \complex^N$ denote a finite-dimensional complex Euclidean space with
+a fixed standard basis $\{\ket{1}, \ldots, \ket{N} \}$ for some positive
+integer $N$. We use sets $\Lin(\X), \Pos(\X), \Herm(\X), \Density(\X)$, and
+$\Unitary(\X)$ to represent the set of a linear operators, positive
+semidefinite operators, Hermitian operators, density operators, and unitary
+operators acting on the space $\X$.
+
+We begin by describing the setting of quantum state discrimination over an
+ensemble of quantum states. In this setting, we are provided with a collection
+of tuples (an ensemble)
+
+\begin{equation}
+    \{(p_1, \rho_1), \ldots, (p_N, \rho_N) \ \} \subset 
+    (\X_1 \otimes \Y_1) \otimes \cdots \otimes (\X_N \otimes \Y_N),
+\end{equation}
+where $\rho_i \in \Density(\X_i \otimes \Y_i)$ denotes a shared quantum state
+between two parties, Alice and Bob, indexed by $i$ and where $p_i$ denotes the
+probability with which $\rho_i$ is selected from the ensemble. The state
+discrimination procedure involves a random index $k \in \{1, \ldots, N\}$ being
+selected. Alice and Bob are then provided with the state $\rho_k$ where their
+goal is to determine the index $k$ by performing a measurement on their
+respective shared portion of the state. 
+
+%------------------------------------------------------------------------------%
+\subsection*{State discrimination via PPT measurements}
+\label{sec:state-discrimination-ppt}
+%------------------------------------------------------------------------------%
+
+\comment{Paragraph about PPT}
+
+The problem of state discrimination with respect to PPT measurements can also
+be framed as a semidefinite program whose optimal value corresponds to the
+maximum probability of discriminating a state from an ensemble using any PPT
+measurement~\cite{cosentino2013positive}. The dual problem of this optimization
+problem is provided as
+\begin{center}
+  \begin{minipage}{5in}
+    \centerline{\underline{Dual problem}}\vspace{-4mm}
+    \begin{equation} \label{eq:ppt-dual}
+	    \begin{aligned}
+    		\text{minimize:} \quad & \frac{1}{N} \text{Tr}(H) \\
+            \text{subject to:} \quad & H - \pt_{\X}
+                               (\rho_i) \in \Pos(\X \otimes \Y), \quad i = 1,
+                               \ldots, N, \\
+                              & H \in \text{Herm}(\X \otimes \Y).
+    \end{aligned}
+    \end{equation}
+  \end{minipage}
+\end{center}
+For obtaining numerical results, the $\ket{\text{toqito}}$ software
+package~\cite{russo2020toqito} makes use of the convex optimization Python
+module CVXPY~\cite{diamond2016cvxpy} to solve this optimization problem. 
+
+%------------------------------------------------------------------------------%
+\subsection*{State discrimination via separable measurements}
+\label{sec:state-discrimination-separable}
+%------------------------------------------------------------------------------%
+
+Unlike the set of PPT measurements, the structure of the set of separable
+measurements is more complex. 
+
+\begin{center}
+  \begin{minipage}{5in}
+    \centerline{\underline{Dual problem}}\vspace{-4mm}
+    \begin{equation} \label{eq:sep-dual}
+    \begin{aligned}
+      \text{minimize:}\quad & \tr(H) \\
+      \text{subject to:}\quad & H - p_i \rho_i \in \sep^*(\X : \Y), \quad i =
+        1, \ldots, N, \\
+      & H \in \Herm(\X \otimes \Y).
+    \end{aligned}
+    \end{equation}    
+  \end{minipage}
+\end{center}
+
+\comment{Talk about the SDP hierarchy for converging to optimal value of
+separable measurements.}
+
+%------------------------------------------------------------------------------%
+\section{Discriminating two-qubit ensembles}
+\label{sec:discriminating-two-qubit-ensembles}
+%------------------------------------------------------------------------------%
+
+In this section we study the problem of discriminating arbitrary two-qubit
+ensembles. We define the following orthogonal two-qubit basis:
+\begin{equation}\label{eq:four-general-parameterized-states}
+\begin{aligned}
+    \ket{\phi_n^{(1)}} = \alpha \ket{00} + \beta \ket{11}, &\quad
+    \ket{\phi_n^{(2)}} = \beta \ket{00} - \alpha \ket{11}, \\
+    \ket{\phi_m^{(3)}} = \gamma \ket{01} + \delta \ket{10}, &\quad
+    \ket{\phi_m^{(4)}} = \delta \ket{01} - \gamma \ket{10},	
+\end{aligned}
+\end{equation}
+where 
+\begin{equation} \label{eq:alpha_beta}
+    \alpha = \sqrt{\frac{1 + n}{2}}, 
+    \quad
+    \beta = \sqrt{\frac{1-n}{2}},
+    \quad
+    \gamma = \sqrt{\frac{1+m}{2}},
+    \quad \text{and} \quad
+    \delta = \sqrt{\frac{1-m}{2}},
+\end{equation}
+for some $n \in [0,1]$ and $m \in [0,1]$. Note that for $n = m = 0$ we have
+$\alpha = \beta = \gamma = \delta = \frac{1}{\sqrt{2}}$, which corresponds to
+the Bell states.
+
+%------------------------------------------------------------------------------%
+\subsection*{Discrimination of four states via PPT measurements}
+\label{sec:discrim-four-states-ppt-no-resource}
+%------------------------------------------------------------------------------%
+
+\begin{theorem}
+    Let $\X = \Y = \complex^2$. For any PPT measurement $\{ P_1, P_2, P_3, P_4
+    \} \subset \ppt(\X : \Y)$, the success probability of correctly
+    discriminating the states corresponding to the set 
+	\begin{equation}
+        \left\{ 
+            \ket{\phi_n^{(1)}},
+            \ket{\phi_n^{(2)}},
+            \ket{\phi_m^{(3)}},
+            \ket{\phi_m^{(4)}} 
+        \right\} \subset 
+        \left(\X \otimes \Y \right)
+	\end{equation}
+    assuming a uniform distribution $p_1 = p_2 = p_3 = p_4 = 1/4$, is at most
+    \begin{equation}
+        \frac{1}{2} \left(1 + \frac{n+m}{2}\right)
+    \end{equation}
+    for all $n \in [0, 1]$ and $m \in [0, 1]$.
+\end{theorem}
+\begin{proof}
+	Define the Hermitian operator
+	\begin{equation}
+        H_{n,m} = \frac{1}{2}
+        \begin{pmatrix}
+            1+n & 0 & 0 & 0 \\
+            0 & 1+m & 0 & 0 \\
+            0 & 0 & 1+m & 0 \\
+            0 & 0 & 0 & 1+n
+        \end{pmatrix}
+        \in \Herm(\X \otimes \Y).
+	\end{equation}
+	It holds that
+	\begin{equation}
+        \frac{1}{4}\tr(H_{n,m}) = \frac{1}{2} \left(1 + \frac{n+m}{2}\right).
+	\end{equation}
+    We now desire to show that 
+    \begin{equation}
+        \begin{aligned}
+            H_{n,m} - \pt_{\X}\left(\phi_n^{(1)}\right) \in \Pos(\X \otimes\Y),
+            &\quad
+            H_{n,m} - \pt_{\X}\left(\phi_n^{(2)}\right) \in \Pos(\X \otimes\Y), \\
+            H_{n,m} - \pt_{\X}\left(\phi_m^{(3)}\right) \in \Pos(\X \otimes\Y),
+            &\quad
+            H_{n,m} - \pt_{\X}\left(\phi_n^{(4)}\right) \in \Pos(\X \otimes\Y),
+        \end{aligned}
+    \end{equation}
+    for all $n \in [0, 1]$ and $m \in [0, 1]$. Observe that
+    \begin{equation}\label{eq:partial-transpose-states}
+        \begin{aligned}
+            \pt_{\X}\left(\phi_n^{(1)}\right) = 
+            \begin{pmatrix}
+                \alpha^2 & 0 & 0 & 0 \\
+                0 & 0 & \alpha\beta & 0 \\
+                0 & \alpha\beta & 0 & 0 \\
+                0 & 0 & 0 & \beta^2
+            \end{pmatrix}, &\quad 
+            \pt_{\X}\left(\phi_n^{(2)}\right) = 
+            \begin{pmatrix}
+                \beta^2 & 0 & 0 & 0 \\
+                0 & 0 & -\alpha\beta & 0 \\
+                0 & -\alpha\beta & 0 & 0 \\
+                0 & 0 & 0 & \alpha^2
+            \end{pmatrix}, \\ 
+            \pt_{\X}\left(\phi_m^{(3)}\right) = 
+            \begin{pmatrix}
+                0 & 0 & 0 & \gamma\delta \\
+                0 & \gamma^2 & 0 & 0 \\
+                0 & 0 & \delta^2 & 0 \\
+                \gamma\delta & 0 & 0 & 0
+            \end{pmatrix}, &\quad 
+            \pt_{\X} \left(\phi_m^{(4)}\right) = 
+            \begin{pmatrix}
+                0 & 0 & 0 & -\gamma\delta \\
+                0 & \delta^2 & 0 & 0 \\
+                0 & 0 & \gamma^2 & 0 \\
+                -\gamma\delta & 0 & 0 & 0
+            \end{pmatrix}.
+        \end{aligned}
+    \end{equation}
+    We can represent $H_{n.m}$ as
+    \begin{equation}
+        H_{n,m} = 
+        \begin{pmatrix}
+            \alpha^2 & 0 & 0 & 0 \\
+            0 & \gamma^2 & 0 & 0 \\
+            0 & 0 & \gamma^2 & 0 \\
+            0 & 0 & 0 & \alpha^2
+        \end{pmatrix}
+    \end{equation}
+    since it holds that
+    \begin{equation}
+        \alpha^2 = \left(\sqrt{\frac{1+n}{2}}\right)^2 = \frac{1 + n}{2} 
+        \quad \text{and} \quad 
+        \gamma^2 = \left(\sqrt{\frac{1+m}{2}}\right)^2 = \frac{1 + m}{2}.
+    \end{equation}
+    Consider $k=1$ and observe that
+    \begin{equation}
+        H_{n,m} - \pt_{\X}\left(\phi_n^{(1)}\right) = 
+        \begin{pmatrix}
+            \alpha^2 - \alpha^2 & 0 & 0 & 0 \\
+            0 & \gamma^2 & -\alpha\beta & 0 \\
+            0 & -\alpha\beta & \gamma^2 & 0 \\
+            0 & 0 & 0 & \alpha^2 - \beta^2
+        \end{pmatrix}
+    \end{equation}
+    which is positive semidefinite as $0 \leq \beta \leq \alpha \leq 1$ and $0
+    \leq \delta \leq \gamma \leq 1$ for all $n \in [0,1]$ and $m \in [0,1]$. A
+    similar observation can be made for $k = 2, 3, 4$
+\end{proof}
+Supplemental software that calculates the minimum-error probability of
+discriminating amongst the four states from
+equation~\eqref{eq:four-general-parameterized-states} via PPT measurements
+using the SDP from equation~\eqref{eq:ppt-dual} may be found in
+\texttt{four\_state\_ppt.py} in~\cite{russo2020ppt}.
+
+%------------------------------------------------------------------------------%
+\subsection*{Discrimination of four states via separable measurements}
+\label{sec:discrim-four-states-sep-no-resource}
+%------------------------------------------------------------------------------%
+
+\begin{theorem}
+    Let $\X = \Y = \complex^2$. For any separable measurement $\{ P_1, P_2,
+    P_3, P_4 \} \subset \sep(\X : \Y)$, the success probability of correctly
+    discriminating the states corresponding to the set 
+	\begin{equation}
+        \left\{ 
+            \ket{\phi_n^{(1)}},
+            \ket{\phi_n^{(2)}},
+            \ket{\phi_m^{(3)}},
+            \ket{\phi_m^{(4)}} 
+        \right\} \subset 
+        \left(\X \otimes \Y \right)
+	\end{equation}
+    assuming a uniform distribution $p_1 = p_2 = p_3 = p_4 = 1/4$, is at most
+    \begin{equation}
+        \frac{1}{2} \left(1 + \frac{n+m}{2}\right)
+    \end{equation}
+    for all $n \in [0, 1]$ and $m \in [0, 1]$.
+\end{theorem}
+
+\begin{proof}
+	Define the Hermitian operator
+	\begin{equation}
+        H_{n, m} = \frac{1}{8}
+        \begin{pmatrix}
+            1+n & 0 & 0 & 0 \\
+            0 & 1+m & 0 & 0 \\
+            0 & 0 & 1+m & 0 \\
+            0 & 0 & 0 & 1+n
+        \end{pmatrix} \in \Herm(\X \otimes \Y).
+	\end{equation}
+	It holds that
+	\begin{equation}
+        \tr(H_{m,n}) = \frac{1}{2} \left(1 + \frac{n+m}{2}\right).
+	\end{equation}
+	We desire to show that
+	\begin{equation}
+        \begin{aligned}
+            Q_{n, m, 1} = \left( H_{n,m} - \frac{1}{4} \phi_n^{(1)} \right) \in
+            \Herm(\X \otimes \Y), &\quad
+            Q_{n, m, 2} = \left( H_{n,m} - \frac{1}{4} \phi_n^{(2)} \right) \in
+            \Herm(\X \otimes \Y), \\
+            Q_{n, m, 3} = \left( H_{n,m} - \frac{1}{4} \phi_m^{(3)} \right) \in
+            \Herm(\X \otimes \Y), &\quad
+            Q_{n, m, 4} = \left( H_{n,m} - \frac{1}{4} \phi_m^{(4)} \right) \in
+            \Herm(\X \otimes \Y),
+        \end{aligned}
+	\end{equation}
+    is contained in $\sep^*(\X : \Y)$ for all $n \in [0, 1]$ and $m \in [0,
+    1]$.
+	
+    We first consider the case of $k=1$. Recall that proving $Q_{n, m, 1} \in
+    \sep^*(\X:\Y)$ is equivalent to showing that $Q_{n, m, 1}$ is
+    block-positive.  Recall that $Q_{n, m, 1}$ is block-positive if and only if
+    the inequality
+	\begin{equation}
+        \bra{a} \otimes \bra{b} Q_{n, m, 1}  \ket{a} \otimes \ket{b} \geq 0
+	\end{equation}
+    holds for all $\ket{a} \in \complex^2$ and $\ket{b} \in
+    \complex^2$~\cite{johnston2012norms}. Observe that 
+	\begin{equation}
+		\begin{aligned}
+             \bra{a} \otimes \bra{b}  Q_{n, m, 1}  \ket{a} \otimes \ket{b} 
+             &=
+             \bra{a} \otimes \bra{b} \left(H_{n,m} - \frac{1}{4} \phi_n^{(1)}
+             \right) \ket{a} \otimes \ket{b}  \\
+            &=
+            \bra{a} \otimes \bra{b} \left(\frac{1}{8} 
+            \begin{pmatrix}
+                1+n & 0 & 0 & 0 \\
+                0 & 1+m & 0 & 0 \\
+                0 & 0 & 1+m & 0 \\
+                0 & 0 & 0 & 1+n
+            \end{pmatrix} -
+            \frac{1}{4}
+            \begin{pmatrix}
+                \alpha^2 & 0 & 0 & \alpha\beta \\
+                0 & 0 & 0 & 0 \\
+                0 & 0 & 0 & 0 \\
+                \alpha\beta & 0 & 0 & \beta^2
+            \end{pmatrix}
+            \right) \ket{a} \otimes \ket{b} \\
+            &=
+            \frac{1}{4} \left(\bra{a} \otimes \bra{b}
+            \frac{1}{2}
+            \begin{pmatrix}
+                1+n & 0 & 0 & 0 \\
+                0 & 1+m & 0 & 0 \\
+                0 & 0 & 1+m & 0 \\
+                0 & 0 & 0 & 1+n
+            \end{pmatrix} -
+            \begin{pmatrix}
+                \alpha^2 & 0 & 0 & \alpha\beta \\
+                0 & 0 & 0 & 0 \\
+                0 & 0 & 0 & 0 \\
+                \alpha\beta & 0 & 0 & \beta^2
+            \end{pmatrix}
+            \ket{a} \otimes \ket{b} \right) \\
+            &=
+            \frac{1}{4} \left(\bra{a} \otimes \bra{b}
+            \begin{pmatrix}
+                \alpha^2 & 0 & 0 & 0 \\
+                0 & \gamma^2 & 0 & 0 \\
+                0 & 0 & \gamma^2 & 0 \\
+                0 & 0 & 0 & \alpha^2
+            \end{pmatrix} -
+            \begin{pmatrix}
+                \alpha^2 & 0 & 0 & \alpha\beta \\
+                0 & 0 & 0 & 0 \\
+                0 & 0 & 0 & 0 \\
+                \alpha\beta & 0 & 0 & \beta^2
+            \end{pmatrix}
+            \ket{a} \otimes \ket{b} \right) \\
+            &=
+            \frac{1}{4} \left( 
+            \bra{a} \otimes \bra{b} 
+            \begin{pmatrix}
+                \alpha^2 - \alpha^2 & 0 & 0 & -\alpha\beta \\
+                0 & \gamma^2 & 0 & 0 \\
+                0 & 0 & \gamma^2 & 0 \\
+                -\alpha\beta & 0 & 0 & \alpha^2 - \beta^2
+            \end{pmatrix}
+            \ket{a} \otimes \ket{b}
+            \right) \\
+		\end{aligned}	
+	\end{equation}
+    As $0 \leq \beta \leq \alpha \leq 1$ and $0 \leq \delta \leq \gamma \leq 1$
+    and $\frac{1+n}{2} = \alpha^2$ and $\frac{1+m}{2} = \gamma^2$, it holds
+    that the elements along the diagonal are all greater than or equal to zero
+    which implies the block-positivity of $Q_{n, m, 1}$. A similar analysis
+    holds for $k = 2, 3, 4$. 
+\end{proof}
+Supplemental software that approximates the minimum-error probability of
+discriminating amongst the four states from
+equation~\eqref{eq:four-general-parameterized-states} via separable
+measurements using the cone program from equation~\eqref{eq:sep-dual} may be
+found in \texttt{four\_state\_sep.py} in~\cite{russo2020ppt}.
+
+%------------------------------------------------------------------------------%
+\subsection*{Discrimination of three states via PPT measurements}
+\label{sec:discrim-three-states-ppt-no-resource}
+%------------------------------------------------------------------------------%
+
+\begin{theorem}
+    Let $\X = \Y = \complex^2$. For any PPT measurement $\{P_1, P_2, P_3\}
+    \subset \ppt(\X : \Y)$, the success probability of correctly discriminating
+    the states corresponding to the set 
+	\begin{equation}
+        \left\{ 
+            \ket{\phi_n^{(1)}},
+            \ket{\phi_n^{(2)}},
+            \ket{\phi_n^{(3)}}
+        \right\} \subset 
+        \left(\X \otimes \Y \right)
+	\end{equation}
+    assuming a uniform distribution $p_1 = p_2 = p_3 = 1/3$, is at most
+    \begin{equation}
+        \frac{2 + n}{3},
+    \end{equation}
+    for all $n \in [0, 1]$.
+\end{theorem}
+\begin{proof}
+    Define the Hermitian operator
+    \begin{equation}
+        H_n = \frac{1}{2}
+        \begin{pmatrix}
+            1+n & 0 & 0 & 0 \\
+            0 & 1+n & 0 & 0 \\
+            0 & 0 & 1-n & 0 \\
+            0 & 0 & 0 & 1+n
+        \end{pmatrix}.
+    \end{equation}
+    It holds that
+    \begin{equation}
+        \frac{1}{3} \tr(H_n) = \frac{2 + n}{3}.
+    \end{equation}
+    We now desire to show that
+    \begin{equation}
+        H_n - \pt_{\X}\left(\phi_n^{(k)}\right) \in \Pos(\X \otimes \Y)
+    \end{equation}
+    for all $n \in [0, 1]$ and for all $k = 1, 2, 3$. We can represent $H_n$ as
+    \begin{equation}
+        H_n = 
+        \begin{pmatrix}
+            \alpha^2 & 0 & 0 & 0 \\
+            0 & \alpha^2 & 0 & 0 \\
+            0 & 0 & \beta^2 & 0 \\
+            0 & 0 & 0 & \alpha^2
+        \end{pmatrix}
+    \end{equation}
+    since it holds that
+    \begin{equation}
+        \alpha^2 = \left(\sqrt{\frac{1+n}{2}}\right)^2 = \frac{1+n}{2} 
+        \quad \text{and} \quad 
+        \beta^2 = \left(\sqrt{\frac{1-n}{2}}\right)^2 = \frac{1-n}{2}.
+    \end{equation}
+    Using the matrices from equation~\eqref{eq:partial-transpose-states} it can
+    be observed that
+    \begin{equation}\label{eq:three-state-constraint}
+        \begin{aligned}
+            H_n - \pt_{\X}\left(\phi_n^{(1)}\right) &=
+            \begin{pmatrix}
+                0 & 0 & 0 & 0 \\
+                0 & \alpha^2 & -\alpha\beta & 0 \\
+                0 & -\alpha\beta & \beta^2 & 0 \\
+                0 & 0 & 0 & \alpha^2 - \beta^2
+            \end{pmatrix}, \quad 
+            H_n - \pt_{\X}\left(\phi_n^{(2)}\right) =
+            \begin{pmatrix}
+                \alpha^2 - \beta^2 & 0 & 0 & 0 \\
+                0 & \alpha^2 & \alpha\beta & 0 \\
+                0 & \alpha\beta & \beta^2 & 0 \\
+                0 & 0 & 0 & 0
+            \end{pmatrix}, \\
+            H_n - \pt_{\X} \left(\phi_n^{(3)}\right) &= 
+            \begin{pmatrix}
+                \alpha^2 & 0 & 0 & -\alpha\beta \\
+                0 & 0 & 0 & 0 \\
+                0 & 0 & 0 & 0 \\
+                -\alpha\beta & 0 & 0 & \alpha^2
+            \end{pmatrix}. 
+        \end{aligned}
+    \end{equation}
+    As $0 \leq \beta \leq \alpha \leq 1$ it may be verified that the matrices
+    from equation~\eqref{eq:three-state-constraint} are positive semidefinite
+    which completes the proof.
+\end{proof}
+Supplemental software that calculates the minimum-error probability of
+discriminating amongst three out of the four states from
+equation~\eqref{eq:four-parameterized-states} via PPT measurements using the
+SDP from equation~\eqref{eq:ppt-dual} may be found in
+\texttt{three\_state\_ppt.py} in~\cite{russo2020ppt}
+
+%------------------------------------------------------------------------------%
+\subsection*{Discrimination of three states via separable measurements}
+\label{sec:discrim-three-states-sep-no-resource}
+%------------------------------------------------------------------------------%
+
+\begin{theorem}
+    Let $\X = \Y = \complex^2$. For any separable measurement $\{ P_1, P_2, P_3
+    \} \subset \sep(\X : \Y)$, the success probability of correctly
+    discriminating the states corresponding to the set 
+	\begin{equation}
+        \left\{ 
+            \ket{\phi_n^{(1)}},
+            \ket{\phi_n^{(2)}},
+            \ket{\phi_n^{(3)}}
+        \right\} \subset 
+        \left(\X \otimes \Y \right)
+	\end{equation}
+    assuming a uniform distribution $p_1 = p_2 = p_3 = 1/3$, is at most
+    \begin{equation}
+        \frac{2 + n}{3},
+    \end{equation}
+    for all $n \in [0, 1]$.
+\end{theorem}
+\begin{proof}
+    Define the Hermitian operator
+    \begin{equation}
+        H_n = \frac{1}{6}
+        \begin{pmatrix}
+            1+n & 0 & 0 & 0 \\
+            0 & 1+n & 0 & 0 \\
+            0 & 0 & 1-n & 0 \\
+            0 & 0 & 0 & 1+n
+        \end{pmatrix}.
+    \end{equation}
+    It holds that
+    \begin{equation}
+        \tr(H_n) = \frac{2+n}{3}.
+    \end{equation}
+    We desire to show that
+    \begin{equation}
+        Q_{n,k} = \left(H_n - \frac{1}{3}\phi_n^{(k)}\right) \in \Herm(\X
+        \otimes \Y)
+    \end{equation}
+    is contained in $\sep^*(\X : \Y)$ for $k = 1, 2, 3$ for all $n \in [0, 1]$.
+
+    Consider $k=1$. We need to show that
+    \begin{equation}
+        \bra{a} \otimes \bra{b} Q_{n, 1} \ket{a} \otimes \ket{b} \geq 0
+    \end{equation}
+    for all $\ket{a} \in \complex^2$ and $\ket{b} \in \complex^2$. Observe that
+    \begin{equation}
+        \begin{aligned}
+            \bra{a} \otimes \bra{b} Q_{n,1} \ket{a} \otimes \ket{b} &= \bra{a}
+            \otimes \bra{b} \left(H_n - \frac{1}{3} \phi_n^{(1)}\right) \ket{a}
+            \otimes \ket{b} \\
+            &= 
+            \bra{a} \otimes \bra{b} \frac{1}{6} 
+            \begin{pmatrix}
+                1+n & 0 & 0 & 0 \\ 
+                0 & 1+n & 0 & 0 \\
+                0 & 0 & 1-n & 0 \\
+                0 & 0 & 0 & 1+n
+            \end{pmatrix} - \frac{1}{3}\phi_n^{(1)}
+            \ket{a} \otimes \ket{b} \\
+            &= 
+            \frac{1}{3} \left(
+            \bra{a} \otimes \bra{b} \frac{1}{2} 
+            \begin{pmatrix}
+                1+n & 0 & 0 & 0 \\
+                0 & 1+n & 0 & 0 \\
+                0 & 0 & 1-n & 0 \\
+                0 & 0 & 0 & 1+n
+            \end{pmatrix} - \phi_n^{(1)}
+            \ket{a} \otimes \ket{b}
+            \right) \\
+            &=
+            \frac{1}{3} \left(
+            \bra{a} \otimes \bra{b}
+            \begin{pmatrix}
+                \alpha^2 & 0 & 0 & 0 \\
+                0 & \alpha^2 & 0 & 0 \\
+                0 & 0 & \beta^2 & 0 \\
+                0 & 0 & 0 & \alpha^2
+            \end{pmatrix} - \phi_n^{(1)}
+            \ket{a} \otimes \ket{b}
+            \right) \\
+            &=
+            \frac{1}{3} \left(
+            \bra{a} \otimes \bra{b} 
+            \begin{pmatrix}
+                0 & 0 & 0 & -\alpha\beta \\
+                0 & \alpha^2 & 0 & 0 \\
+                0 & 0 & \beta^2 & 0 \\
+                -\alpha\beta & 0 & 0 & \alpha^2 - \beta^2
+            \end{pmatrix}
+            \ket{a} \otimes \ket{b}
+            \right).
+        \end{aligned}
+    \end{equation}
+    As $0 \leq \beta \leq \alpha \leq 1$, it holds that the elements along the
+    diagonal are all greater than or equal to zero which implies the
+    block-positivty of $Q_{n,1}$. A similar analysis holds for $k = 2$ and
+    $k=3$.
+\end{proof}
+
+%------------------------------------------------------------------------------%
+\section{Discriminating three-qubit ensembles}
+\label{sec:discriminating-three-qubit-ensembles}
+%------------------------------------------------------------------------------%
+
+In this section we study the problem of discriminating arbitrary three-qubit
+ensembles. We define the following orthogonal three-qubit basis:
+\begin{equation}\label{eq:three-qubit-parameterized-states}
+\begin{aligned}
+    \ket{\phi_n^{(1)}} = \alpha \ket{000} + \beta \ket{111}, &\quad
+    \ket{\phi_n^{(2)}} = \beta \ket{000} - \alpha \ket{111}, \\
+    \ket{\phi_n^{(3)}} = \alpha \ket{011} + \beta \ket{100}, &\quad
+    \ket{\phi_n^{(4)}} = \beta \ket{011} - \alpha \ket{100},	
+\end{aligned}
+\end{equation}
+where 
+\begin{equation} \label{eq:alpha_beta}
+    \alpha = \sqrt{\frac{1 + n}{2}}
+    \quad \text{and} \quad 
+    \beta = \sqrt{\frac{1-n}{2}}
+\end{equation}
+for some $n \in [0,1]$. Note that for $n = 0$ we have $\alpha = \beta =
+\frac{1}{\sqrt{2}}$, which corresponds to the GHZ states.
+
+%------------------------------------------------------------------------------%
+\subsection*{Discrimination of four states via PPT measurements}
+\label{sec:discrim-three-qubit-four-states-ppt-resource}
+%------------------------------------------------------------------------------%
+
+\begin{theorem}
+    Let $\X = \Y = \complex^2$. For any PPT measurement $\{ P_1, P_2, P_3, P_4
+    \} \subset \ppt(\X : \Y)$, the success probability of correctly
+    discriminating the states from
+    equation~\eqref{eq:three-qubit-parameterized-states} corresponding to the
+    set 
+	\begin{equation}
+        \left\{ 
+            \ket{\phi_n^{(1)}},
+            \ket{\phi_n^{(2)}},
+            \ket{\phi_n^{(3)}},
+            \ket{\phi_n^{(4)}} 
+        \right\} \subset 
+        \left(\X \otimes \Y \right)
+	\end{equation}
+    assuming a uniform distribution $p_1 = p_2 = p_3 = p_4 = 1/4$, is at most
+    \begin{equation}
+        \frac{1 + n}{2},
+    \end{equation}
+    for all $n \in [0, 1]$.
+\end{theorem}
+\begin{proof}
+    \comment{Proof for this is pretty direct and nearly identitcal to the
+    two-qubit case.}
+\end{proof}
+
+%------------------------------------------------------------------------------%
+\subsection*{Discrimination of four states via separable measurements}
+\label{sec:discrim-three-qubit-four-states-sep-resource}
+%------------------------------------------------------------------------------%
+
+
+
+
+%------------------------------------------------------------------------------%
+\section{Discriminating two-qubit ensembles using a resource state}
+\label{sec:ent-cost-resource-state}
+%------------------------------------------------------------------------------%
+
+In this section we study the problem of discriminating arbitrary two-qubit
+ensembles when Alice and Bob have access to an additional resource state to
+assist in their task. We define this resource state as
+\begin{equation}
+    \ket{\tau_{\epsilon}} = \epsilon_+ \ket{00} + \epsilon_- \ket{11}
+\end{equation}
+where
+\begin{equation}
+    \epsilon_+ = \sqrt{\frac{1+\epsilon}{2}}
+    \quad \text{and} \quad 
+    \epsilon_- = \sqrt{\frac{1-\epsilon}{2}}
+\end{equation}
+for some $\epsilon \in [0,1]$. 
+
+Note that for $\alpha = \beta = \frac{1}{\sqrt{2}}$, we recover the Bell
+states. In~\cite{bandyopadhyay2015limitations}, a closed form expression
+characterizing the entanglement cost of discriminating an ensemble consisting
+of four Bell states with a resource state when using either separable, PPT, or
+LOCC measurements was proven.
+
+%------------------------------------------------------------------------------%
+\subsection*{Discrimination of two Bell states and two product states}
+\label{sec:discrim-two-bell-two-product}
+%------------------------------------------------------------------------------%
+
+Define the following ensemble of states consisting of two Bell states and two
+product states
+
+\begin{equation}\label{eq:two-bell-two-product}
+\begin{aligned}
+    \ket{\psi_1} = \frac{1}{\sqrt{2}} \ket{00} + \frac{1}{\sqrt{2}} \ket{11}, &\quad
+    \ket{\psi_2} = \ket{01}, \\
+    \ket{\psi_3} = \frac{1}{\sqrt{2}} \ket{00} - \frac{1}{\sqrt{2}} \ket{11}, &\quad
+    \ket{\psi_4} = \ket{10}.
+\end{aligned}
+\end{equation}
+
+\begin{theorem}\label{thm:two-bell-two-prod}
+    Let $\X_1 = \X_2 = \Y_1 = \Y_2 = \complex^2$, define $\X = \X_1 \otimes
+    \X_2$ and $\Y = \Y_1 \otimes \Y_2$, and let $\epsilon \in [0,1]$ be chosen
+    arbitrarily. For any PPT measurement $\{ P_1, P_2, P_3, P_4\}
+    \subset \ppt(\X : \Y)$, the success probability of correctly discriminating
+    the states corresponding to the set 
+	\begin{equation}
+        \left\{ 
+            \ket{\psi_1} \otimes \ket{\tau_{\epsilon}},
+            \ket{\psi_2} \otimes \ket{\tau_{\epsilon}},
+            \ket{\psi_3} \otimes \ket{\tau_{\epsilon}},
+            \ket{\psi_4} \otimes \ket{\tau_{\epsilon}}
+        \right\} \subset 
+        \left(\X_1 \otimes \Y_1 \right) \otimes \left(\X_2 \otimes \Y_2 \right)
+	\end{equation}
+    assuming a uniform distribution $p_1 = p_2 = p_3 = p_4 = 1/4$, is at most
+    \begin{equation}
+        \frac{1}{4} \left(3 + \sqrt{1 - \epsilon^2} \right).
+    \end{equation}
+\end{theorem}
+\begin{proof}
+    \comment{Seems true, but cannot find candidate $H$}
+\end{proof}
+
+%------------------------------------------------------------------------------%
+\subsection*{Discrimination of three states via separable measurements}
+\label{sec:discrim-three-states-sep-resource}
+%------------------------------------------------------------------------------%
+
+\begin{theorem}
+    Let $\X_1 = \X_2 = \Y_1 = \Y_2 = \complex^2$, define $\X = \X_1 \otimes
+    \X_2$ and $\Y = \Y_1 \otimes \Y_2$, and let $\epsilon \in [0,1]$ be chosen
+    arbitrarily. For any separable measurement $\{ P_1, P_2, P_3 \}
+    \subset \sep(\X : \Y)$, the success probability of correctly discriminating
+    the states corresponding to the set 
+	\begin{equation}
+        \left\{ 
+            \ket{\phi_n^{(1)}} \otimes \ket{\tau_{\epsilon}},
+            \ket{\phi_n^{(2)}} \otimes \ket{\tau_{\epsilon}},
+            \ket{\phi_n^{(3)}} \otimes \ket{\tau_{\epsilon}},
+        \right\} \subset 
+        \left(\X_1 \otimes \Y_1 \right) \otimes \left(\X_2 \otimes \Y_2 \right)
+	\end{equation}
+    assuming a uniform distribution $p_1 = p_2 = p_3 = 1/3$, is at most
+    \begin{equation}
+        \frac{1}{3} \left(2 + \sqrt{1 - (1 - n^2) \epsilon^2} \right).
+    \end{equation}
+\end{theorem}
+\begin{proof}
+    \comment{Seems true, but cannot find candidate $H$}
+\end{proof}
+
+
+%------------------------------------------------------------------------------%
+\subsection*{Discrimination of four states via separable measurements}
+\label{sec:discrim-four-states-sep-resource}
+%------------------------------------------------------------------------------%
+
+\begin{theorem}
+    Let $\X_1 = \X_2 = \Y_1 = \Y_2 = \complex^2$, define $\X = \X_1 \otimes
+    \X_2$ and $\Y = \Y_1 \otimes \Y_2$, and let $\epsilon \in [0,1]$ be chosen
+    arbitrarily. For any separable measurement $\{ P_1, P_2, P_3, P_4 \}
+    \subset \sep(\X : \Y)$, the success probability of correctly discriminating
+    the states corresponding to the set 
+	\begin{equation}
+        \left\{ 
+            \ket{\phi_n^{(1)}} \otimes \ket{\tau_{\epsilon}},
+            \ket{\phi_n^{(2)}} \otimes \ket{\tau_{\epsilon}},
+            \ket{\phi_n^{(3)}} \otimes \ket{\tau_{\epsilon}},
+            \ket{\phi_n^{(4)}} \otimes \ket{\tau_{\epsilon}} 
+        \right\} \subset 
+        \left(\X_1 \otimes \Y_1 \right) \otimes \left(\X_2 \otimes \Y_2 \right)
+	\end{equation}
+    assuming a uniform distribution $p_1 = p_2 = p_3 = p_4 = 1/4$, is at most
+    \begin{equation}
+        \frac{1}{2} \left(1 + \sqrt{1 - (1 - n^2) \epsilon^2} \right).
+    \end{equation}
+\end{theorem}
+
+\begin{proof}
+    Define the Hermitian operator
+    \begin{equation}
+        H_{n, \epsilon} = \frac{1}{8} \left[ \I_{\X_1 \otimes \Y_1} \otimes
+        \tau_{\epsilon} + \sqrt{1 - (1 - n^2)\epsilon^2} \I_{\X_1 \otimes \Y_1}
+        \otimes \pt_{\X_2}\left(\phi_n^{(4)}\right) \right].
+    \end{equation}
+    It holds that
+    \begin{equation} \label{eq:trace-h}
+        \tr(H_{n, \epsilon}) = \frac{1}{2} \left(1 + \sqrt{1 - (1 - n^2)
+        \epsilon^2} \right).
+    \end{equation}
+    It now suffices to show that $H_{n, \epsilon}$ is a feasible solution to
+    the dual problem~\eqref{eq:sep-dual}.
+
+    Define $W$ as the unitary operator
+    \begin{equation}
+        W(x_1 \otimes x_2 \otimes y_1 \otimes y_2) = x_1 \otimes y_1 \otimes
+        x_2 \otimes y_2, 
+    \end{equation}
+    for all $x_1 \in \X_1, x_2 \in \X_2, y_1 \in \Y_1,$ and $y_2 \in \Y_2$. We
+    desire to show that 
+    \begin{equation}
+        Q_{n, \epsilon, k} = W^* \left( H_{n, \epsilon} - \frac{1}{4}
+        \phi_n^{(k)} \otimes \tau_{\epsilon} \right) W \in \Herm(\X \otimes \Y)
+    \end{equation}
+    is contained in $\sep^*(\X : \Y)$ for $k = 1, 2, 3, 4$ and for all $n \in
+    [0, 1]$.
+    Let us consider the case of $k=1$. Observe that one can write $H_{n,
+    \epsilon}$ as the block matrix
+    \begin{equation}
+        H_{n, \epsilon} = 
+        \frac{1}{16}
+        \begin{pmatrix}
+            A & \bf{0} & \bf{0} & \bf{0} \\
+            \bf{0} & A & \bf{0} & \bf{0} \\
+            \bf{0} & \bf{0} & A & \bf{0} \\
+            \bf{0} & \bf{0} & \bf{0} & A
+        \end{pmatrix}
+    \end{equation}
+    where 
+    \begin{equation}
+        A =
+        \begin{pmatrix}
+            1 + \epsilon & 0 & 0 & \sqrt{1-\epsilon^2} - \sqrt{1 - n^2} \\
+            0 & 1-n & 0 & 0 \\
+            0 & 0 & 1+n & 0 \\
+            \sqrt{1-\epsilon^2} - \sqrt{1-n^2} & 0 & 0 & 1 - \epsilon
+        \end{pmatrix}
+    \end{equation}
+    and where $\bf{0}$ is the $4$-by-$4$ zero matrix. One may also represent
+    the quantity $\phi_n^{(1)} \otimes \tau_{\epsilon}$ as a block matrix with
+    the following form
+    \begin{equation}
+        \phi_n^{(1)} \otimes \tau_{\epsilon} = 
+        \begin{pmatrix}
+            B & \bf{0} & \bf{0} & C \\
+            \bf{0} & \bf{0} & \bf{0} & \bf{0} \\
+            \bf{0} & \bf{0} & \bf{0} & \bf{0} \\
+            C & \bf{0} & \bf{0} & D
+        \end{pmatrix}
+    \end{equation}
+    where 
+    \begin{equation}
+        \begin{aligned}
+            B &= 
+            \begin{pmatrix}
+                \alpha^2 \epsilon_+^2 & 0 & 0 & \alpha^2 \epsilon_+ \epsilon_- \\
+                0 & 0 & 0 & 0 \\
+                0 & 0 & 0 & 0 \\
+                \alpha^2 \epsilon_+ \epsilon_- & 0 & 0 & \alpha^2 \epsilon_-^2
+            \end{pmatrix} \\
+            C &=
+            \begin{pmatrix}
+                \alpha \beta \epsilon_+^2 & 0 & 0 & \alpha \beta \epsilon_+ \epsilon_- \\
+                0 & 0 & 0 & 0 \\
+                0 & 0 & 0 & 0 \\
+                \alpha \beta \epsilon_+ \epsilon_- & 0 & 0 & \alpha \beta \epsilon_-^2 \\
+            \end{pmatrix} \\
+            D &= 
+            \begin{pmatrix}
+                \beta^2 \epsilon_+^2 & 0 & 0 & \beta^2 \epsilon_+ \epsilon_- \\
+                0 & 0 & 0 & 0 \\
+                0 & 0 & 0 & 0 \\
+                \beta^2 \epsilon_+ \epsilon_- & 0 & 0 & \beta^2 \epsilon_-^2
+            \end{pmatrix}
+        \end{aligned}
+    \end{equation}
+    We have that
+    \begin{equation}
+        \begin{aligned}
+            &H_{n, \epsilon} - \frac{1}{4} \phi_n^{(k)} \otimes \tau_{\epsilon} \\
+            &=\frac{1}{16}
+            \begin{pmatrix}
+                A & \bf{0} & \bf{0} & \bf{0} \\
+                \bf{0} & A & \bf{0} & \bf{0} \\
+                \bf{0} & \bf{0} & A & \bf{0} \\
+                \bf{0} & \bf{0} & \bf{0} & A
+            \end{pmatrix} - 
+            \frac{1}{4}
+            \begin{pmatrix}
+                B & \bf{0} & \bf{0} & C \\
+                \bf{0} & \bf{0} & \bf{0} & \bf{0} \\
+                \bf{0} & \bf{0} & \bf{0} & \bf{0} \\
+                C & \bf{0} & \bf{0} & D
+            \end{pmatrix} \\
+            &=\frac{1}{4}
+            \left(
+            \frac{1}{4}
+            \begin{pmatrix}
+                A & \bf{0} & \bf{0} & \bf{0} \\
+                \bf{0} & A & \bf{0} & \bf{0} \\
+                \bf{0} & \bf{0} & A & \bf{0} \\
+                \bf{0} & \bf{0} & \bf{0} & A
+            \end{pmatrix} - 
+            \begin{pmatrix}
+                B & \bf{0} & \bf{0} & C \\
+                \bf{0} & \bf{0} & \bf{0} & \bf{0} \\
+                \bf{0} & \bf{0} & \bf{0} & \bf{0} \\
+                C & \bf{0} & \bf{0} & D
+            \end{pmatrix}
+            \right) \\
+            &=\frac{1}{4}
+            \left(
+            \frac{1}{4}
+            \begin{pmatrix}
+                A-B & \bf{0} & \bf{0} & -C \\
+                \bf{0} & A & \bf{0} & \bf{0} \\
+                \bf{0} & \bf{0} & A & \bf{0} \\
+                -C & \bf{0} & \bf{0} & A-D
+            \end{pmatrix}
+            \right) \\
+            &=\frac{1}{16}
+            \begin{pmatrix}
+                A-B & \bf{0} & \bf{0} & -C \\
+                \bf{0} & A & \bf{0} & \bf{0} \\
+                \bf{0} & \bf{0} & A & \bf{0} \\
+                -C & \bf{0} & \bf{0} & A-D
+            \end{pmatrix}
+        \end{aligned}
+    \end{equation}
+    Proving $Q_{n, \epsilon, 1} \in \sep^*(\X : \Y)$ is equivalent to showing
+    that $Q_{n, k, \epsilon}$ is block-positive for all $n \in [0,1]$ and
+    $\epsilon \in [0,1]$. Equivalently, $Q_{n, \epsilon, 1}$ is
+    block-positive if and only if the inequality
+    \begin{equation}
+        \bra{a} \otimes \bra{b} \otimes \bra{c} \otimes \bra{d}
+        Q_{n, \epsilon, 1}
+        \ket{a} \otimes \ket{b} \otimes \ket{c} \otimes \ket{d}
+        \geq 0
+    \end{equation}
+    holds for all $\ket{a} \in \complex^4$, $\ket{b} \in \complex^4$, $\ket{c}
+    \in \complex^4$, and $\ket{d} \in \complex^4$.
+    \comment{TODO: Can we just prove block-positivtiy like we did for the
+    non-resource case? Might be something worth trying.}
+\end{proof}
+
+
+
+
+
+
+
+% %------------------------------------------------------------------------------%
+% \subsection*{Discrimination of four states with no resource state}
+% \label{sec:discrim-four-states-no-resource}
+% %------------------------------------------------------------------------------%
+% 
+% \begin{theorem}
+% Let $\X = \Y = \complex^2$. For any separable measurement $\{ P_1, P_2, P_3, P_4 \} \subset \sep(\X : \Y)$, the success probability of correctly discriminating the states corresponding to the set 
+% 	\begin{equation}
+%         \left\{ 
+%             \ket{\phi_n^{(1)}},
+%             \ket{\phi_n^{(2)}},
+%             \ket{\phi_m^{(3)}},
+%             \ket{\phi_m^{(4)}} 
+%         \right\} \subset 
+%         \left(\X \otimes \Y \right)
+% 	\end{equation}
+% assuming a uniform distribution $p_1 = p_2 = p_3 = p_4 = 1/4$, is at most
+% \begin{equation}
+% 	\frac{1}{2} \left(1 + \frac{1}{2} \left(n + m\right) \right),
+% \end{equation}
+% for all $n, m \in [0, 1]$.
+% \end{theorem}
+% 
+% \begin{proof}
+% 	Define the Hermitian operator
+% 	\begin{equation}
+% 		H_{n,m} = \frac{1}{16} \left( (1+n) + (1+m) \right) \I_{\X \otimes \Y}.
+% 	\end{equation}
+% 	It holds that
+% 	\begin{equation}
+% 		\tr(H_{n,m}) = \frac{1}{2} \left(1 + \frac{1}{2} \left(n + m \right) \right).
+% 	\end{equation}
+% 	We desire to show that
+% 	\begin{equation}
+% 		Q_{n, m, k} = \left( H_{n, m} - \frac{1}{4} \phi_n^{(k)} \right) \in \Herm(\X \otimes \Y)
+% 	\end{equation}
+% 	is contained in $\sep^*(\X : \Y)$ for $k = 1, 2$ for all $n \in [0, 1]$ and that
+% 	\begin{equation}
+% 		Q_{n, m, k} = \left( H_{n, m} - \frac{1}{4} \phi_m^{(k)} \right) \in \Herm(\X \otimes \Y)
+% 	\end{equation}
+% 	is contained in $\sep^*(\X : \Y)$ for $k = 3, 4$ for all $m \in [0, 1]$.
+% 	\comment{TODO}
+% \end{proof} 
+
+%
+%Let $\Lambda_{n, \epsilon, k} : \Lin(\Y) \rightarrow \Lin(\X)$ be a unique linear map whose Choi representation satisfies 
+%\begin{align}
+%	J(\Lambda_{n, \epsilon, k}) = Q_{n, \epsilon, k}
+%\end{align} 
+%for $k = 1, 2, 3, 4$. Showing that the operators $Q_{n, \epsilon, k}$ are block positive will imply that the map $\Lambda_{n, \epsilon, k}$ is positive.
+%
+%Consider the case for $k = 1$ and let
+%\begin{align}
+%	t = \sqrt{\frac{1+\epsilon}{1-\epsilon}}.
+%\end{align}
+%
+%A calculation reveals that
+%\comment{Vincent to Som: Refer to section "Question" for more details here.}
+%\begin{align}
+%	\Lambda_{n, \epsilon, 1}(Y) = ?
+%\end{align}
+%
+%For the case of $k = 2$, $k = 3$, and $k = 4$, define $U_0, U_1, U_2, U_3 \in \Unitary(\complex^2)$ as
+%\begin{equation}
+%	U_0 = \begin{pmatrix}
+%				0 & i \\
+%				1 & 0
+%			  \end{pmatrix}, \quad
+%	U_1 = \frac{1}{\sqrt{2}} \begin{pmatrix}
+%										1 & i \\
+%										i & 1
+%									   \end{pmatrix}, \quad
+%	U_2 = \frac{1}{\sqrt{2}}\begin{pmatrix}
+%				-1 & i \\
+%				i & -1
+%			  \end{pmatrix}, \quad \text{and} \quad
+%	U_3 = \frac{1}{\sqrt{2}} \begin{pmatrix}
+%										1 & i \\
+%										-i & -1
+%									   \end{pmatrix}.									   
+%\end{equation}
+%It may be observed that
+%\begin{equation}
+%\begin{aligned}
+%	\left(U_0^* \otimes U_0^* \right) \phi_n^{(1)} \left( U_0 \otimes U_0 \right) &= \phi_n^{(2)}, \\
+%	\left(U_1^* \otimes U_1^* \right) \phi_n^{(1)} \left(U_1 \otimes U_1 \right) &= \phi_n^{(3)}, \\
+%	\left(U_2^* \otimes U_3^* \right) \phi_n^{(1)} \left(U_2 \otimes U_3 \right) &= \phi_n^{(4)}.
+%\end{aligned}
+%\end{equation}
+%It then holds that
+%
+%\begin{equation}
+%\begin{aligned}
+%	Q_{n, \epsilon, 2} &= \left(U_0^* \otimes \I \otimes U_0^* \otimes \I \right) Q_{n, \epsilon, 1} \left(U_0 \otimes \I \otimes U_0 \otimes \I \right), \\
+%	Q_{n, \epsilon, 3} &=  \left(U_1^* \otimes \I \otimes U_1^* \otimes \I \right) Q_{n, \epsilon, 1} \left(U_1 \otimes \I \otimes U_1 \otimes \I \right), \\
+%	Q_{n, \epsilon, 4} &=  \left(U_2^* \otimes \I \otimes U_3^* \otimes \I \right) Q_{n, \epsilon, 1} \left(U_2 \otimes \I \otimes U_3 \otimes \I \right).
+%\end{aligned}
+%\end{equation}
+%It follows that $Q_{n, \epsilon, 2} \in \sep^*(\X : \Y)$, $Q_{n, \epsilon, 3} \in \sep^*(\X: \Y)$, and $Q_{n, \epsilon, 4} \in \sep^*(\X : \Y)$, which completes the proof. 
+
+%\end{proof}
+
+% %------------------------------------------------------------------------------%
+% \section{Positive maps}
+% \label{sec:pos-maps}
+% %------------------------------------------------------------------------------%
+% 
+% \comment{Maps for $n = 0$}
+% \begin{lemma}
+% Define a linear mapping $\Xi_t : \Lin(\complex^2 \oplus \complex^2) \rightarrow \Lin(\complex \oplus \complex)$ as 
+% \begin{equation}
+% 	\Xi_t \begin{pmatrix}
+% 		A & B \\
+% 		C & D 
+% 	\end{pmatrix} = 
+% 	\begin{pmatrix}
+% 		\Phi(A) + \Delta_t(D) & \Psi_t(B) \\
+% 		\Psi_t(C) & \Phi(D) + \Delta_t(A)
+% 	\end{pmatrix}
+% \end{equation}
+% for every $t \in (0, \infty)$ and $A, B, C, D \in \Lin(\complex^2)$, where $\Psi_t : \Lin(\complex^2) \rightarrow \Lin(\complex^2)$ is defined as
+% \begin{equation}
+% 	\Psi_t \begin{pmatrix}
+% 		\alpha & \beta \\
+% 		\gamma & \delta
+% 	\end{pmatrix} = 
+% 	\begin{pmatrix}
+% 		t \alpha & \beta \\
+% 		\gamma & t^{-1} \delta
+% 	\end{pmatrix}
+% \end{equation}
+% and $\Phi : \Lin(\complex^2) \rightarrow \Lin(\complex^2)$ is defined as 
+% \begin{equation}
+% 	\Phi \begin{pmatrix}
+% 		\alpha & \beta \\
+% 		\gamma & \delta
+% 	\end{pmatrix} = 
+% 	\begin{pmatrix}
+% 		\delta & -\beta \\
+% 		-\gamma & \alpha
+% 	\end{pmatrix},
+% \end{equation}
+% for every $\alpha, \beta, \gamma, \delta \in \complex$ and $\Delta_t : \Lin(\complex^2) \rightarrow \Lin(\complex^2)$ is defined as 
+% \begin{equation}
+% 	\Delta_t \begin{pmatrix}
+% 		\alpha & \beta \\
+% 		\gamma & \delta 
+% 	\end{pmatrix} = 
+% 	\begin{pmatrix}
+% 		t \alpha + \delta & 0 \\
+% 		0 &  \alpha + t^{-1} \delta
+% 	\end{pmatrix},
+% \end{equation}
+% for every $\alpha, \beta, \gamma, \delta \in \complex$.
+% \end{lemma}
+% 
+% \comment{Maps for $n = 1$}
+% \begin{lemma}
+% Define a linear mapping $\Xi_t : \Lin(\complex^2 \oplus \complex^2) \rightarrow \Lin(\complex \oplus \complex)$ as 
+% \begin{equation}
+% 	\Xi_t \begin{pmatrix}
+% 		A & B \\
+% 		C & D 
+% 	\end{pmatrix} = 
+% 	\begin{pmatrix}
+% 		\Phi_{\epsilon, t}(D) - \Phi_{\epsilon, t}(A) & 0 \\
+% 		0 & \Phi_{\epsilon, t}(D) + \Phi_{\epsilon, t}(A)
+% 	\end{pmatrix}
+% \end{equation}
+% for every $t \in (0, \infty)$ and for every $\epsilon \in [0, 1]$ and $A, B, C, D \in \Lin(\complex^2)$, where $\Phi_{\epsilon, t} : \Lin(\complex^2) \rightarrow \Lin(\complex^2)$ is defined as
+% \begin{equation}
+% 	\Phi_{\epsilon, t} \begin{pmatrix}
+% 		\alpha & \beta \\
+% 		\gamma & \delta
+% 	\end{pmatrix} = 
+% 	\begin{pmatrix}
+% 		(1 + \epsilon) \alpha & t(1 - \epsilon) \beta \\
+% 		t(1 - \epsilon) \gamma & 2 \alpha + (1-\epsilon) \delta
+% 	\end{pmatrix}
+% \end{equation}
+% for every $\alpha, \beta, \gamma, \delta \in \complex$ and $\Delta_t : \Lin(\complex^2) \rightarrow \Lin(\complex^2)$ is defined as 
+% \end{lemma}
+
+%\begin{lemma}[\cite{szarek2008geometry}] \label{lemma:block-positive}
+%Let $\X$ and $\Y$ be complex Euclidean spaces and let $H \in \Herm(\X \otimes \Y)$. If $H$ is block positive then $\tr(H^2) \leq \left( \tr(H) \right)^2$.
+%\end{lemma} 
+%
+
+
+%\begin{lemma}[\cite{szarek2008geometry}] \label{lemma:block-positive}
+%Let $\X$ and $\Y$ be complex Euclidean spaces and let $H \in \Herm(\X \otimes \Y)$. If $H$ is block positive then $\tr(H^2) \leq \left( \tr(H) \right)^2$.
+%\end{lemma} 
+%
+
+%
+%\section{Question} \label{sec:question}
+%
+%\subsection*{Goal}
+%
+%We want to characterize a closed form expression for how the channel $\Lambda_{n, \epsilon, k}$ acts on an arbitrary operator $Y \in \Pos(\Y)$. IOW, we want an expression that looks like Eq. (37) from~\cite{bandyopadhyay2015limitations}. That is, we want a closed form expression:
+%
+%\begin{align}
+%	\Lambda_{n, \epsilon, k}(Y) = ?
+%\end{align}
+%
+%\subsection*{Examples}
+%
+%For certain $Y \in \Pos(\Y)$, I can generate what $\Lambda_{n, \epsilon, k}(Y)$ is equal to. Recall, we are assuming that
+%\begin{align}
+%	J(\Lambda_{n, \epsilon, k}) = Q_{n, \epsilon, k}.
+%\end{align}
+%
+%For simplicity, let's fix $n = 0$. Once a closed form is obtained here, I think generalizing to arbitrary $n$ will be fairly straightforward. 
+%
+%\subsubsection*{Example 1}
+%
+%Let $n = k = \epsilon = 0$. Let us also fix $Y = \I_{4}$ to be the 4-by-4 identity matrix. We can compute and find that
+%\begin{align}
+%	\Lambda_{0, 0, 0}(Y) = \frac{3}{16} \I_{4} = 
+%	\frac{1}{16} \begin{pmatrix}
+%						1 & 0 & 0 & 0 \\
+%						0 & 1 & 0 & 0 \\
+%						0 & 0 & 1 & 0 \\
+%						0 & 0 & 0 & 1
+%				  	 \end{pmatrix}
+%\end{align}
+%
+%\subsubsection*{Example 2}
+%
+%Let $n = k = \epsilon = 0$. Let us also fix $Y \in \Pos(\Y)$ to be the following matrix
+%\begin{align}
+%	Y = \begin{pmatrix}
+%		1 & 1 & 1 & 1 \\
+%		1 & 1 & 1 & 1 \\
+%		1 & 1 & 1 & 1 \\
+%		1 & 1 & 1 & 1 	
+%	\end{pmatrix}
+%\end{align}
+%We can compute and find that
+%\begin{align}
+%	\Lambda_{0, 0, 0}(Y) = \frac{1}{16} \begin{pmatrix}
+%											3 & -1 & -1 & -1 \\
+%											-1 & 3 & -1 & -1 \\
+%											-1 & -1 & 3 & -1 \\
+%											-1 & -1 & -1 & 3
+%										\end{pmatrix}.
+%\end{align}
+%
+%
+%\subsubsection*{Example 3}
+%
+%If you want further examples for other value of $Y$, please let me know.
+%
+%\subsection*{Conjecture}
+%
+%It seems likely that the analogous equation to Eq. (37) from~\cite{bandyopadhyay2015limitations} \emph{might} look something like this:
+%\begin{align}
+%	\Lambda_{n, \epsilon, 1}(Y) = \frac{1}{4} \frac{\sqrt{1 - (1-n^2)\epsilon^2}}{4} \left(U \otimes V \right) \Xi_t(Y) \left(U \otimes V \right)
+%\end{align}
+%where $U = ?$ and $V = ?$. Not entirely sure if we define $t$ in the same way nor is it obvious what the unitary operators should be. 
+%
+%
+%\section{Partially answered Question}
+%
+%I'm breaking a  few next action steps down:
+%
+%\begin{enumerate}
+%	\item Take the proof of Theorem 2 from~\cite{bandyopadhyay2015limitations} and adapt it work for four states. We obviously already know what the SEP value is for four Bell states (Theorem 5 from~\cite{bandyopadhyay2015limitations}), however in order for us to get our parameterized two-qubit states, this is a necessary first step. 
+%	\item Once an equivalent of Theorem 2 from~\cite{bandyopadhyay2015limitations} exists for four states for $n = 0$ (the Bell states) determine what needs to be adapted to have this apply for any $n \in [0,1]$. 
+%\end{enumerate}
+%
+%From section~\ref{sec:question}, I was able to successfully arrive at a closed form for the examples. Note two things:
+%
+%\begin{itemize}
+%	\item These examples are simplistic. There are only $1's$ in the matrices. When other values are placed in, the normalization factors for the maps (that I will define shortly) alters. I am currently trying to figure out how these normalization factors change as the entries in the matrix $Y$ are changed. 
+%\end{itemize}
+%
+%Define the following maps:
+%
+%\begin{equation}
+%	\Xi_t \begin{pmatrix}
+%				A & B \\
+%				C & D
+%		    \end{pmatrix}
+%	 = \begin{pmatrix}
+%				\Psi_t(D) + \Phi_t^0(D) & \Psi_t(B) + \Phi_t^1(C) \\
+%				\Psi_t(C) + \Phi_t^1(B) & \Psi_t(A) + \Phi_t^0(A)
+%			\end{pmatrix}
+%\end{equation}
+%where 
+%\begin{equation}
+%	\Psi_t \begin{pmatrix}
+%				\alpha & \beta \\
+%				\gamma & \delta
+%			\end{pmatrix} = \begin{pmatrix}
+%				2t & \beta \\
+%				\gamma & 2t^{-1}\delta
+%			\end{pmatrix}
+%\end{equation}
+%\begin{equation}
+%	\Phi_t^0 \begin{pmatrix}
+%				\alpha & \beta \\
+%				\gamma & \delta
+%			\end{pmatrix} = \begin{pmatrix}
+%				(2-t)\delta & -2\beta \\
+%				-2\gamma & 2 - (t^{-1} \alpha) 
+%			\end{pmatrix}
+%\end{equation}
+%\begin{equation}
+%	\Phi_t^1 \begin{pmatrix}
+%				\alpha & \beta \\
+%				\gamma & \delta
+%			\end{pmatrix} = \begin{pmatrix}
+%				-t \delta & 0 \\
+%				0 & -t^{-1} \alpha
+%			\end{pmatrix}
+%\end{equation}
+%
+%For a given matrix $Y$ it holds that for the map $\Lambda_{n, \epsilon, k}$ that
+%
+%\begin{equation} \label{eq:lam-map}
+%	\Lambda_{0, k, \epsilon}(Y) = \frac{1}{16} \sqrt{1 - (1 - n^2) \epsilon^2} \left(\sigma_3 \otimes \I_{\X_2} \right) \Xi_t(Y) \left(\sigma_3 \otimes \I_{\X_2} \right) 
+%\end{equation}
+%for all $k = 1, 2, 3, 4$ and for all $\epsilon \in (0, 1)$.
+%
+%The following are items that we need to do:
+%\begin{itemize}
+%	\item Determine how to adapt the map in~\eqref{eq:lam-map} such that when the entries of $Y$ are not equal to $1$ that the scaling factors in the maps are adapted properly. I could use a hand with this if you have some time. 
+%	\item Prove that this new $\Xi_t$ does in fact constitute a family of positive maps for all $t \in (0, \infty)$. This should go through like our proof does in~\cite{bandyopadhyay2015limitations}.
+%	\item Generalize from $n = 0$ and $n \in [0, 1]$.
+%\end{itemize}
+
+%In~\cite{bandyopadhyay2015limitations} we define
+%
+%\begin{equation}
+%	\begin{aligned}
+%		H_{\epsilon} &= \frac{1}{3} \left[ \frac{\I_{\X_1 \otimes \Y_1} \otimes \tau_{\epsilon}}{2} + \sqrt{1 - \epsilon^2} \phi_4 \otimes \pt_{\X_2} \left(\phi_4\right) \right], \\
+%		Q_{k, \epsilon} &= W^* \left( H_{\epsilon} - \frac{1}{3} \phi_k \otimes \tau_{\epsilon} \right) W.
+%	\end{aligned}
+%\end{equation}
+%
+%We define the map $\Lambda_{k,\epsilon} : \Lin(\Y) \rightarrow \Lin(\X)$ as the linear map whose Choi representation satisfies $J(\Lambda_{k,\epsilon}) = Q_{k, \epsilon}$.
+%
+%Fix $k = 1$ and fix $t =\sqrt{\frac{1+\epsilon}{1-\epsilon}}$. According to~\cite{bandyopadhyay2015limitations} a calculation reveals that
+%\begin{equation} \label{eq:exp}
+%	\Lambda_{1, \epsilon}(Y) = \frac{\sqrt{1 - \epsilon^2}}{3} \left( \sigma_3 \otimes \I_{\X_2} \right) \Xi_t(Y) \left(\sigma_3 \otimes \I_{\X_2} \right).
+%\end{equation}
+%However, I'm not able to replicate this. Based on the definition of the Choi map (eq 2.66 from \href{https://cs.uwaterloo.ca/~watrous/TQI/TQI.pdf}{https://cs.uwaterloo.ca/~watrous/TQI/TQI.pdf}), it should be possible to make this calculation by
+%\begin{equation}
+%	\begin{aligned} \label{eq:exp-res}
+%		\Lambda_{1,\epsilon}(Y) &= \tr_{\X} \left( J(\Lambda_{1, \epsilon}) \left(\I_{\Y} \otimes Y^{\t} \right) \right) \\
+%		&= \tr_{\X} \left( Q_{1, \epsilon} \left( \I_{\Y} \otimes Y^{\t} \right) \right)
+%	\end{aligned}
+%\end{equation}
+%
+%However, I'm not able to obtain the value in~\eqref{eq:exp} from~\eqref{eq:exp-res} for any fixed 4-by-4 matrix $Y$.
+
+%
+%\begin{theorem}
+%    Let $\X_1 = \X_2 = \Y_1 = \Y_2 = \complex^2$, define $\X = \X_1 \otimes
+%    \X_2$ and $\Y = \Y_1 \otimes \Y_2$, let $\epsilon = 1$ and let $n \in [0,
+%    1]$. For any PPT measurement $\{P_1, P_2, P_3, P_4\} \subset \ppt(\X :
+%    \Y)$, the success probability of discriminating the states in the set
+%	\begin{equation}
+%        \left\{ 
+%            \ket{\phi_n^{(1)}} \otimes \ket{\tau_{\epsilon}},
+%            \ket{\phi_n^{(2)}} \otimes \ket{\tau_{\epsilon}},
+%            \ket{\phi_n^{(3)}} \otimes \ket{\tau_{\epsilon}},
+%            \ket{\phi_n^{(4)}} \otimes \ket{\tau_{\epsilon}} 
+%        \right\} \subset 
+%        \left(\X_1 \otimes \Y_1 \right) \otimes \left(\X_2 \otimes \Y_2 \right)
+%	\end{equation}
+%    assuming $p_1 = p_2 = p_3 = p_4 = 1/4$ is at most $\max(\alpha^2,
+%    \beta^2)$.
+%\end{theorem}
+%
+%\begin{proof}
+%We shall make use of the semidefinite program from~\cite{cosentino2013positive}
+%in a similar manner to the proof of discriminating four Bell states 
+%from~\cite{bandyopadhyay2015limitations}.
+%
+%Define the operator
+%\begin{equation}
+%	H_{1, n} = \frac{1}{8} 
+%    \left[ 
+%    \I_{\X_1 \otimes \Y_1} \otimes \tau_{\epsilon} + n \I_{\X_1 \otimes \Y_1} \otimes \pt_{\X_2} (\phi_n^{(4)}) 
+%    \right] \in \Herm(\X_1 \otimes \Y_1 \otimes \X_2 \otimes \Y_2).
+%\end{equation}
+%It holds that
+%\begin{equation}
+%	\tr(H_{1, n}) = \frac{1+n}{2} =  \max(\alpha^2, \beta^2).
+%\end{equation}
+%By similar reasoning to Theorem 5 in~\cite{bandyopadhyay2015limitations}, the operator
+%\begin{equation}
+%	\left( \pt_{\X_1} \otimes \pt_{\X_2} \right) \left( H_{1,n} - \frac{1}{4} \phi_n^{(i)} \otimes \tau_{\epsilon} \right) \in \Pos(\X_1 \otimes \Y_1 \otimes \X_2 \otimes \Y_2)
+%\end{equation}
+%is positive semidefinite. Similar calculations for $i = 2, 3, 4$ also hold, which completes the proof.
+%\end{proof}
+%
+%\begin{theorem}
+%	When $\epsilon = 1$ it holds that
+%	\begin{equation}
+%		\omega_{\sep}(\Delta^{4}_{1, n}) = \omega_{\ppt}(\Delta^{4}_{1, n}) = \frac{1+n}{2} \leq \omega_{\text{global}}(\Delta^{4}_{1, n}) = 1
+%	\end{equation}
+%	for all $n$ defined in terms of $\alpha$ and $\beta$. Note that the inequality is always strict except when $n = 1$. 
+%\end{theorem}
+%
+%%------------------------------------------------------------------------------%
+%\section{Discrimination of three states}
+%\label{sec:discrim-three-states}
+%%------------------------------------------------------------------------------%
+%
+%\begin{theorem}
+%	Let $\X_1 = \X_2 = \Y_1 = \Y_2 = \complex^2$, define $\X = \X_1 \otimes \X_2$ and $\Y = \Y_1 \otimes \Y_2$, let $\epsilon = 1$ and let $n \in [0, 1]$. For any PPT measurement $\{P_1, P_2, P_3\} \subset \ppt(\X : \Y)$, the success probability 
+%	\begin{equation}
+%		\omega_{\sep}(\Delta^3_{1,n}, \pi) \leq \omega_{\ppt}(\Delta^3_{1, n}, \pi) = \frac{2 + n}{3}
+%	\end{equation}
+%	holds assuming $\pi$ refers to the uniform distribution.
+%\end{theorem}
+%
+%\begin{proof}
+%It holds that
+%\begin{equation}
+%	\omega_{\sep}(\Delta^3_{\epsilon, n}) \leq \omega_{\ppt}(\Delta^3_{\epsilon, n})
+%\end{equation}
+%for any choice of $n \in [0, 1]$ and $\epsilon \in [0, 1]$ as the success probability of discrimination via PPT measurements serves as a natural upper bound to discrimination by separable measurements. 
+%
+%It was shown in~\cite{bandyopadhyay2015limitations} that
+%\begin{equation}
+%	\omega_{\sep}(\Delta^3_{1, 0}, \pi) = \frac{2}{3} .
+%\end{equation}
+%
+%\comment{To show the next step that $\omega_{\ppt}(\Delta^3_{1,n}, \pi) = \frac{2 + n}{3}$ it should suffice to use a very similar proof technique to the one used for the discrimination of four states.}.
+%
+%\end{proof}
+
+
+%We will make use of Lemma~\ref{lemma:block-positive} and show that $\tr(Q_{n, \epsilon, k}^2) \leq \left(\tr(Q_{n, \epsilon, k})\right)^2$ for all $\epsilon, n,$ and $k$. We first compute the upper bound in terms of $n$ and $\epsilon$. 
+%
+%\begin{subequations}
+%\begin{align}
+%		\tr\left(Q_{n, \epsilon, k} \right)^2 &= \left( \tr  \left( W^* \left( H_{n, \epsilon} - \frac{1}{4} \phi_n^{(k)} \otimes \tau_{\epsilon} \right) W \right) \right)^2  \label{eqn:line-1} \\
+%		&= \left( \tr \left(H_{n, \epsilon} - \frac{1}{4} \phi_n^{(k)} \otimes \tau_{\epsilon}\right) \right)^2  \label{eqn:line-2} \\		
+%		&= \left( \tr(H_{n, \epsilon}) - \frac{1}{4} \tr \left(\phi_n^{(k)} \otimes \tau_{\epsilon} \right) \right)^2 \label{eqn:line-3} \\
+%		&= \left( \frac{1}{2} \left(1 + \sqrt{1 - (1 - n^2) \epsilon^2} \right) - \frac{1}{4} \tr \left(\phi_n^{(k)} \otimes \tau_{\epsilon} \right) \right)^2 \label{eqn:line-4} \\
+%		&= \left( \frac{1}{2} \left(1 + \sqrt{1 - (1 - n^2) \epsilon^2} \right) - \frac{1}{4} \tr \left(\phi_n^{(k)} \right) \tr \left(\tau_{\epsilon} \right) \right)^2  \label{eqn:line-5} \\
+%		&= \left( \frac{1}{2} \left(1 + \sqrt{1 - (1 - n^2) \epsilon^2} \right) - \frac{1}{4} \right)^2 \label{eqn:line-6}
+%\end{align}
+%\label{eqn:all-lines}
+%\end{subequations}
+%
+%We are able to ignore the $W$ operators in~\eqref{eqn:line-2} as they simply permute the subsystems. We perform~\eqref{eqn:line-3} by the linearity of the trace, we obtain~\eqref{eqn:line-4} from equation~\eqref{eq:trace-h}, we obtain~\eqref{eqn:line-5} as a result of the multiplicative properties of the trace amongst tensor products, and obtain~\eqref{eqn:line-6} as it holds that the trace of a density operator is equal to $1$.
+%
+%Next, we compute the lower bound.
+%
+%\begin{subequations}
+%\begin{align}
+%\tr(Q_{n, \epsilon, k}^2) &= \tr(Q_{n, \epsilon, k} Q_{n, \epsilon, k}) \\
+%&= \tr \left( \left(H - \frac{1}{4} \phi_n^{(k)} \otimes \tau_{\epsilon} \right) \left( H - \frac{1}{4} \phi_n^{(k)} \otimes \tau_{\epsilon} \right) \right) \\
+%&= \tr \left( H_{n, \epsilon}^2 \right) - \tr \left( H_{n, \epsilon} \frac{1}{4} \phi_n^{(k)} \otimes \tau_{\epsilon}  \right) - \tr \left( \frac{1}{4} \phi_n^{(k)} \otimes \tau_{\epsilon} H_{n, \epsilon} \right) + \tr \left( \frac{1}{16} \left( \phi_n^{(k)} \otimes \tau_{\epsilon} \right)^2 \right) \\
+%&= \tr \left( H_{n, \epsilon}^2 \right) - \frac{1}{2} \tr \left( H_{n, \epsilon} \phi_n^{(k)} \otimes \tau_{\epsilon} \right) + \frac{1}{16} \tr \left( \left(\phi_n^{(k)} \otimes \tau_{\epsilon} \right)^2 \right) \\
+%&= \tr \left( H_{n, \epsilon}^2 \right) - \frac{1}{2} \tr \left( H_{n, \epsilon} \phi_n^{(k)} \otimes \tau_{\epsilon} \right) + \frac{1}{16} \label{eqn:simp-line}
+%\end{align}
+%\label{eqn:all-lines}
+%\end{subequations}
+%
+%We need to simplify some of the expressions in~\eqref{eqn:simp-line}. Let
+%
+%\begin{equation}
+%	\begin{aligned}
+%		c &= \sqrt{1 - (1-n^2)\epsilon^2}, \\
+%		A &= \I_{\X_1 \otimes \Y_1} \otimes \tau_{\epsilon}, \\
+%		B &= \I_{\X_1 \otimes \Y_1} \otimes \pt_{\X_2} \left( \phi_n^{(4)} \right)
+%	\end{aligned}
+%\end{equation}
+%
+%A calculation reveals that
+%
+%\begin{subequations}
+%\begin{align}
+%\tr(H_{n, \epsilon}^2) &= \tr(H_{n, \epsilon} H_{n, \epsilon}) \\
+%&=  \tr(\frac{1}{8}(A + cB) \frac{1}{8}(A + cB)) \\
+%&= \frac{1}{64} \tr( (A + cB)(A + cB) ) \\
+%&= \frac{1}{64} \left( \tr(A^2) + c\tr(AB) + c\tr(BA) + c^2\tr(B^2) \right) \\
+%&= \frac{1}{64} \left( \tr(A^2) + 2c\tr(AB) + c^2 \tr(B^2) \right) \\
+%&= \frac{1}{64} \left( \tr(A^2) + 2c\tr(AB) + 4 c^2 \right) \\
+%&= \frac{1}{64} \left( 4 + 2c\tr(AB) + 4c^2 \right) \label{eqn:simp-2}
+%\end{align}
+%\label{eqn:all-lines}
+%\end{subequations}
+%
+%We will now also need to simplify the $\tr(AB)$ expression. 
+%
+%\comment{this is the part of the proof mentioned in the email.}
+%\begin{subequations}
+%\begin{align}
+%\tr(AB) &= \tr\left(\left(\I_{\X_1 \otimes \Y_1} \otimes \tau_{\epsilon}\right) \left(\I_{\X_1 \otimes \Y_1} \otimes \pt_{\X_2} \left( \phi_n^{(4)} \right) \right) \right) \\
+%&= 
+%\end{align}
+%\label{eqn:all-lines}
+%\end{subequations}
+
+% %------------------------------------------------------------------------------%
+% \subsection*{Discrimination of two Bell states and two product states}
+% \label{sec:discrim-two-bell-two-product}
+% %------------------------------------------------------------------------------%
+% 
+% Define the following ensemble of states consisting of two Bell states and two
+% product states
+% 
+% \begin{equation}\label{eq:two-bell-two-product}
+% \begin{aligned}
+%     \ket{\psi_1} = \frac{1}{\sqrt{2}} \ket{00} + \frac{1}{\sqrt{2}} \ket{11}, &\quad
+%     \ket{\psi_2} = \ket{01}, \\
+%     \ket{\psi_3} = \frac{1}{\sqrt{2}} \ket{00} - \frac{1}{\sqrt{2}} \ket{11}, &\quad
+%     \ket{\psi_4} = \ket{10}.
+% \end{aligned}
+% \end{equation}
+% 
+% \begin{theorem}\label{thm:two-bell-two-prod}
+%     Let $\X_1 = \X_2 = \Y_1 = \Y_2 = \complex^2$, define $\X = \X_1 \otimes
+%     \X_2$ and $\Y = \Y_1 \otimes \Y_2$, and let $\epsilon \in [0,1]$ be chosen
+%     arbitrarily. For any separable measurement $\{ P_1, P_2, P_3, P_4\}
+%     \subset \sep(\X : \Y)$, the success probability of correctly discriminating
+%     the states corresponding to the set 
+% 	\begin{equation}
+%         \left\{ 
+%             \ket{\psi_1} \otimes \ket{\tau_{\epsilon}},
+%             \ket{\psi_2} \otimes \ket{\tau_{\epsilon}},
+%             \ket{\psi_3} \otimes \ket{\tau_{\epsilon}},
+%             \ket{\psi_4} \otimes \ket{\tau_{\epsilon}}
+%         \right\} \subset 
+%         \left(\X_1 \otimes \Y_1 \right) \otimes \left(\X_2 \otimes \Y_2 \right)
+% 	\end{equation}
+%     assuming a uniform distribution $p_1 = p_2 = p_3 = p_4 = 1/4$, is at most
+%     \begin{equation}
+%         \frac{1}{4} \left(3 + \sqrt{1 - \epsilon^2} \right).
+%     \end{equation}
+% \end{theorem}
+% \begin{lemma}\label{lem:two-bell-two-prod}
+%     Define a linear mapping $\Xi_{t, \epsilon} : \Lin(\complex^2 \oplus \complex^2)
+%     \rightarrow \Lin(\complex^2 \oplus \complex^2)$ as
+%     \begin{equation}\label{eq:xi-map}
+%         \Xi_{t ,\epsilon}
+%         \begin{pmatrix}
+%             A & B \\
+%             C & D
+%         \end{pmatrix} =
+%         \begin{pmatrix}
+%             \frac{1}{2\sqrt{1-\epsilon^2}} \left(\Phi_{t, \epsilon, 0}(A) +
+%             3 \Phi_{t, \epsilon, \frac{8}{3}}(D) \right) & 
+%             \Psi_t(B) \\
+%             \Psi_t(C) & 
+%             \frac{1}{2\sqrt{1-\epsilon^2}} \left(3 \Phi_{t, \epsilon, 0}(A) +
+%             \Phi_{t, \epsilon, 0}(D) \right) & 
+%         \end{pmatrix}
+%     \end{equation}
+%     for every $t \in (0, \infty)$ and $A,B,C,D \in \Lin(\complex^2)$, where
+%     $\Psi_t : \Lin(\complex^2) \rightarrow \Lin(\complex^2)$ is defined as
+%     \begin{equation}
+%         \Psi_t
+%         \begin{pmatrix}
+%             \alpha & \beta \\
+%             \gamma & \delta
+%         \end{pmatrix} =
+%         \begin{pmatrix}
+%             t \alpha & \beta \\
+%             \gamma & t^{-1} \delta
+%         \end{pmatrix}
+%     \end{equation}
+%     and where $\Phi_{t, \epsilon, c} : \Lin(\complex^2) \rightarrow
+%     \Lin(\complex^2)$ is defined as 
+%     \begin{equation}
+%         \Phi_{t, \epsilon, c}
+%         \begin{pmatrix}
+%             \alpha (1 + \epsilon) + c \delta (1 - \epsilon) t & 
+%             \beta (1-\epsilon) t \\
+%             \gamma (1 - \epsilon) t &
+%             \delta (1 - \epsilon) 
+%         \end{pmatrix}
+%     \end{equation}
+%     for every $\alpha, \beta, \gamma, \delta \in \complex$. It holds that
+%     $\Xi_{t, \epsilon}$ is a positive map for all $t \in (0,
+%     \infty)$.
+% \end{lemma}
+% \begin{proof}
+%     \comment{TODO: Most of the proof can be leveraged from~\cite{bandyopadhyay2015limitations}.}
+% \end{proof}
+% \begin{proof}[Proof of Theorem~\ref{thm:two-bell-two-prod}]
+%     Define the Hermitian operator
+%     \begin{equation}
+%         H_{\epsilon} = \frac{1}{4} \left[ \frac{3}{4}\left(\I_{\X \otimes \Y} \otimes
+%         \tau_{\epsilon}\right) + \sqrt{1 - \epsilon^2} \psi_4 \otimes
+%         \pt_{\X_2}\left(\psi_4\right) \right]
+%     \end{equation}
+%     It holds that
+%     \begin{equation}
+%         \tr(H_{\epsilon}) = \frac{1}{4} \left(3 + \sqrt{1 - \epsilon^2}\right).
+%     \end{equation}
+%     It now suffices to show that $H_{\epsilon}$ is a feasible solution to the
+%     dual problem~\eqref{eq:sep-dual}. Define $W$ as the unitary operator
+%     \begin{equation}
+%         W(x_1 \otimes x_2 \otimes y_1 \otimes y_2) = x_1 \otimes y_1 \otimes x_1 \otimes y_2,
+%     \end{equation}
+%     for all $x_1 \in \X_1, x_2 \in \X_2, y_1 \in \Y_1$, and $y_2 \in \Y_2$. We
+%     desire to show that
+%     \begin{equation}
+%         Q_{k, \epsilon} = W^* \left(H_{\epsilon} - \frac{1}{4} \psi_k \otimes
+%         \tau_{\epsilon}\right) W \in \Herm(\X \otimes \Y)
+%     \end{equation}
+%     is contained in $\sep^*(\X : \Y)$ for $k = 1, 2, 3, 4$.
+%     Let $\Lambda_{k, \epsilon} : \Lin(\Y) \rightarrow \Lin(\X)$ be the unique
+%     linear map whose Choi representation satisfies $J(\Lambda_{k, \epsilon}) =
+%     Q_{k, \epsilon}$ for each $k = 1,2,3,4$. Consider $k = 1$ and let
+%     \begin{equation}
+%         t = \sqrt{\frac{1+\epsilon}{1-\epsilon}}.
+%     \end{equation}
+%     It may be observed that
+%     \begin{equation}
+%         \begin{aligned}
+%             \Lambda_{1, \epsilon}(Y) &= \tr_{\X}\left[J(Q_{1, \epsilon})
+%             \left(\I_{\Y} \otimes Y^{\t}\right) \right] \\
+%             &= \frac{1}{16} \sqrt{1-\epsilon^2} \left(\sigma_3 \otimes
+%             \I_{\X_2} \right) \Xi_{t, \epsilon}(Y) \left(\sigma_3 \otimes \I_{\X_2}
+%             \right),
+%         \end{aligned}
+%     \end{equation}
+%     where $\Xi_{t, \epsilon} : \Lin(\Y) \rightarrow \Lin(\X)$ is the map defined in
+%     equation~\eqref{eq:xi-map}, where 
+%     \begin{equation}
+%         \sigma_3 = 
+%         \begin{pmatrix}
+%             1 & 0 \\
+%             0 & -1
+%         \end{pmatrix}
+%     \end{equation}
+%     is one of the Pauli operators, and where $Y \in \Pos(\Y)$. As $\epsilon \in
+%     (0, 1)$, it holds that $t \in (0, \infty)$ and therefore that
+%     Lemma~\ref{lem:two-bell-two-prod} implies that $\Xi_{t, \epsilon}(Y) \in
+%     \Pos(\X)$ for all $Y \in \Pos(\Y)$. As we are conjugating $\Xi_{t,
+%     \epsilon}$ by a unitary and scaling it by a positive real factor, we also
+%     have that $\Lambda_{1, \epsilon}(Y) \in \Pos(\X)$, for any $Y \in
+%     \Pos(\Y)$, which implies that $Q_{1, \epsilon} \in \sep^*(\X : \Y)$.
+%     \comment{TODO: Define unitary operators in the same way that we did for
+%     IEEE paper.}
+%     Therefore the following equations hold:
+%     \begin{equation}
+%         \begin{aligned}
+%             Q_{2, \epsilon} &= \left(\right) Q_{} \left(\right) \\
+%             Q_{3, \epsilon} &= \left(\right) Q_{} \left(\right) \\
+%             Q_{4, \epsilon} &= \left(\right) Q_{} \left(\right).
+%         \end{aligned}
+%     \end{equation}
+%     It then follows that $Q_{2, \epsilon} \in \sep^*(\X : \Y)$, $Q_{3,
+%     \epsilon} \in \sep^*(\X : \Y)$, and $Q_{4, \epsilon} \in \sep^*(\X : \Y)$,
+%     which completes the proof.
+% \end{proof}
+
+
+\bibliographystyle{alpha}
+\bibliography{refs}
+
+\end{document}
+

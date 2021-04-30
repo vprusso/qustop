@@ -60,7 +60,6 @@ class Separable:
         self._probs = self._ensemble.probs
 
         self._dims = self._ensemble.dims
-        self._sys = [i for i in self._ensemble.systems if i % 2 != 0]
 
         self.dim_x, self.dim_y = self._ensemble[0].shape
         self.dim_list = self._ensemble[0].dims
@@ -125,12 +124,12 @@ class Separable:
                 == x_var[k]
             )
             constraints.append(partial_transpose(x_var[k], 1, dim_list) >> 0)
-            constraints.append(meas[k] >> 0)
-            constraints.append(x_var[k] >> 0)
             for sys in range(3, self._level + 2):
                 constraints.append(
                     partial_transpose(x_var[k], sys, dim_list) >> 0
                 )
+            constraints.append(meas[k] >> 0)
+            constraints.append(x_var[k] >> 0)
 
         constraints.append(cvxpy.sum(meas) == np.identity(self._ensemble.shape[0]))
 
@@ -144,22 +143,18 @@ class Separable:
         return opt_val, meas
 
     def dual_problem(self) -> float:
-        dim_x, dim_y = self._states[0].shape
-
         constraints = []
-        Q = []
-        R = []
-        S = []
-        Z = []
+        q_vars = []
+        r_vars = []
+        s_vars = []
+        z_vars = []
 
-        dim = int(np.log2(dim_x))
-        dim_list = [dim] * (self._level + 1)
-
-        dim_xy = dim_x
+        dim = int(np.log2(self.dim_x))
+        dim_list = (2 + self._level - 1) * [dim]
         dim_xyy = np.prod(dim_list)
+
         sym = symmetric_projection(dim, self._level)
         print(f"DIM: {dim}")
-        print(f"DIM_XY: {dim_xy}")
         print(f"DIM_XYY: {dim_xyy}")
         print(f"DIM_LIST: {dim_list}")
 
@@ -168,35 +163,35 @@ class Separable:
         else:
             dim_yp = dim * (self._level - 1)
 
-        h_var = cvxpy.Variable((dim_xy, dim_xy), hermitian=True)
+        h_var = cvxpy.Variable(self._ensemble.shape, hermitian=True)
         for k, _ in enumerate(self._states):
-            Q.append(cvxpy.Variable((dim_xy, dim_xy), hermitian=True))
-            R.append(cvxpy.Variable((dim_xyy, dim_xyy), hermitian=True))
-            S.append(cvxpy.Variable((dim_xyy, dim_xyy), hermitian=True))
-            Z.append(cvxpy.Variable((dim_xyy, dim_xyy), hermitian=True))
+            q_vars.append(cvxpy.Variable(self._ensemble.shape, hermitian=True))
+            r_vars.append(cvxpy.Variable((dim_xyy, dim_xyy), hermitian=True))
+            s_vars.append(cvxpy.Variable((dim_xyy, dim_xyy), hermitian=True))
+            z_vars.append(cvxpy.Variable((dim_xyy, dim_xyy), hermitian=True))
 
             constraints.append(
-                h_var - Q[k] >> self._probs[k] * self._states[k]
+                h_var - q_vars[k] >> self._probs[k] * self._states[k]
             )
 
             constraints.append(
                 (
-                    cvx_kron(Q[k], np.identity(dim_yp))
+                    cvx_kron(q_vars[k], np.identity(dim_yp))
                     + (
                         np.kron(np.identity(dim), sym)
-                        @ R[k]
+                        @ r_vars[k]
                         @ np.kron(np.identity(dim), sym)
                     )
-                    - R[k]
-                    - partial_transpose(S[k], 1, dim_list)
-                    - partial_transpose(Z[k], 2, dim_list)
+                    - r_vars[k]
+                    - partial_transpose(s_vars[k], 1, dim_list)
+                    - partial_transpose(z_vars[k], 2, dim_list)
                 )
                 >> 0
             )
 
-            constraints.append(R[k] >> 0)
-            constraints.append(S[k] >> 0)
-            constraints.append(Z[k] >> 0)
+            constraints.append(r_vars[k] >> 0)
+            constraints.append(s_vars[k] >> 0)
+            constraints.append(z_vars[k] >> 0)
 
         objective = cvxpy.Minimize(cvxpy.trace(cvxpy.real(h_var)))
         problem = cvxpy.Problem(objective, constraints)

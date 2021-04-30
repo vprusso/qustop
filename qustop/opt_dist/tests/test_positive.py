@@ -112,13 +112,12 @@ def test_unambiguous_state_distinguishability_two_states():
     primal_res.solve()
     np.testing.assert_equal(np.isclose(primal_res.value, 1), True)
 
-
-# dual_res = OptDist(ensemble=ensemble,
-#                    dist_measurement="pos",
-#                    dist_method="unambiguous",
-#                    return_optimal_meas=False)
-# dual_res.solve()
-# np.testing.assert_equal(np.isclose(dual_res.value, 0), True)
+    dual_res = OptDist(ensemble=ensemble,
+                       dist_measurement="pos",
+                       dist_method="unambiguous",
+                       return_optimal_meas=False)
+    dual_res.solve()
+    np.testing.assert_equal(np.isclose(dual_res.value, 1), True)
 
 
 def test_state_distinguishability_ydy_density_matrices():
