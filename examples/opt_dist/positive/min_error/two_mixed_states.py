@@ -43,9 +43,9 @@ sd = OptDist(
     ensemble=ensemble, dist_measurement="pos", dist_method="min-error"
 )
 
-# 0.5000000000000002
+# 0.7500000000609778
 sd.solve()
 print(sd.value)
 
-# The closed-form equation yields: 1/2
+# The closed-form equation yields: 3/4
 print(1 / 2 + 1 / 4 * np.linalg.norm(rho_1.value - rho_2.value, ord="nuc"))

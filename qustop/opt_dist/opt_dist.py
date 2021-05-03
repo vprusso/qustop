@@ -116,16 +116,16 @@ class OptDist:
             ValueError:
                 * If the `dist_measurement` argument is not supported.
         """
-
-        # If `value` and `meas` were solved in the pre-optimization step, there's no need to
-        # perform any further calculations.
-        value, meas = self.pre_optimize()
-        if value is not None and self.return_optimal_meas is False:
-            self._optimal_value = value
-            return
-        elif value is not None and self.return_optimal_meas:
-            self._optimal_value, self._optimal_measurements = value, meas
-            return
+        #
+        # # If `value` and `meas` were solved in the pre-optimization step, there's no need to
+        # # perform any further calculations.
+        # value, meas = self.pre_optimize()
+        # if value is not None and self.return_optimal_meas is False:
+        #     self._optimal_value = value
+        #     return
+        # elif value is not None and self.return_optimal_meas:
+        #     self._optimal_value, self._optimal_measurements = value, meas
+        #     return
 
         if self.dist_measurement == "ppt":
             opt = PPT(

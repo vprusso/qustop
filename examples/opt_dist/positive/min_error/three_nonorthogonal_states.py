@@ -49,6 +49,6 @@ sd = OptDist(
     ensemble=ensemble, dist_measurement="pos", dist_method="min-error"
 )
 
-# 0.4166666666697986
+# 1/2
 sd.solve()
 print(sd.value)

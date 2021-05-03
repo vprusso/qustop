@@ -136,40 +136,36 @@ class PPT:
 
     def dual_problem(self) -> float:
         """Calculate dual problem for PPT distinguishability.
-
         The dual problem for the min-error case is defined in equation-2 from arXiv:1205.1031.
         The dual problem for the unambiguous case is defined in equation-5 from arXiv:1205.1031.
         """
-
-        # Unambiguous consists of `len(self._states)` + 1 measurement operators, where the outcome
-        # of the `len(self._states)`+1^st corresponds to the inconclusive answer.
-        num_measurements = (
-            len(self._states) + 1
-            if self._dist_method == "unambiguous"
-            else len(self._states)
-        )
+        constraints = []
 
         y_var = cvxpy.Variable(self._ensemble.shape, hermitian=True)
 
-        dual_vars = [
-            cvxpy.Variable(self._ensemble.shape, hermitian=True)
-            for _ in range(num_measurements)
-        ]
-        # Enforce that each dual variable must be PSD.
-        constraints = [
-            dual_vars[i] >> 0
-            for i in range(num_measurements)
-        ]
-
         # This implements the dual problem (equation-2) from arXiv:1205.1031:
         if self._dist_method == "min-error":
+            num_measurements = len(self._states)
+
+            dual_vars = [
+                cvxpy.Variable(self._ensemble.shape, hermitian=True)
+                for _ in range(num_measurements)
+            ]
             constraints = [
                 y_var - self._probs[i] * self._states[i] >> partial_transpose(dual_vars[i], self._sys, self._dims)
                 for i in range(num_measurements)
             ]
+            for i in range(num_measurements):
+                constraints.append(dual_vars[i] >> 0)
 
         # This implements the dual problem (equation-5) rom arXiv:1205.1031:
         if self._dist_method == "unambiguous":
+            num_measurements = len(self._states) + 1
+
+            dual_vars = [
+                cvxpy.Variable(self._ensemble.shape, PSD=True)
+                for _ in range(num_measurements)
+            ]
             scalar_vars = [
                 [cvxpy.Variable() for i, _ in enumerate(self._states)]
                 for j, _ in enumerate(self._states)
