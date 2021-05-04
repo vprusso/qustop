@@ -1,38 +1,32 @@
 import numpy as np
 from toqito.states import bell
-from qustop import State, Ensemble, OptDist
+from qustop import Ensemble, OptDist, State
 
-
-# Define the maximally entangled states
-# from arXiv:1107.3224
-phi_0 = np.kron(bell(0), bell(0))
-phi_1 = np.kron(bell(2), bell(1))
-phi_2 = np.kron(bell(3), bell(1))
-phi_3 = np.kron(bell(1), bell(1))
-
-
+# Define the ensemble initially defined in arXiv:1107.3224:
 dims = [2, 2, 2, 2]
-rho_0 = phi_0 * phi_0.conj().T
-rho_1 = phi_1 * phi_1.conj().T
-rho_2 = phi_2 * phi_2.conj().T
-rho_3 = phi_3 * phi_3.conj().T
-
 ensemble = Ensemble(
     [
-        State(rho_0, dims),
-        State(rho_1, dims),
-        State(rho_2, dims),
-        State(rho_3, dims),
+        State(np.kron(bell(0), bell(0)), dims),
+        State(np.kron(bell(2), bell(1)), dims),
+        State(np.kron(bell(3), bell(1)), dims),
+        State(np.kron(bell(1), bell(1)), dims),
     ]
 )
 
-sd = OptDist(
-    ensemble=ensemble,
-    dist_measurement="ppt",
-    dist_method="min-error"
-)
-sd.solve()
+# Determine the optimal probability of distinguishing
+# via PPT measurements with minimum error:
+ppt_min = OptDist(ensemble, "ppt", "min-error")
+ppt_min.solve()
+print(ppt_min.value)  # 7/8
 
-# The min-error probability of distinguishing
-# via PPT is equal to 7/8.
-print(sd.value)
+# Determine the optimal probability of distinguishing
+# via separable measurements with minimum-error:
+sep_min = OptDist(ensemble, "sep", "min-error")
+sep_min.solve()
+print(sep_min.value)  # 3/4
+
+# Determine the optimal probability of distinguishing
+# via PPT measurements unambiguously:
+ppt_unambig = OptDist(ensemble, "ppt", "unambiguous")
+ppt_unambig.solve()
+print(ppt_unambig.value)  # 3/4

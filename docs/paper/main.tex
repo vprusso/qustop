@@ -1,23 +1,70 @@
-\documentclass[nofootinbib,superscriptaddress,a4paper,twocolumn,longbibliography,floatfix,pra]{revtex4-2}
-\usepackage[english]{babel}
-\usepackage[utf8]{inputenc}
+% pdflatex -s main.tex && bibtex main.aux && pdflatex -s main.tex -o main.pdf && open main.pdf
+\documentclass[11pt]{article}
 
-\usepackage{enumitem}
 
+%-----------------------------------------------------------------------------%
+% Fonts and symbols:
+%-----------------------------------------------------------------------------%
+
+\usepackage{mathpazo}
 \usepackage{amsfonts}
-\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{latexsym}
 \usepackage{mathtools}
-\usepackage{physics}
-\usepackage{xcolor}
-\usepackage{graphicx}
-\usepackage[left=23mm,right=13mm,top=35mm,columnsep=15pt]{geometry} 
-\usepackage{adjustbox}
-\usepackage{placeins}
-\usepackage[T1]{fontenc}
-\usepackage{lipsum}
-\usepackage{csquotes}
-
 \usepackage{listings}
+
+
+%-----------------------------------------------------------------------------%
+% Margins and page layout:
+%-----------------------------------------------------------------------------%
+
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{pdfpagemode=UseNone}
+\frenchspacing
+
+%-----------------------------------------------------------------------------%
+% Theorem-like environments:
+%-----------------------------------------------------------------------------%
+
+\usepackage{amsthm}
+\newtheorem{theorem}{Theorem}
+\newtheorem{observation}{Observation}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{prop}[theorem]{Proposition}
+\newtheorem{cor}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{example}[theorem]{Example}
+
+%-----------------------------------------------------------------------------%
+% Other packages:
+%-----------------------------------------------------------------------------%
+
+\usepackage{authblk}
+\usepackage{tikz}
+\usetikzlibrary{calc,positioning}
+\usepackage{mdframed}
+
+\mdfdefinestyle{figstyle}{
+  linecolor=black!7,
+  backgroundcolor=black!7,
+  innertopmargin=10pt,
+  innerleftmargin=25pt,
+  innerrightmargin=25pt,
+  innerbottommargin=10pt
+}
+
+\definecolor{White}{rgb}{1,1,1}
+\definecolor{Black}{rgb}{0,0,0}
+\definecolor{LightGray}{rgb}{.81,.81,.81}
+\colorlet{ChannelColor}{LightGray}
+\colorlet{ChannelTextColor}{Black}
+\colorlet{ReadoutColor}{White}
+
 \usepackage{xcolor}
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
@@ -27,22 +74,22 @@
 \definecolor{backcolour}{HTML}{fefdf5}
 
 \lstdefinestyle{mystyle}{
-    backgroundcolor=\color{backcolour},   
+    backgroundcolor=\color{backcolour},
     commentstyle=\color{codegreen},
     keywordstyle=\color{magenta},
     numberstyle=\tiny\color{codegray},
     stringstyle=\color{codepurple},
     basicstyle=\ttfamily\footnotesize\color{tqblue},
-    breakatwhitespace=false,         
+    breakatwhitespace=false,
     breaklines=true,
-    postbreak=\mbox{\textcolor{magenta}{$\hookrightarrow$}\space},                 
-    captionpos=b,                    
-    keepspaces=true,                 
-    numbers=left,                    
-    numbersep=5pt,                  
-    showspaces=false,                
+    postbreak=\mbox{\textcolor{magenta}{$\hookrightarrow$}\space},
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
     showstringspaces=false,
-    showtabs=false,                  
+    showtabs=false,
     tabsize=2
 }
 
@@ -50,20 +97,6 @@
 
 \usepackage{booktabs}
 \usepackage{soul}
-
-\usepackage{xspace}
-\newcommand{\expect}[2]{\ensuremath{\langle #1 \rangle_{#2}}}
-
-\setlength{\parindent}{0cm}
-
-\usepackage[pdftex, pdftitle={Article}, pdfauthor={Author}]{hyperref} % For hyperlinks in the PDF
-\usepackage{xcolor}
-\hypersetup{
-    colorlinks,
-    linkcolor={red!50!black},
-    citecolor={blue!50!black},
-    urlcolor={blue!80!black}
-}
 
 %-----------------------------------------------------------------------------%
 % Macros:
@@ -76,25 +109,28 @@
 \newcommand{\tinyspace}{\mspace{1mu}}
 \newcommand{\microspace}{\mspace{0.5mu}}
 \newcommand{\negsmallspace}{\mspace{-1.5mu}}
+\newcommand{\op}[1]{\operatorname{#1}}
+\newcommand{\tr}{\operatorname{Tr}}
 \newcommand{\pt}{\operatorname{T}}
-\newcommand{\ppt}{\operatorname{PPT}}
-\newcommand{\sep}{\operatorname{Sep}}
+\newcommand{\POS}{\operatorname{POS}}
+\newcommand{\PPT}{\operatorname{PPT}}
+\newcommand{\SEP}{\operatorname{SEP}}
+\newcommand{\rank}{\operatorname{rank}}
 \renewcommand{\int}{\operatorname{int}}
 \renewcommand{\det}{\operatorname{Det}}
 \renewcommand{\vec}{\operatorname{vec}}
 \newcommand{\fid}{\operatorname{F}}
 \newcommand{\im}{\operatorname{im}}
 
-\renewcommand{\tr}{\operatorname{Tr}}
 \renewcommand{\t}{{\scriptscriptstyle\mathsf{T}}}
 
-\renewcommand{\abs}[1]{\lvert #1 \rvert}
+\newcommand{\abs}[1]{\lvert #1 \rvert}
 \newcommand{\bigabs}[1]{\bigl\lvert #1 \bigr\rvert}
 \newcommand{\Bigabs}[1]{\Bigl\lvert #1 \Bigr\rvert}
 \newcommand{\biggabs}[1]{\biggl\lvert #1 \biggr\rvert}
 \newcommand{\Biggabs}[1]{\Biggl\lvert #1 \Biggr\rvert}
 
-\renewcommand{\ip}[2]{\langle #1 , #2\rangle}
+\newcommand{\ip}[2]{\langle #1 , #2\rangle}
 \newcommand{\bigip}[2]{\bigl\langle #1, #2 \bigr\rangle}
 \newcommand{\Bigip}[2]{\Bigl\langle #1, #2 \Bigr\rangle}
 \newcommand{\biggip}[2]{\biggl\langle #1, #2 \biggr\rangle}
@@ -112,6 +148,7 @@
 \newcommand{\biggfloor}[1]{\biggl\lfloor #1 \biggr\rfloor}
 \newcommand{\Biggfloor}[1]{\Biggl\lfloor #1 \Biggr\rfloor}
 
+\newcommand{\norm}[1]{\lVert\tinyspace #1 \tinyspace\rVert}
 \newcommand{\bignorm}[1]{\bigl\lVert\tinyspace #1 \tinyspace\bigr\rVert}
 \newcommand{\Bignorm}[1]{\Bigl\lVert\tinyspace #1 \tinyspace\Bigr\rVert}
 \newcommand{\biggnorm}[1]{\biggl\lVert\tinyspace #1 \tinyspace\biggr\rVert}
@@ -139,6 +176,9 @@
 \def\iso{\cong}
 \newcommand{\defeq}{\triangleq}
 
+\newcommand{\ket}[1]{
+  \lvert\microspace #1 \microspace \rangle}
+
 \newcommand{\bigket}[1]{
   \bigl\lvert\microspace #1 \microspace \bigr\rangle}
 
@@ -150,6 +190,9 @@
 
 \newcommand{\Biggket}[1]{
   \Biggl\lvert\microspace #1 \microspace \Biggr\rangle}
+
+\newcommand{\bra}[1]{
+  \langle\microspace #1 \microspace \rvert}
 
 \newcommand{\bigbra}[1]{
   \bigl\langle\microspace #1 \microspace \bigr\rvert}
@@ -163,7 +206,7 @@
 \newcommand{\Biggbra}[1]{
   \Biggl\langle\microspace #1 \microspace \Biggr\rvert}
 
-\newcommand{\I}{\mathbb{I}}
+\newcommand{\I}{\mathbb{1}}
 
 \newcommand{\setft}[1]{\mathrm{#1}}
 \newcommand{\Density}{\setft{D}}
@@ -173,19 +216,14 @@
 \newcommand{\Lin}{\setft{L}}
 
 \newcommand{\complex}{\mathbb{C}}
+\newcommand{\real}{\mathbb{R}}
 \renewcommand{\natural}{\mathbb{N}}
 \newcommand{\integer}{\mathbb{Z}}
 
-\usepackage{FiraSans}
+\newcommand{\qustop}{\texttt{qustop}}
+
 \newcommand{\poly}{\mathit{poly}}
-\newcommand{\toqitofont}{%
-	\fontfamily{FiraSans}%
-	\selectfont}
 
-
-\newcommand{\toqito}{ $|${\toqitofont toqito}$\rangle$\xspace}
-\newcommand{\numpy}{\texttt{numpy}\xspace}
-\newcommand{\tequila}{\textsc{toqito}}
 \newenvironment{mylist}[1]{\begin{list}{}{
 	\setlength{\leftmargin}{#1}
 	\setlength{\rightmargin}{0mm}
@@ -221,102 +259,273 @@
 
 \newcommand{\yes}{\text{yes}}
 \newcommand{\no}{\text{no}}
+\newcommand{\opt}{\text{opt}}
+\newcommand{\LOCC}{\text{LOCC}}
 
 \newcommand{\class}[1]{\textup{#1}}
 \newcommand{\reg}[1]{\textsf{#1}}
 
-\def\BB84{\mathsf{BB84}}
-\def\CHSH{\mathsf{CHSH}}
-\def\MUB{\mathsf{MUB}}
-\def\qustop{\texttt{qustop}}
+\DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{10}
+\DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{10}
+\definecolor{deepblue}{rgb}{0,0,0.5}
+\definecolor{deepred}{rgb}{0.6,0,0}
+\definecolor{deepgreen}{rgb}{0,0.5,0}
+\newcommand\cppstyle{\lstset{
+language=C++,
+basicstyle=\ttm,
+otherkeywords={uint8_t, __m256i, size_t, ASSERT_TRUE, EXPECT_TRUE, TEST, BENCHMARK},
+keywordstyle=\ttb\color{deepblue},
+emphstyle=\ttb\color{deepblue},
+stringstyle=\color{deepgreen},
+commentstyle=\fontfamily{txtt}\selectfont\color{gray},
+showstringspaces=false,
+literate={*}{{\char42}}1
+         {-}{{\char45}}1
+}}
+\lstnewenvironment{cpp}[1][]
+{\cppstyle\lstset{#1}}{}
+\newcommand\pythonstyle{\lstset{
+language=python,
+basicstyle=\ttm,
+morekeywords={assert,as,echo},
+keywordstyle=\ttb\color{deepblue},
+emphstyle=\ttb\color{deepblue},
+stringstyle=\color{deepgreen},
+commentstyle=\fontfamily{txtt}\selectfont\color{gray},
+showstringspaces=false,
+literate={*}{{\char42}}1
+         {-}{{\char45}}1
+}}
+\lstnewenvironment{python}[1][]
+{\pythonstyle\lstset{#1}}{}
+
+\makeatletter
+\let\@fnsymbol\@arabic
+\makeatother
+
+%-----------------------------------------------------------------------------%
+% Main document
+%-----------------------------------------------------------------------------%
 
 \begin{document}
-\title{\qustop: Quantum state optimizer}
 
-\author{Vincent Russo}
-\email[E-mail:]{vincentrusso1@gmail.com}
-\affiliation{-}
+\title{\LARGE\bf \qustop: Quantum state optimizer}
 
-\date{\today}
-
-\begin{abstract}
-\end{abstract}
+\author[1]{Vincent Russo}
+  
+\renewcommand\Affilfont{\normalsize\itshape}
+\renewcommand\Authfont{\large}
+\setlength{\affilsep}{6mm}
+\renewcommand\Authand{\rule{10mm}{0mm}}
 
 \maketitle
 
-%-----------------------------------------------------------------------------%
+\begin{abstract}
+    The \qustop\ package is an open-source Python module for studying various
+    quantum state optimization scenarios including calculating optimal values
+    for quantum state distinguishability, quantum state exclusion, and quantum
+    state cloning.
+\end{abstract}
+
+%------------------------------------------------------------------------------%
 \section{Introduction}
-\label{sec:introduction}
-%-----------------------------------------------------------------------------%
+\label{sec:intro}
+%------------------------------------------------------------------------------%
 
-Documentation and tutorials are available on the $\qustop$
-\href{https://github.com/vprusso/toqito}{GitHub repository}~\cite{toqito}.
+%------------------------------------------------------------------------------%
+\section{Definitions}
+\label{sec:definitions}
+%------------------------------------------------------------------------------%
+
+It holds that
+\begin{equation}
+    0 \leq \omega_t(\eta, \LOCC) \leq \omega_t(\eta, \SEP) \leq \omega_t(\eta, \PPT) \leq \omega_t(\eta, \POS) \leq 1
+\end{equation}
+for all $t \in [U, M]$.
+
+It holds that
+\begin{equation}
+    0 \leq \omega_U(\eta, T) \leq \omega_M(\eta, T) \leq 1
+\end{equation}
+for all $T \in [\LOCC, \SEP, \PPT, \POS]$.
+
+The four Bell states $\ket{\psi_0}, \ldots, \ket{\psi_3} \in \complex^2 \otimes
+\complex^2$ are defined as
+
+\begin{equation}
+    \begin{aligned}
+        \ket{\psi_0} = \frac{1}{\sqrt{2}} \left(\ket{00} + \ket{11} \right), &\quad
+        \ket{\psi_1} = \frac{1}{\sqrt{2}} \left(\ket{01} + \ket{10} \right), \\
+        \ket{\psi_2} = \frac{1}{\sqrt{2}} \left(\ket{01} - \ket{10} \right), &\quad
+        \ket{\psi_3} = \frac{1}{\sqrt{2}} \left(\ket{00} - \ket{11} \right).
+    \end{aligned}
+\end{equation}
 
 
-%-----------------------------------------------------------------------------%
-\section{Fundamental objects}
-\label{sec:fundemental_objects}
-%-----------------------------------------------------------------------------%
+\subsection{Minimum-error distinguishability of four two-qubit states via PPT measurements}
 
-%-----------------------------------------------------------------------------%
-\subsection{Quantum states and ensembles}\label{sec:ensembles}
-%-----------------------------------------------------------------------------%
+\begin{theorem}\label{thm:min_error_four_state_two_qubit_ppt}
+    Let $\X = \Y = \complex^2$. For any PPT measurement $\{ P_1, P_2, P_3, P_4
+    \} \subset \PPT(\X : \Y)$, the success probability of correctly
+    discriminating the states corresponding to the set 
+	\begin{equation}
+        \left\{ 
+            \ket{\phi_n^{(1)}},
+            \ket{\phi_n^{(2)}},
+            \ket{\phi_m^{(3)}},
+            \ket{\phi_m^{(4)}} 
+        \right\} \subset 
+        \left(\X \otimes \Y \right)
+	\end{equation}
+    assuming a uniform distribution $p_1 = p_2 = p_3 = p_4 = 1/4$, is at most
+    \begin{equation}
+        \frac{1}{2} \left(1 + \frac{n+m}{2}\right)
+    \end{equation}
+    for all $n \in [0, 1]$ and $m \in [0, 1]$.
+\end{theorem}
+\begin{proof}
+	Define the Hermitian operator
+	\begin{equation}
+        H_{n,m} = \frac{1}{2}
+        \begin{pmatrix}
+            1+n & 0 & 0 & 0 \\
+            0 & 1+m & 0 & 0 \\
+            0 & 0 & 1+m & 0 \\
+            0 & 0 & 0 & 1+n
+        \end{pmatrix}
+        \in \Herm(\X \otimes \Y).
+	\end{equation}
+	It holds that
+	\begin{equation}
+        \frac{1}{4}\tr(H_{n,m}) = \frac{1}{2} \left(1 + \frac{n+m}{2}\right).
+	\end{equation}
+    We now desire to show that 
+    \begin{equation}
+        \begin{aligned}
+            H_{n,m} - \pt_{\X}\left(\phi_n^{(1)}\right) \in \Pos(\X \otimes\Y),
+            &\quad
+            H_{n,m} - \pt_{\X}\left(\phi_n^{(2)}\right) \in \Pos(\X \otimes\Y), \\
+            H_{n,m} - \pt_{\X}\left(\phi_m^{(3)}\right) \in \Pos(\X \otimes\Y),
+            &\quad
+            H_{n,m} - \pt_{\X}\left(\phi_n^{(4)}\right) \in \Pos(\X \otimes\Y),
+        \end{aligned}
+    \end{equation}
+    for all $n \in [0, 1]$ and $m \in [0, 1]$. Observe that
+    \begin{equation}\label{eq:partial-transpose-states}
+        \begin{aligned}
+            \pt_{\X}\left(\phi_n^{(1)}\right) = 
+            \begin{pmatrix}
+                \alpha^2 & 0 & 0 & 0 \\
+                0 & 0 & \alpha\beta & 0 \\
+                0 & \alpha\beta & 0 & 0 \\
+                0 & 0 & 0 & \beta^2
+            \end{pmatrix}, &\quad 
+            \pt_{\X}\left(\phi_n^{(2)}\right) = 
+            \begin{pmatrix}
+                \beta^2 & 0 & 0 & 0 \\
+                0 & 0 & -\alpha\beta & 0 \\
+                0 & -\alpha\beta & 0 & 0 \\
+                0 & 0 & 0 & \alpha^2
+            \end{pmatrix}, \\ 
+            \pt_{\X}\left(\phi_m^{(3)}\right) = 
+            \begin{pmatrix}
+                0 & 0 & 0 & \gamma\delta \\
+                0 & \gamma^2 & 0 & 0 \\
+                0 & 0 & \delta^2 & 0 \\
+                \gamma\delta & 0 & 0 & 0
+            \end{pmatrix}, &\quad 
+            \pt_{\X} \left(\phi_m^{(4)}\right) = 
+            \begin{pmatrix}
+                0 & 0 & 0 & -\gamma\delta \\
+                0 & \delta^2 & 0 & 0 \\
+                0 & 0 & \gamma^2 & 0 \\
+                -\gamma\delta & 0 & 0 & 0
+            \end{pmatrix}.
+        \end{aligned}
+    \end{equation}
+    We can represent $H_{n,m}$ as
+    \begin{equation}
+        H_{n,m} = 
+        \begin{pmatrix}
+            \alpha^2 & 0 & 0 & 0 \\
+            0 & \gamma^2 & 0 & 0 \\
+            0 & 0 & \gamma^2 & 0 \\
+            0 & 0 & 0 & \alpha^2
+        \end{pmatrix}
+    \end{equation}
+    since it holds that
+    \begin{equation}
+        \alpha^2 = \left(\sqrt{\frac{1+n}{2}}\right)^2 = \frac{1 + n}{2} 
+        \quad \text{and} \quad 
+        \gamma^2 = \left(\sqrt{\frac{1+m}{2}}\right)^2 = \frac{1 + m}{2}.
+    \end{equation}
+    Consider $k=1$ and observe that
+    \begin{equation}
+        H_{n,m} - \pt_{\X}\left(\phi_n^{(1)}\right) = 
+        \begin{pmatrix}
+            \alpha^2 - \alpha^2 & 0 & 0 & 0 \\
+            0 & \gamma^2 & -\alpha\beta & 0 \\
+            0 & -\alpha\beta & \gamma^2 & 0 \\
+            0 & 0 & 0 & \alpha^2 - \beta^2
+        \end{pmatrix}
+    \end{equation}
+    which is positive semidefinite as $0 \leq \beta \leq \alpha \leq 1$ and $0
+    \leq \delta \leq \gamma \leq 1$ for all $n \in [0,1]$ and $m \in [0,1]$. A
+    similar observation can be made for $k = 2, 3, 4$
+\end{proof}
 
-
-%-----------------------------------------------------------------------------%
-\section{Applications of qustop}
-\label{sec:applications}
-%-----------------------------------------------------------------------------%
-
-%-----------------------------------------------------------------------------%
-\subsection{Calculating optimal probabilities of distinguishing quantum states}\label{sec:opt_dist}
-%-----------------------------------------------------------------------------%
-
-%-----------------------------------------------------------------------------%
-\subsection{Global distinguishability}\label{sec:global}
-%-----------------------------------------------------------------------------%
-
-%-----------------------------------------------------------------------------%
-\subsection{PPT distinguishability}\label{sec:ppt}
-%-----------------------------------------------------------------------------%
-
-%-----------------------------------------------------------------------------%
-\subsection{Separable distinguishability}\label{sec:separable}
-%-----------------------------------------------------------------------------%
-
-%-----------------------------------------------------------------------------%
-\subsection{Calculating optimal probabilities of excluding quantum states}\label{sec:opt_exclude}
-%-----------------------------------------------------------------------------%
-
-%-----------------------------------------------------------------------------%
-\subsection{Calculating optimal probabilities of cloning quantum states}\label{sec:opt_clone}
-%-----------------------------------------------------------------------------%
+For completeness, we provide the following code listing that makes use of
+\qustop to encode the setting from
+Theorem~\ref{thm:min_error_four_state_two_qubit_ppt}.
 
 \begin{figure}[!htpb]
     \centering
-    \lstinputlisting[language=Python]{code/indstinguishable_mes.py}        
-    \caption{Calculate the minimum-error probability of optimally
-    distinguishing the states from Equation~\eqref{eq:ydy} via PPT
-    measurements.}
+    \lstinputlisting[language=Python]{code/four_state_two_qubit_ppt.py}
+    \caption{}
+    \label{fig:ppt_four_state_two_qubit}
+\end{figure}
+
+
+\subsubsection*{Example: Indistinguishable maximally entangled states}
+
+Consider the following ensemble in $\complex^4 \otimes \complex^4$ defined as
+\begin{equation}\label{eq:ydy_ensemble}
+    \eta = \left\{ \left(\frac{1}{4}, \ket{\psi_0} \otimes \ket{\psi_0} \right), 
+                  \left(\frac{1}{4}, \ket{\psi_2} \otimes \ket{\psi_1} \right),
+                  \left(\frac{1}{4}, \ket{\psi_3} \otimes \ket{\psi_1} \right),
+                  \left(\frac{1}{4}, \ket{\psi_1} \otimes \ket{\psi_1} \right) 
+            \right\} \subset \complex^4 \otimes \complex^4.
+\end{equation}
+In~\cite{yu2012four}, these states were shown to not be perfectly
+distinguishable via PPT measurements, although the optimal probability with
+which one is able to distinguish via PPT measurements was left as an open
+question. This question was resolved in~\cite{cosentino2013positive}, where it
+was shown that $\omega_M(\eta, \PPT) = 7/8$.
+
+In~\cite{cosentino2013positive} it was also shown that $\omega_U(\eta, \PPT) = 3/4$.
+
+\begin{figure}[!htpb]
+    \centering
+    \lstinputlisting[language=Python]{code/indstinguishable_mes.py}
+    \caption{Calculate the minimum-error and unambiguous probabilities of
+    distinguishing the ensemble from Equation~\eqref{eq:ydy_ensemble} via PPT
+    measurements and separable measurements.}
     \label{fig:ppt_ydy}
 \end{figure}
 
 
-%-----------------------------------------------------------------------------%
-\subsubsection{Quantum state discrimination via separable measurements}
-\label{sec:}
-%-----------------------------------------------------------------------------%
+\subsubsection*{Example: Entanglement cost of distinguishing Bell states}
+
+One may ask whether the ability to distinguish a state can be improved by
+making use of an auxiliary resource state
+\begin{equation}
+    \ket{\tau_{\epsilon}} = \sqrt{\frac{1+\epsilon}{2}}\ket{00} + \sqrt{\frac{1-\epsilon}{2}},
+\end{equation}
+for some $\epsilon \in [0, 1]$.
 
 
-%-----------------------------------------------------------------------------%
-\section{Conclusion}
-%-----------------------------------------------------------------------------%
+\bibliographystyle{alpha}
+\bibliography{refs}
 
-
-%-----------------------------------------------------------------------------%
-\section{Acknowledgements}
-%-----------------------------------------------------------------------------%
-
-\bibliography{main}
-\clearpage
 \end{document}
+

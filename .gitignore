@@ -9,6 +9,12 @@ plot.py
 *linter.sh
 *main.py
 *.vscode
+*.aux
+*.blg
+*.gz
+*.out
+*.bbl
+*.pyg
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
