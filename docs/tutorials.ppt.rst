@@ -109,8 +109,8 @@ measurements, and therefore also indistinguishable via LOCC measurements.
 .. math::
     \rho_0 = |\psi_0\rangle |\psi_0 \rangle \langle \psi_0 | \langle \psi_0 |, \quad
     \rho_1 = |\psi_1 \rangle |\psi_3 \rangle \langle \psi_1 | \langle \psi_3 |, \\
-    \rho_0 = |\psi_0\rangle |\psi_0 \rangle \langle \psi_0 | \langle \psi_0 |, \quad
-    \rho_1 = |\psi_1 \rangle |\psi_3 \rangle \langle \psi_1 | \langle \psi_3 |, \\
+    \rho_2 = |\psi_3\rangle |\psi_1 \rangle \langle \psi_3 | \langle \psi_1 |, \quad
+    \rho_3 = |\psi_1 \rangle |\psi_1 \rangle \langle \psi_1 | \langle \psi_1 |, \\
 
 While it was known that perfect distinguishability could not be achieved, the actual value and
 bound of optimal distinguishability was not known. It was shown in [Cosentino13]_ and later extended

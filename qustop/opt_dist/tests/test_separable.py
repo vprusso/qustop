@@ -108,28 +108,32 @@ def test_symmetric_extension_hierarchy_ydy_states():
     )
     ensemble.swap([2, 3])
 
-    primal_res = OptDist(ensemble,
-                         "sep",
-                         "min-error",
-                         return_optimal_meas=True,
-                         solver="SCS",
-                         verbose=False,
-                         eps=1e-6,
-                         level=2)
+    primal_res = OptDist(
+        ensemble,
+        "sep",
+        "min-error",
+        return_optimal_meas=True,
+        solver="SCS",
+        verbose=False,
+        eps=1e-6,
+        level=2,
+    )
     primal_res.solve()
 
     # The min-error probability of distinguishing via
     # separable measurements is equal to 3/4.
     np.testing.assert_equal(np.isclose(primal_res.value, 3 / 4), True)
 
-    dual_res = OptDist(ensemble,
-                       "sep",
-                       "min-error",
-                       return_optimal_meas=True,
-                       solver="SCS",
-                       verbose=False,
-                       eps=1e-6,
-                       level=2)
+    dual_res = OptDist(
+        ensemble,
+        "sep",
+        "min-error",
+        return_optimal_meas=True,
+        solver="SCS",
+        verbose=False,
+        eps=1e-6,
+        level=2,
+    )
     dual_res.solve()
 
     # The min-error probability of distinguishing via

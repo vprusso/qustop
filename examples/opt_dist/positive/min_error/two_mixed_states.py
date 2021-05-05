@@ -16,36 +16,29 @@ import numpy as np
 
 from qustop import State, Ensemble, OptDist
 
-# Define single-qubit |0> and |1> basis states.
-e_0, e_1 = np.array([[1, 0]]).T, np.array([[0, 1]]).T
+# Define single-qubit |+> and |-> basis states.
 e_p, e_m = (
     1 / np.sqrt(2) * np.array([[1, 1]]).T,
     1 / np.sqrt(2) * np.array([[1, -1]]).T,
 )
 
-# rho_1 = 3/4 |+><+| + 1/4|-><-|
-rho_1 = 3 / 4 * (e_p * e_p.conj().T) + 1 / 4 * (e_m * e_m.conj().T)
-
-# rho_2 = 1/4 |+><+| + 3/4|-><-|
-rho_2 = 1 / 4 * (e_p * e_p.conj().T) + 3 / 4 * (e_m * e_m.conj().T)
-
 dims = [2]
-rho_1 = State(rho_1, dims)
-rho_2 = State(rho_2, dims)
+# sqrt(3/4) |+> + sqrt(1/4)|->
+phi_1 = State(np.sqrt(3 / 4) * e_p + np.sqrt(1 / 4) * e_m, dims)
+# sqrt(1/4) |+> + sqrt(3/4)|->
+phi_2 = State(np.sqrt(1 / 4) * e_p + np.sqrt(3 / 4) * e_m, dims)
 
-# Verify that the states `rho_1` and `rho_2` are mixed:
-print(f"Is rho_1 pure: {rho_1.is_pure}")
-print(f"Is rho_2 pure: {rho_2.is_pure}")
+# Verify that the states `phi_1` and `phi_2` are mixed:
+print(f"Is phi_1 pure: {phi_1.is_pure}")
+print(f"Is phi_2 pure: {phi_2.is_pure}")
 
-ensemble = Ensemble([rho_1, rho_2])
+ensemble = Ensemble([phi_1, phi_2])
 
-sd = OptDist(
-    ensemble=ensemble, dist_measurement="pos", dist_method="min-error"
-)
+res = OptDist(ensemble, "pos", "min-error")
 
 # 0.7500000000609778
-sd.solve()
-print(sd.value)
+res.solve()
+print(res.value)
 
 # The closed-form equation yields: 3/4
-print(1 / 2 + 1 / 4 * np.linalg.norm(rho_1.value - rho_2.value, ord="nuc"))
+print(1 / 2 + 1 / 4 * np.linalg.norm(phi_1.value - phi_2.value, ord="nuc"))

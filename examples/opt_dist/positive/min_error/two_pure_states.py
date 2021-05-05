@@ -16,34 +16,29 @@ import numpy as np
 
 from qustop import State, Ensemble, OptDist
 
-# Define single-qubit |0> and |1> basis states.
+# Define single-qubit |+> and |-> basis states.
 e_p, e_m = (
     1 / np.sqrt(2) * np.array([[1, 1]]).T,
     1 / np.sqrt(2) * np.array([[1, -1]]).T,
 )
 
-# Define v_1 = sqrt(3/4)|+> + sqrt(1/4)|->
-v_1 = np.sqrt(3 / 4) * e_p + np.sqrt(1 / 4) * e_m
-# Define v_2 = sqrt(1/4)|+> - sqrt(3/4)|->
-v_2 = np.sqrt(1 / 4) * e_p - np.sqrt(3 / 4) * e_m
-
 dims = [2]
-rho_1 = State(v_1, dims)
-rho_2 = State(v_2, dims)
+# sqrt(3/4)|+> + sqrt(1/4)|->
+psi_1 = State(np.sqrt(3 / 4) * e_p + np.sqrt(1 / 4) * e_m, dims)
+# sqrt(1/4)|+> - sqrt(3/4)|->
+psi_2 = State(np.sqrt(1 / 4) * e_p - np.sqrt(3 / 4) * e_m, dims)
 
-# Verify that the states `rho_1` and `rho_2` are pure:
-print(f"Is rho_1 pure: {rho_1.is_pure}")
-print(f"Is rho_2 pure: {rho_2.is_pure}")
+# Verify that the states `psi_1` and `psi_2` are pure:
+print(f"Is psi_1 pure: {psi_1.is_pure}")
+print(f"Is psi_2 pure: {psi_2.is_pure}")
 
-ensemble = Ensemble([rho_1, rho_2])
+ensemble = Ensemble([psi_1, psi_2])
 
-sd = OptDist(
-    ensemble=ensemble, dist_measurement="pos", dist_method="min-error"
-)
+res = OptDist(ensemble, "pos", "min-error")
 
 # 0.999999998061445
-sd.solve()
-print(sd.value)
+res.solve()
+print(res.value)
 
 # The closed-form equation yields: 0.9999999999999999 = 1
-print(1 / 2 + 1 / 4 * np.linalg.norm(rho_1.value - rho_2.value, ord="nuc"))
+print(1 / 2 + 1 / 4 * np.linalg.norm(psi_1.value - psi_2.value, ord="nuc"))

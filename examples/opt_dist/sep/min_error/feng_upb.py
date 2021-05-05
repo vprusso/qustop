@@ -30,27 +30,14 @@ phi_8 = np.kron((e_0 - e_1 + e_2), (e_1 + e_2 + e_3) / 3)
 
 dims = [4, 4]
 states = [
-    State(phi_1 * phi_1.conj().T, dims),
-    State(phi_2 * phi_2.conj().T, dims),
-    State(phi_3 * phi_3.conj().T, dims),
-    State(phi_4 * phi_4.conj().T, dims),
-    State(phi_5 * phi_5.conj().T, dims),
-    State(phi_6 * phi_6.conj().T, dims),
-    State(phi_7 * phi_7.conj().T, dims),
-    State(phi_8 * phi_8.conj().T, dims),
+    State(phi_1, dims), State(phi_2, dims),
+    State(phi_3, dims), State(phi_4, dims),
+    State(phi_5, dims), State(phi_6, dims),
+    State(phi_7, dims), State(phi_8, dims),
 ]
 ensemble = Ensemble(states=states)
-sd = OptDist(
-    ensemble,
-    "sep",
-    "min-error",
-    return_optimal_meas=True,
-    solver="SCS",
-    verbose=True,
-    eps=1e-4,
-    level=2,
-)
-sd.solve()
+res = OptDist(ensemble, "sep", "min-error", level=2)
+res.solve()
 
 # 0.9967296337698935
-print(sd.value)
+print(res.value)

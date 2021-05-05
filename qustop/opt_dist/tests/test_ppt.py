@@ -394,33 +394,52 @@ def test_ppt_five_mes_generalized_bell():
     n = 5
     dims = [5, 5]
 
-    rho_1 = State(1 / n * (vec(gen_pauli(0, 0, n)) @ vec(gen_pauli(0, 0, n)).conj().T), dims)
-    rho_2 = State(1 / n * (vec(gen_pauli(1, 1, n)) @ vec(gen_pauli(1, 1, n)).conj().T), dims)
-    rho_3 = State(1 / n * (vec(gen_pauli(1, 2, n)) @ vec(gen_pauli(1, 2, n)).conj().T), dims)
-    rho_4 = State(1 / n * (vec(gen_pauli(3, 1, n)) @ vec(gen_pauli(3, 1, n)).conj().T), dims)
-    rho_5 = State(1 / n * (vec(gen_pauli(3, 2, n)) @ vec(gen_pauli(3, 2, n)).conj().T), dims)
+    rho_1 = State(
+        1 / n * (vec(gen_pauli(0, 0, n)) @ vec(gen_pauli(0, 0, n)).conj().T),
+        dims,
+    )
+    rho_2 = State(
+        1 / n * (vec(gen_pauli(1, 1, n)) @ vec(gen_pauli(1, 1, n)).conj().T),
+        dims,
+    )
+    rho_3 = State(
+        1 / n * (vec(gen_pauli(1, 2, n)) @ vec(gen_pauli(1, 2, n)).conj().T),
+        dims,
+    )
+    rho_4 = State(
+        1 / n * (vec(gen_pauli(3, 1, n)) @ vec(gen_pauli(3, 1, n)).conj().T),
+        dims,
+    )
+    rho_5 = State(
+        1 / n * (vec(gen_pauli(3, 2, n)) @ vec(gen_pauli(3, 2, n)).conj().T),
+        dims,
+    )
 
     ensemble = Ensemble([rho_1, rho_2, rho_3, rho_4, rho_5])
 
-    primal_res = OptDist(ensemble,
-                         "ppt",
-                         "min-error",
-                         return_optimal_meas=True,
-                         solver="SCS",
-                         verbose=False,
-                         eps=1e-6)
+    primal_res = OptDist(
+        ensemble,
+        "ppt",
+        "min-error",
+        return_optimal_meas=True,
+        solver="SCS",
+        verbose=False,
+        eps=1e-6,
+    )
     primal_res.solve()
     np.testing.assert_equal(
         np.isclose(primal_res.value, 0.9898, atol=0.001), True
     )
 
-    dual_res = OptDist(ensemble,
-                       "ppt",
-                       "min-error",
-                       return_optimal_meas=False,
-                       solver="SCS",
-                       verbose=False,
-                       eps=1e-6)
+    dual_res = OptDist(
+        ensemble,
+        "ppt",
+        "min-error",
+        return_optimal_meas=False,
+        solver="SCS",
+        verbose=False,
+        eps=1e-6,
+    )
     dual_res.solve()
     np.testing.assert_equal(
         np.isclose(dual_res.value, 0.9898, atol=0.001), True
@@ -448,34 +467,56 @@ def test_ppt_six_mes_generalized_bell():
     """
     n = 6
     dims = [6, 6]
-    rho_1 = State(1 / n * (vec(gen_pauli(0, 0, n)) @ vec(gen_pauli(0, 0, n)).conj().T), dims)
-    rho_2 = State(1 / n * (vec(gen_pauli(1, 1, n)) @ vec(gen_pauli(1, 1, n)).conj().T), dims)
-    rho_3 = State(1 / n * (vec(gen_pauli(0, 2, n)) @ vec(gen_pauli(0, 2, n)).conj().T), dims)
-    rho_4 = State(1 / n * (vec(gen_pauli(0, 3, n)) @ vec(gen_pauli(0, 3, n)).conj().T), dims)
-    rho_5 = State(1 / n * (vec(gen_pauli(0, 4, n)) @ vec(gen_pauli(0, 4, n)).conj().T), dims)
-    rho_6 = State(1 / n * (vec(gen_pauli(3, 0, n)) @ vec(gen_pauli(3, 0, n)).conj().T), dims)
+    rho_1 = State(
+        1 / n * (vec(gen_pauli(0, 0, n)) @ vec(gen_pauli(0, 0, n)).conj().T),
+        dims,
+    )
+    rho_2 = State(
+        1 / n * (vec(gen_pauli(1, 1, n)) @ vec(gen_pauli(1, 1, n)).conj().T),
+        dims,
+    )
+    rho_3 = State(
+        1 / n * (vec(gen_pauli(0, 2, n)) @ vec(gen_pauli(0, 2, n)).conj().T),
+        dims,
+    )
+    rho_4 = State(
+        1 / n * (vec(gen_pauli(0, 3, n)) @ vec(gen_pauli(0, 3, n)).conj().T),
+        dims,
+    )
+    rho_5 = State(
+        1 / n * (vec(gen_pauli(0, 4, n)) @ vec(gen_pauli(0, 4, n)).conj().T),
+        dims,
+    )
+    rho_6 = State(
+        1 / n * (vec(gen_pauli(3, 0, n)) @ vec(gen_pauli(3, 0, n)).conj().T),
+        dims,
+    )
 
     ensemble = Ensemble([rho_1, rho_2, rho_3, rho_4, rho_5, rho_6])
 
-    primal_res = OptDist(ensemble,
-                         "ppt",
-                         "min-error",
-                         return_optimal_meas=True,
-                         solver="SCS",
-                         verbose=False,
-                         eps=1e-6)
+    primal_res = OptDist(
+        ensemble,
+        "ppt",
+        "min-error",
+        return_optimal_meas=True,
+        solver="SCS",
+        verbose=False,
+        eps=1e-6,
+    )
     primal_res.solve()
     np.testing.assert_equal(
         np.isclose(primal_res.value, 0.9905, atol=0.001), True
     )
 
-    dual_res = OptDist(ensemble,
-                       "ppt",
-                       "min-error",
-                       return_optimal_meas=False,
-                       solver="SCS",
-                       verbose=False,
-                       eps=1e-6)
+    dual_res = OptDist(
+        ensemble,
+        "ppt",
+        "min-error",
+        return_optimal_meas=False,
+        solver="SCS",
+        verbose=False,
+        eps=1e-6,
+    )
     dual_res.solve()
     np.testing.assert_equal(
         np.isclose(dual_res.value, 0.9905, atol=0.001), True

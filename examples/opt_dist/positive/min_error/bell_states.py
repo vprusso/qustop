@@ -17,21 +17,20 @@ from toqito.states import bell
 from qustop import State, Ensemble, OptDist
 
 dims = [2, 2]
-rho_1 = State(bell(0), dims)
-rho_2 = State(bell(1), dims)
-rho_3 = State(bell(2), dims)
-rho_4 = State(bell(3), dims)
+psi_0 = State(bell(0), dims)
+psi_1 = State(bell(1), dims)
+psi_2 = State(bell(2), dims)
+psi_3 = State(bell(3), dims)
 
-ensemble = Ensemble([rho_1, rho_2, rho_3, rho_4])
+ensemble = Ensemble([psi_0, psi_1, psi_2, psi_3])
 
 # Verify that states in the ensemble are mutually orthogonal:
 print(f"Are states mutually orthogonal: {ensemble.is_mutually_orthogonal}")
 
-sd = OptDist(
-    ensemble=ensemble, dist_measurement="pos", dist_method="min-error"
-)
+res = OptDist(ensemble, "pos", "min-error")
 
 # Mutually orthogonal states are optimally distinguishable--giving
 # an optimal value of one.
-sd.solve()
-print(sd.value)
+res.solve()
+# 1.0000000000879223
+print(res.value)

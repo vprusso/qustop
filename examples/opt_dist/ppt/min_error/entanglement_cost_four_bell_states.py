@@ -43,6 +43,9 @@ sep_res.solve()
 
 eq = 1 / 2 * (1 + np.sqrt(1 - eps ** 2))
 
+# 0.9330127018922193
 print(eq)
+# 0.9330127016540999
 print(ppt_res.value)
+# 0.9330127016540999
 print(sep_res.value)

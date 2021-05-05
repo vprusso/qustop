@@ -146,11 +146,14 @@ class Positive:
                 for i, _ in enumerate(self._states):
                     if i != j:
                         sum_val += (
-                            cvxpy.real(scalar_vars[i][j])
+                            scalar_vars[i][j]
                             * self._probs[i]
                             * self._states[i]
                         )
-                constraints.append(y_var - self._probs[j] * self._states[j] + sum_val >> 0)
+                constraints.append(
+                    y_var - self._probs[j] * self._states[j] + sum_val >> 0
+                )
+            constraints.append(y_var >> 0)
 
         objective = cvxpy.Minimize(cvxpy.trace(cvxpy.real(y_var)))
         problem = cvxpy.Problem(objective, constraints)

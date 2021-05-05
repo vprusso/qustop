@@ -30,11 +30,11 @@ Minimum-error distinguishability via separable measurements
                                     & \text{T}_{\mathcal{X}}(X_k) \in \text{Pos}\left(
                                         \mathcal{X} \otimes \mathcal{Y} \otimes \mathcal{Y}_2
                                         \otimes \ldots \otimes \mathcal{Y}_s \right), \\
-                                    & \text{T}_{\mathcal{Y}_2 (X_k) \in \text{Pos}\left(
+                                    & \text{T}_{\mathcal{Y}_2} (X_k) \in \text{Pos}\left(
                                         \mathcal{X} \otimes \mathcal{Y} \otimes \mathcal{Y}_2
                                         \otimes \ldots \otimes \mathcal{Y}_s \right), \\
-                                    & \cdots \\
-                                    & \text{T}_{\mathcal{Y}_s (X_k) \in \text{Pos}\left(
+                                    & \vdots \\
+                                    & \text{T}_{\mathcal{Y}_s} (X_k) \in \text{Pos}\left(
                                         \mathcal{X} \otimes \mathcal{Y} \otimes \mathcal{Y}_2
                                         \otimes \ldots \otimes \mathcal{Y}_s \right), \\
                                     & X_1, \ldots, X_N \in
@@ -240,10 +240,8 @@ is not perfectly distinguishable via separable measurements. This can be observe
    :linenos:
    :start-after: # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-XXXX
-
-XXX
-^^^
+Impossibility to distinguish a UPB plus one extra pure state
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 It was shown in [BCJRWY15]_ that if we consider an ensemble of states consisting of a UPB along with a pure state
 that is orthogonal to all states in said ensemble, then it is impossible to perfectly distinguish this ensemble.
@@ -266,8 +264,6 @@ that is orthogonal to all states in said ensemble, then it is impossible to perf
    :language: python
    :linenos:
    :start-after: # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
-XXX
 
 References
 -----------

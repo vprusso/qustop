@@ -23,7 +23,7 @@ ensemble = Ensemble(
 ppt_min = OptDist(ensemble, "ppt", "min-error")
 ppt_min.solve()
 
-print(ppt_min.value)
+ppt_val = ppt_min.value
+ppt_closed_form = 1 / 2 * (1 + (n + m) / 2)
 
-print(1 / 2 * (1 + (n + m) / 2))
-
+assert np.isclose(ppt_val, ppt_closed_form)

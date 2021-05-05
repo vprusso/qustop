@@ -112,10 +112,12 @@ def test_unambiguous_state_distinguishability_two_states():
     primal_res.solve()
     np.testing.assert_equal(np.isclose(primal_res.value, 1), True)
 
-    dual_res = OptDist(ensemble=ensemble,
-                       dist_measurement="pos",
-                       dist_method="unambiguous",
-                       return_optimal_meas=False)
+    dual_res = OptDist(
+        ensemble=ensemble,
+        dist_measurement="pos",
+        dist_method="unambiguous",
+        return_optimal_meas=False,
+    )
     dual_res.solve()
     np.testing.assert_equal(np.isclose(dual_res.value, 1), True)
 
@@ -144,13 +146,17 @@ def test_state_distinguishability_two_mixed_states():
         ensemble=ensemble, dist_measurement="pos", dist_method="min-error"
     )
     primal_res.solve()
-    np.testing.assert_equal(np.isclose(primal_res.value, 3 / 4, atol=0.001), True)
+    np.testing.assert_equal(
+        np.isclose(primal_res.value, 3 / 4, atol=0.001), True
+    )
 
     dual_res = OptDist(
         ensemble=ensemble, dist_measurement="pos", dist_method="min-error"
     )
     dual_res.solve()
-    np.testing.assert_equal(np.isclose(dual_res.value, 3 / 4, atol=0.001), True)
+    np.testing.assert_equal(
+        np.isclose(dual_res.value, 3 / 4, atol=0.001), True
+    )
 
 
 def test_state_distinguishability_three_non_orthogonal_states():
@@ -182,24 +188,39 @@ def test_state_distinguishability_three_non_orthogonal_states():
 
     # Primal min-error:
     primal_min_error_res = OptDist(
-        ensemble=ensemble, dist_measurement="pos", dist_method="min-error", return_optimal_meas=True
+        ensemble=ensemble,
+        dist_measurement="pos",
+        dist_method="min-error",
+        return_optimal_meas=True,
     )
     primal_min_error_res.solve()
-    np.testing.assert_equal(np.isclose(primal_min_error_res.value, 1/2, atol=0.001), True)
+    np.testing.assert_equal(
+        np.isclose(primal_min_error_res.value, 1 / 2, atol=0.001), True
+    )
 
     # Dual min-error:
     dual_min_error_res = OptDist(
-        ensemble=ensemble, dist_measurement="pos", dist_method="min-error", return_optimal_meas=False
+        ensemble=ensemble,
+        dist_measurement="pos",
+        dist_method="min-error",
+        return_optimal_meas=False,
     )
     dual_min_error_res.solve()
-    np.testing.assert_equal(np.isclose(dual_min_error_res.value, 1/2, atol=0.001), True)
+    np.testing.assert_equal(
+        np.isclose(dual_min_error_res.value, 1 / 2, atol=0.001), True
+    )
 
     # Primal unambiguous:
     primal_unambig_res = OptDist(
-        ensemble=ensemble, dist_measurement="pos", dist_method="unambiguous", return_optimal_meas=True
+        ensemble=ensemble,
+        dist_measurement="pos",
+        dist_method="unambiguous",
+        return_optimal_meas=True,
     )
     primal_unambig_res.solve()
-    np.testing.assert_equal(np.isclose(primal_unambig_res.value, 0, atol=0.001), True)
+    np.testing.assert_equal(
+        np.isclose(primal_unambig_res.value, 0, atol=0.001), True
+    )
     # TODO FIX ME
     # # Dual unambiguous
     # dual_unambig_res = OptDist(
@@ -255,7 +276,9 @@ def test_state_distinguishability_bell_states():
         return_optimal_meas=True,
     )
     primal_min_error_res.solve()
-    np.testing.assert_equal(np.isclose(primal_min_error_res.value, 1, atol=0.001), True)
+    np.testing.assert_equal(
+        np.isclose(primal_min_error_res.value, 1, atol=0.001), True
+    )
 
     dual_min_error_res = OptDist(
         ensemble=ensemble,
@@ -264,7 +287,9 @@ def test_state_distinguishability_bell_states():
         return_optimal_meas=False,
     )
     dual_min_error_res.solve()
-    np.testing.assert_equal(np.isclose(dual_min_error_res.value, 1, atol=0.001), True)
+    np.testing.assert_equal(
+        np.isclose(dual_min_error_res.value, 1, atol=0.001), True
+    )
 
     primal_unambig_res = OptDist(
         ensemble=ensemble,
@@ -273,7 +298,9 @@ def test_state_distinguishability_bell_states():
         return_optimal_meas=True,
     )
     primal_unambig_res.solve()
-    np.testing.assert_equal(np.isclose(primal_unambig_res.value, 1, atol=0.001), True)
+    np.testing.assert_equal(
+        np.isclose(primal_unambig_res.value, 1, atol=0.001), True
+    )
 
     dual_unambig_res = OptDist(
         ensemble=ensemble,
@@ -282,4 +309,6 @@ def test_state_distinguishability_bell_states():
         return_optimal_meas=False,
     )
     dual_unambig_res.solve()
-    np.testing.assert_equal(np.isclose(dual_unambig_res.value, 1, atol=0.001), True)
+    np.testing.assert_equal(
+        np.isclose(dual_unambig_res.value, 1, atol=0.001), True
+    )

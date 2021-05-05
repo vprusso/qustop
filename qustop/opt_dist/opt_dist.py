@@ -76,18 +76,28 @@ class OptDist:
         if len(self.ensemble) == 2:
             # If the states are mutually orthogonal and both pure states, they are perfectly distinguishable
             # arXiv:0007098.
-            if self.ensemble.is_mutually_orthogonal and self.ensemble[0].is_pure and self.ensemble[1].is_pure:
+            if (
+                self.ensemble.is_mutually_orthogonal
+                and self.ensemble[0].is_pure
+                and self.ensemble[1].is_pure
+            ):
                 return 1.0
 
             # In any case, there is a closed-form expression for the distinguishability of two density matrices.
             # TODO:
             else:
-                return 1/2 + trace_norm(self.ensemble.probs[0] * self.ensemble.density_matrices[0] -
-                                        self.ensemble.probs[1] * self.ensemble.density_matrices[1])
+                return 1 / 2 + trace_norm(
+                    self.ensemble.probs[0] * self.ensemble.density_matrices[0]
+                    - self.ensemble.probs[1]
+                    * self.ensemble.density_matrices[1]
+                )
 
         if len(self.ensemble) == 3:
             # Check if ensemble is in :math:`\mathbb{C}^2 \otimes \mathbb{C}^2`:
-            if len(self.ensemble.dims) == 2 and self.ensemble.dims[0] == self.ensemble.dims == 2:
+            if (
+                len(self.ensemble.dims) == 2
+                and self.ensemble.dims[0] == self.ensemble.dims == 2
+            ):
                 # If two out of the three states are product states and all three states are pure then according to
                 # arXiv:0202034, the states are perfectly distinguishable.
                 # TODO
@@ -98,7 +108,10 @@ class OptDist:
             # If ensemble is in :math:`\mathbb{C}^2 \otimes \mathbb{C}^2` and all states are product states, the
             # ensemble is perfectly distinguishable according to arXiv:0202034
             # TODO
-            if len(self.ensemble.dims) == 2 and self.ensemble.dims[0] == self.ensemble.dims == 2:
+            if (
+                len(self.ensemble.dims) == 2
+                and self.ensemble.dims[0] == self.ensemble.dims == 2
+            ):
                 pass
             pass
 

@@ -19,14 +19,14 @@ from qustop import Ensemble, State, OptDist
 # Construct the corresponding density matrices of the Bell states.
 dims = [2, 2]
 states = [
-    State(bell(0) * bell(0).conj().T, dims),
-    State(bell(1) * bell(1).conj().T, dims),
-    State(bell(2) * bell(2).conj().T, dims),
-    State(bell(3) * bell(3).conj().T, dims),
+    State(bell(0), dims),
+    State(bell(1), dims),
+    State(bell(2), dims),
+    State(bell(3), dims),
 ]
-ensemble = Ensemble(states=states, probs=[1 / 4, 1 / 4, 1 / 4, 1 / 4])
-sd = OptDist(
-    ensemble=ensemble, dist_measurement="ppt", dist_method="min-error"
-)
-sd.solve()
-print(sd.value)
+ensemble = Ensemble(states, [1 / 4, 1 / 4, 1 / 4, 1 / 4])
+res = OptDist(ensemble, "ppt", "min-error")
+res.solve()
+
+# 0.5000000000530641
+print(res.value)

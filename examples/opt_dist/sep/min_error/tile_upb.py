@@ -17,7 +17,7 @@ from toqito.states import basis, tile
 from qustop import Ensemble, State, OptDist
 
 
-# Construct the corresponding density matrices of the Bell states.
+# Construct the corresponding density matrices of the Tiles UPB.
 dims = [3, 3]
 states = [
     State(tile(0) * tile(0).conj().T, dims),
@@ -26,18 +26,9 @@ states = [
     State(tile(3) * tile(3).conj().T, dims),
     State(tile(4) * tile(4).conj().T, dims),
 ]
-ensemble = Ensemble(states=states)
-sd = OptDist(
-    ensemble,
-    "sep",
-    "min-error",
-    return_optimal_meas=True,
-    solver="SCS",
-    verbose=False,
-    eps=1e-6,
-    level=2,
-)
-sd.solve()
+ensemble = Ensemble(states)
+res = OptDist(ensemble, "sep", "min-error", level=2)
+res.solve()
 
 # 0.999999
-print(sd.value)
+print(res.value)

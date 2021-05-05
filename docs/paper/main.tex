@@ -324,7 +324,10 @@ literate={*}{{\char42}}1
     The \qustop\ package is an open-source Python module for studying various
     quantum state optimization scenarios including calculating optimal values
     for quantum state distinguishability, quantum state exclusion, and quantum
-    state cloning.
+    state cloning. We showcase how \qustop \ can be used to verify known results
+    in the domain of quantum state distinguishability as well as how it can be
+    used as a numerical utility for new results. The \qustop \ package is
+    publicly accessible on GitHub at~\cite{}.
 \end{abstract}
 
 %------------------------------------------------------------------------------%
@@ -335,6 +338,44 @@ literate={*}{{\char42}}1
 %------------------------------------------------------------------------------%
 \section{Definitions}
 \label{sec:definitions}
+%------------------------------------------------------------------------------%
+
+We assume the reader is familiar with the notions of quantum information as
+contained in~\cite{nielsen2002quantum} and~\cite{wilde2013quantum}. We will
+make use of the notation and terminology found in~\cite{watrous2018theory}.
+
+
+Let $\X = \complex^N$ denote a finite-dimensional complex Euclidean space with
+a fixed standard basis $\{\ket{1}, \ldots, \ket{N} \}$ for some positive
+integer $N$. We use sets $\Lin(\X), \Pos(\X), \Herm(\X), \Density(\X)$, and
+$\Unitary(\X)$ to represent the set of a linear operators, positive
+semidefinite operators, Hermitian operators, density operators, and unitary
+operators acting on the space $\X$.
+
+We begin by describing the setting of quantum state discrimination over an
+ensemble of quantum states. In this setting, we are provided with a collection
+of tuples (an ensemble)
+
+\begin{equation}
+    \{(p_1, \rho_1), \ldots, (p_N, \rho_N) \ \} \subset 
+    (\X_1 \otimes \Y_1) \otimes \cdots \otimes (\X_N \otimes \Y_N),
+\end{equation}
+where $\rho_i \in \Density(\X_i \otimes \Y_i)$ denotes a shared quantum state
+between two parties, Alice and Bob, indexed by $i$ and where $p_i$ denotes the
+probability with which $\rho_i$ is selected from the ensemble. The state
+discrimination procedure involves a random index $k \in \{1, \ldots, N\}$ being
+selected. Alice and Bob are then provided with the state $\rho_k$ where their
+goal is to determine the index $k$ by performing a measurement on their
+respective shared portion of the state. 
+
+%------------------------------------------------------------------------------%
+\subsubsection*{Quantum states and ensembles}
+\label{sec:quantum_states_and_ensembles}
+%------------------------------------------------------------------------------%
+
+%------------------------------------------------------------------------------%
+\subsubsection*{Semidefinite programming}
+\label{sec:semidefinite_programming}
 %------------------------------------------------------------------------------%
 
 It holds that
@@ -361,6 +402,53 @@ The four Bell states $\ket{\psi_0}, \ldots, \ket{\psi_3} \in \complex^2 \otimes
     \end{aligned}
 \end{equation}
 
+%------------------------------------------------------------------------------%
+\section{Quantum state distinguishability}
+\label{sec:qsd}
+%------------------------------------------------------------------------------%
+
+%------------------------------------------------------------------------------%
+\subsubsection*{Example: Indistinguishable maximally entangled states}
+\label{sec:indistinguishable_mes}
+%------------------------------------------------------------------------------%
+
+Consider the following ensemble in $\complex^4 \otimes \complex^4$ defined as
+\begin{equation}\label{eq:ydy_ensemble}
+    \eta = \left\{ \left(\frac{1}{4}, \ket{\psi_0} \otimes \ket{\psi_0} \right), 
+                  \left(\frac{1}{4}, \ket{\psi_2} \otimes \ket{\psi_1} \right),
+                  \left(\frac{1}{4}, \ket{\psi_3} \otimes \ket{\psi_1} \right),
+                  \left(\frac{1}{4}, \ket{\psi_1} \otimes \ket{\psi_1} \right) 
+            \right\} \subset \complex^4 \otimes \complex^4.
+\end{equation}
+In~\cite{yu2012four}, these states were shown to not be perfectly
+distinguishable via PPT measurements, although the optimal probability with
+which one is able to distinguish via PPT measurements was left as an open
+question. This question was resolved in~\cite{cosentino2013positive}, where it
+was shown that $\omega_M(\eta, \PPT) = 7/8$.
+
+In~\cite{cosentino2013positive} it was also shown that $\omega_U(\eta, \PPT) = 3/4$.
+
+\begin{figure}[!htpb]
+    \centering
+    \lstinputlisting[language=Python]{code/indstinguishable_mes.py}
+    \caption{Calculate the minimum-error and unambiguous probabilities of
+    distinguishing the ensemble from Equation~\eqref{eq:ydy_ensemble} via PPT
+    measurements and separable measurements.}
+    \label{fig:ppt_ydy}
+\end{figure}
+
+
+%------------------------------------------------------------------------------%
+\subsubsection*{Example: Entanglement cost of distinguishing Bell states}
+\label{sec:entanglement_cost_bell}
+%------------------------------------------------------------------------------%
+
+One may ask whether the ability to distinguish a state can be improved by
+making use of an auxiliary resource state
+\begin{equation}
+    \ket{\tau_{\epsilon}} = \sqrt{\frac{1+\epsilon}{2}}\ket{00} + \sqrt{\frac{1-\epsilon}{2}},
+\end{equation}
+for some $\epsilon \in [0, 1]$.
 
 \subsection{Minimum-error distinguishability of four two-qubit states via PPT measurements}
 
@@ -485,43 +573,16 @@ Theorem~\ref{thm:min_error_four_state_two_qubit_ppt}.
     \label{fig:ppt_four_state_two_qubit}
 \end{figure}
 
+%------------------------------------------------------------------------------%
+\section{Quantum state exclusion}
+\label{sec:qse}
+%------------------------------------------------------------------------------%
 
-\subsubsection*{Example: Indistinguishable maximally entangled states}
+%------------------------------------------------------------------------------%
+\section{Quantum state cloning}
+\label{sec:qsc}
+%------------------------------------------------------------------------------%
 
-Consider the following ensemble in $\complex^4 \otimes \complex^4$ defined as
-\begin{equation}\label{eq:ydy_ensemble}
-    \eta = \left\{ \left(\frac{1}{4}, \ket{\psi_0} \otimes \ket{\psi_0} \right), 
-                  \left(\frac{1}{4}, \ket{\psi_2} \otimes \ket{\psi_1} \right),
-                  \left(\frac{1}{4}, \ket{\psi_3} \otimes \ket{\psi_1} \right),
-                  \left(\frac{1}{4}, \ket{\psi_1} \otimes \ket{\psi_1} \right) 
-            \right\} \subset \complex^4 \otimes \complex^4.
-\end{equation}
-In~\cite{yu2012four}, these states were shown to not be perfectly
-distinguishable via PPT measurements, although the optimal probability with
-which one is able to distinguish via PPT measurements was left as an open
-question. This question was resolved in~\cite{cosentino2013positive}, where it
-was shown that $\omega_M(\eta, \PPT) = 7/8$.
-
-In~\cite{cosentino2013positive} it was also shown that $\omega_U(\eta, \PPT) = 3/4$.
-
-\begin{figure}[!htpb]
-    \centering
-    \lstinputlisting[language=Python]{code/indstinguishable_mes.py}
-    \caption{Calculate the minimum-error and unambiguous probabilities of
-    distinguishing the ensemble from Equation~\eqref{eq:ydy_ensemble} via PPT
-    measurements and separable measurements.}
-    \label{fig:ppt_ydy}
-\end{figure}
-
-
-\subsubsection*{Example: Entanglement cost of distinguishing Bell states}
-
-One may ask whether the ability to distinguish a state can be improved by
-making use of an auxiliary resource state
-\begin{equation}
-    \ket{\tau_{\epsilon}} = \sqrt{\frac{1+\epsilon}{2}}\ket{00} + \sqrt{\frac{1-\epsilon}{2}},
-\end{equation}
-for some $\epsilon \in [0, 1]$.
 
 
 \bibliographystyle{alpha}

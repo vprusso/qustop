@@ -114,14 +114,15 @@ class PPT:
 
         # Valid collection of measurements need to sum to the identity
         # operator.
-        constraints.append(cvxpy.sum(meas) == np.identity(self._ensemble.shape[0]))
+        constraints.append(
+            cvxpy.sum(meas) == np.identity(self._ensemble.shape[0])
+        )
 
         # Construct the objective function by taking the inner product of each of the states with
         # each of the measurement variables scaled by the corresponding probability of the given
         # state being selected by the ensemble.
         obj_func = [
-            self._probs[i]
-            * cvxpy.trace(self._states[i].conj().T @ meas[i])
+            self._probs[i] * cvxpy.trace(self._states[i].conj().T @ meas[i])
             for i, _ in enumerate(self._states)
         ]
         obj_sum = cvxpy.sum(obj_func)
@@ -152,7 +153,8 @@ class PPT:
                 for _ in range(num_measurements)
             ]
             constraints = [
-                y_var - self._probs[i] * self._states[i] >> partial_transpose(dual_vars[i], self._sys, self._dims)
+                y_var - self._probs[i] * self._states[i]
+                >> partial_transpose(dual_vars[i], self._sys, self._dims)
                 for i in range(num_measurements)
             ]
             for i in range(num_measurements):
@@ -180,8 +182,14 @@ class PPT:
                             * self._probs[i]
                             * self._states[i]
                         )
-                constraints.append(y_var - self._probs[j] * self._states[j] + sum_val >> partial_transpose(dual_vars[j], self._sys, self._dims))
-            constraints.append(y_var >> partial_transpose(dual_vars[-1], self._sys, self._dims))
+                constraints.append(
+                    y_var - self._probs[j] * self._states[j] + sum_val
+                    >> partial_transpose(dual_vars[j], self._sys, self._dims)
+                )
+            constraints.append(
+                y_var
+                >> partial_transpose(dual_vars[-1], self._sys, self._dims)
+            )
 
         objective = cvxpy.Minimize(cvxpy.trace(cvxpy.real(y_var)))
         problem = cvxpy.Problem(objective, constraints)

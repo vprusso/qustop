@@ -50,8 +50,8 @@ If you are using the :code:`qustop` software package in research work, please
 include an explicit mention of :code:`qustop` in your publication. Something
 along the lines of:
 
-    To solve problem "X" we used `qustop`; a package for studying certain
-    aspects of quantum information.
+    To solve problem "X" we used `qustop`; a package for studying quantum state
+    optimization scenarios.
 
 A BibTeX entry that you can use to cite :code:`qustop` is provided here:
 
@@ -61,7 +61,7 @@ A BibTeX entry that you can use to cite :code:`qustop` is provided here:
        author       = {Vincent Russo},
        title        = {qustop: A {P}ython package for investigating quantum state optimization, version 1.0.0},
        howpublished = {\url{https://github.com/vprusso/qustop}},
-       month        = Mar,
+       month        = May,
        year         = 2021,
        doi          = {XXX}
      }

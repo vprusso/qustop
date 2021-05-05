@@ -34,11 +34,10 @@ ensemble = Ensemble(
     ]
 )
 
-sd = OptDist(
-    ensemble=ensemble, dist_measurement="ppt", dist_method="min-error"
-)
-sd.solve()
-
 # The min-error probability of distinguishing via PPT
 # is equal to 7/8.
-print(sd.value)
+res = OptDist(ensemble, "ppt", "min-error")
+res.solve()
+
+# 0.87500000060847
+print(res.value)

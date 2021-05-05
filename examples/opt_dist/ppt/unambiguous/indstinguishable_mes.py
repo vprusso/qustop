@@ -34,11 +34,10 @@ ensemble = Ensemble(
     ]
 )
 
-sd = OptDist(
-    ensemble=ensemble, dist_measurement="ppt", dist_method="unambiguous"
-)
-sd.solve()
-
 # The unambiguous probability of distinguishing via PPT
 # is equal to 3/4.
+res = OptDist(ensemble, "ppt", "unambiguous")
+res.solve()
+
+# 0.7499999975754753
 print(sd.value)

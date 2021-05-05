@@ -46,18 +46,18 @@ where :math:`\left\lVert \cdot \right\rVert_1`.
 
 A result of [tWalgate00]_ shows that any two orthogonal pure states can be distinguished perfectly.
 This result actually applies to LOCC measurements and is a stronger claim than just for positive
-measurements, but since :math:`\text{opt}_{\text{LOCC}} \leq \text{opt}_{\text{pos}}` it also
-holds for positive measurements.
+measurements, but since :math:`\text{opt}_{\text{LOCC}}(\eta) \leq \text{opt}_{\text{pos}}(\eta)` is
+true for any ensemble :math:`\eta`, it also holds for positive measurements.
 
 For example, consider the two orthogonal pure states
 
 .. math::
-    | \psi_0 \rangle = \sqrt{\frac{3}{4}} | + \rangle + \sqrt{\frac{1}{4}} | - \rangle,
+    | \psi_0 \rangle = \sqrt{\frac{3}{4}} | + \rangle + \sqrt{\frac{1}{4}} | - \rangle
     \quad \text{and} \quad
-    | \psi_1 \rangle = \sqrt{\frac{1}{4}} | + \rangle + \sqrt{\frac{3}{4}} | - \rangle.
+    | \psi_1 \rangle = \sqrt{\frac{1}{4}} | + \rangle - \sqrt{\frac{3}{4}} | - \rangle.
 
-Since :math:`| \psi_0 \rangle` and :math:`| \psi_1 \rangle` are pure and orthogonal with each
-other, they are able to be perfectly distinguished.
+Since :math:`| \psi_0 \rangle` and :math:`| \psi_1 \rangle` are pure and mutually orthogonal,
+they are able to be perfectly distinguished.
 
 .. literalinclude:: ../examples/opt_dist/positive/min_error/two_pure_states.py
    :language: python
@@ -67,9 +67,9 @@ other, they are able to be perfectly distinguished.
 Consider now the following two mixed states
 
 .. math::
-    | \phi_1 \rangle = \frac{3}{4} |+ \rangle \langle + | + \frac{1}{4} |- \rangle \langle - |
+    | \phi_1 \rangle = \sqrt{\frac{3}{4}} |+ \rangle + \sqrt{\frac{1}{4}} |- \rangle
     \quad \text{and} \quad
-    | \phi_2 \rangle = \frac{1}{4} |+ \rangle \langle + | + \frac{3}{4} |- \rangle \langle - |
+    | \phi_2 \rangle = \sqrt{\frac{1}{4}} |+ \rangle + \sqrt{\frac{3}{4}} |- \rangle.
 
 The following code sample shows that the closed-form equation matches the result obtained from
 :code:`qustop`, however, since they are mixed states and not pure, we are not able to perfectly
@@ -108,9 +108,9 @@ For instance, consider the following set of three non-mutually-orthogonal states
 .. math::
     \begin{equation}
         \begin{aligned}
-            | \phi_0 \rangle = \frac{3}{4}| + \rangle \langle + | + \frac{1}{4} | - \rangle \langle - |, &\quad
-            | \phi_1 \rangle = \frac{1}{4}| + \rangle \langle + | + \frac{3}{4} | - \rangle \langle - |, \\
-            | \phi_2 \rangle = \frac{1}{2}| + \rangle \langle + | + \frac{1}{2} | - \rangle \langle - |.
+            | \phi_1 \rangle = \sqrt{\frac{3}{4}}| + \rangle + \sqrt{\frac{1}{4}} | - \rangle, &\quad
+            | \phi_2 \rangle = \sqrt{\frac{1}{4}}| + \rangle + \sqrt{\frac{3}{4}} | - \rangle, \\
+            | \phi_3 \rangle = \sqrt{\frac{1}{2}}| + \rangle + \sqrt{\frac{1}{2}} | - \rangle.
         \end{aligned}
     \end{equation}
 
@@ -142,14 +142,14 @@ As an example, consider the set of three non-mutually-orthogonal states we consi
 .. math::
     \begin{equation}
         \begin{aligned}
-            | \phi_0 \rangle = \frac{3}{4}| + \rangle \langle + | + \frac{1}{4} | - \rangle \langle - |, &\quad
-            | \phi_1 \rangle = \frac{1}{4}| + \rangle \langle + | + \frac{3}{4} | - \rangle \langle - |, \\
-            | \phi_2 \rangle = \frac{1}{2}| + \rangle \langle + | + \frac{1}{2} | - \rangle \langle - |.
+            | \phi_1 \rangle = \sqrt{\frac{3}{4}}| + \rangle + \sqrt{\frac{1}{4}} | - \rangle, &\quad
+            | \phi_2 \rangle = \sqrt{\frac{1}{4}}| + \rangle + \sqrt{\frac{3}{4}} | - \rangle, \\
+            | \phi_3 \rangle = \sqrt{\frac{1}{2}}| + \rangle + \sqrt{\frac{1}{2}} | - \rangle.
         \end{aligned}
     \end{equation}
 
 The probability to distinguish amongst these states unambiguously gives a value of zero, while the minimum-error
-case, as we saw, gave a value of :math:`0.4166666`.
+case, as we saw, gave a value of :math:`3/4`.
 
 .. literalinclude:: ../examples/opt_dist/positive/unambiguous/three_nonorthogonal_states.py
    :language: python

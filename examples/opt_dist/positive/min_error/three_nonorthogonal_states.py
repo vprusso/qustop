@@ -16,28 +16,18 @@ import numpy as np
 
 from qustop import State, Ensemble, OptDist
 
-# Define single-qubit |0> and |1> basis states.
-e_0, e_1 = np.array([[1, 0]]).T, np.array([[0, 1]]).T
+# Define single-qubit |+> and |-> basis states.
 e_p, e_m = (
     1 / np.sqrt(2) * np.array([[1, 1]]).T,
     1 / np.sqrt(2) * np.array([[1, -1]]).T,
 )
 
-# rho_1 = 3/4 |+><+| + 1/4|-><-|
-rho_1 = 3 / 4 * (e_p * e_p.conj().T) + 1 / 4 * (e_m * e_m.conj().T)
-
-# rho_2 = 1/4 |+><+| + 3/4|-><-|
-rho_2 = 1 / 4 * (e_p * e_p.conj().T) + 3 / 4 * (e_m * e_m.conj().T)
-
-# rho_3 = 1/2 |+><+| + 1/2 |-><-|
-rho_3 = 1 / 2 * (e_p * e_p.conj().T) + 1 / 2 * (e_m * e_m.conj().T)
-
 dims = [2]
-rho_1 = State(rho_1, dims)
-rho_2 = State(rho_2, dims)
-rho_3 = State(rho_3, dims)
+phi_1 = State(np.sqrt(3 / 4) * e_p + np.sqrt(1 / 4) * e_m, dims)
+phi_2 = State(np.sqrt(1 / 4) * e_p + np.sqrt(3 / 4) * e_m, dims)
+phi_3 = State(np.sqrt(1 / 2) * e_p + np.sqrt(1 / 2) * e_m, dims)
 
-ensemble = Ensemble([rho_1, rho_2, rho_3])
+ensemble = Ensemble([phi_1, phi_2, phi_3])
 
 # Verify that ensemble consists of non-mutually-orthogonal states.:
 print(f"Is ensemble mutually orthogonal: {ensemble.is_mutually_orthogonal}")
@@ -45,10 +35,8 @@ print(f"Is ensemble mutually orthogonal: {ensemble.is_mutually_orthogonal}")
 # For any set of more than two states that are non-mutually orthogonal, no closed-form expression for optimal
 # distinguishability is known to exist. Therefore, we must resort to solving the SDP to determine what the optimal
 # probability is.
-sd = OptDist(
-    ensemble=ensemble, dist_measurement="pos", dist_method="min-error"
-)
+res = OptDist(ensemble, "pos", "min-error")
 
-# 1/2
-sd.solve()
-print(sd.value)
+# 0.5000000000237005
+res.solve()
+print(res.value)

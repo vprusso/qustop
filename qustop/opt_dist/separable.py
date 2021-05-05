@@ -73,7 +73,9 @@ class Separable:
         self._sym_ext_dim_list = [self._dims[0]] * (self._level + 1)
 
         # dim(X_1) * dim(Y_1) * dim(Y_2) * ... * dim(Y_{level})
-        self._sym_ext_dims = self._ensemble.shape[0] * np.prod(self._sym_ext_dim_list)
+        self._sym_ext_dims = self._ensemble.shape[0] * np.prod(
+            self._sym_ext_dim_list
+        )
 
     def solve(self) -> Union[float, Tuple[float, List[cvxpy.Variable]]]:
         """Solve either the primal or dual problem for the separable SDP."""
@@ -105,15 +107,15 @@ class Separable:
             for i, _ in enumerate(self._states)
         ]
         obj_func = [
-            self._probs[i]
-            * cvxpy.trace(self._states[i].conj().T @ meas[i])
+            self._probs[i] * cvxpy.trace(self._states[i].conj().T @ meas[i])
             for i, _ in enumerate(self._states)
         ]
 
         for k, _ in enumerate(self._states):
             # Tr_{Y_2 \otimes ... \otimes Y_l}(X_k) = meas[k]:
             constraints.append(
-                partial_trace(x_var[k], self._sym_ext_sys_list, dim_list) == meas[k]
+                partial_trace(x_var[k], self._sym_ext_sys_list, dim_list)
+                == meas[k]
             )
             # (I_X \otimes Pi) X_k (I_X \otimes Pi) = X_k
             # where "Pi" is the symmetric projection on (Y \ovee Y_2 \ovee ... \ovee Y_l)
@@ -131,7 +133,9 @@ class Separable:
             constraints.append(meas[k] >> 0)
             constraints.append(x_var[k] >> 0)
 
-        constraints.append(cvxpy.sum(meas) == np.identity(self._ensemble.shape[0]))
+        constraints.append(
+            cvxpy.sum(meas) == np.identity(self._ensemble.shape[0])
+        )
 
         obj_sum = cvxpy.sum(obj_func)
         objective = cvxpy.Maximize(cvxpy.real(obj_sum))

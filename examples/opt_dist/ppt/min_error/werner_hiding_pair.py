@@ -30,13 +30,10 @@ ensemble = Ensemble(states)
 
 expected_val = 1 / 2 + 1 / (dim + 1)
 
-sd = OptDist(
-    ensemble=ensemble, dist_measurement="ppt", dist_method="min-error"
-)
-
-sd.solve()
+res = OptDist(ensemble, "ppt", "min-error")
+res.solve()
 
 # opt_ppt \approx 0.8333333333668715
-print(sd.value)
+print(res.value)
 # Closed-form expression is : 1/2 + 1/(dim+1) = 0.8333333333333333
 print(expected_val)
