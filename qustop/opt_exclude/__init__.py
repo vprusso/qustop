@@ -14,3 +14,4 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 """Optimal exclusion of quantum states."""
+from qustop.opt_exclude.opt_exclude import OptExclude

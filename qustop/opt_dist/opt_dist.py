@@ -18,8 +18,6 @@ from typing import Any, List
 import cvxpy
 import numpy as np
 
-from toqito.state_metrics import trace_norm
-
 from qustop.core import Ensemble
 from qustop.opt_dist import Positive, PPT, Separable
 
@@ -61,67 +59,6 @@ class OptDist:
     def convert_measurements(measurements) -> List[np.ndarray]:
         return [measurements[i].value for i in range(len(measurements))]
 
-    def pre_optimize(self):
-        """For certain special cases of ensembles, we do not need to solve any SDP and can obtain
-        a result analytically.
-        """
-        # If there is only one state in the ensemble, the optimal value is trivially equal to
-        # one. The optimal measurement is simply the identity matrix.
-        if len(self.ensemble) == 1:
-            if self.return_optimal_meas:
-                return 1.0, np.identity(self.ensemble.shape[0])
-            else:
-                return 1.0, []
-
-        if len(self.ensemble) == 2:
-            # If the states are mutually orthogonal and both pure states, they are perfectly distinguishable
-            # arXiv:0007098.
-            if (
-                self.ensemble.is_mutually_orthogonal
-                and self.ensemble[0].is_pure
-                and self.ensemble[1].is_pure
-            ):
-                return 1.0
-
-            # In any case, there is a closed-form expression for the distinguishability of two density matrices.
-            # TODO:
-            else:
-                return 1 / 2 + trace_norm(
-                    self.ensemble.probs[0] * self.ensemble.density_matrices[0]
-                    - self.ensemble.probs[1]
-                    * self.ensemble.density_matrices[1]
-                )
-
-        if len(self.ensemble) == 3:
-            # Check if ensemble is in :math:`\mathbb{C}^2 \otimes \mathbb{C}^2`:
-            if (
-                len(self.ensemble.dims) == 2
-                and self.ensemble.dims[0] == self.ensemble.dims == 2
-            ):
-                # If two out of the three states are product states and all three states are pure then according to
-                # arXiv:0202034, the states are perfectly distinguishable.
-                # TODO
-                pass
-            pass
-
-        if len(self.ensemble) == 4:
-            # If ensemble is in :math:`\mathbb{C}^2 \otimes \mathbb{C}^2` and all states are product states, the
-            # ensemble is perfectly distinguishable according to arXiv:0202034
-            # TODO
-            if (
-                len(self.ensemble.dims) == 2
-                and self.ensemble.dims[0] == self.ensemble.dims == 2
-            ):
-                pass
-            pass
-
-        # # If the states are mutually orthogonal, it is possible to perfectly distinguish.
-        if self.ensemble.is_mutually_orthogonal:
-            # TODO
-            pass
-
-        return None, []
-
     def solve(self) -> None:
         """Depending on the measurement method selected, solve the appropriate optimization problem.
 
@@ -129,17 +66,6 @@ class OptDist:
             ValueError:
                 * If the `dist_measurement` argument is not supported.
         """
-        #
-        # # If `value` and `meas` were solved in the pre-optimization step, there's no need to
-        # # perform any further calculations.
-        # value, meas = self.pre_optimize()
-        # if value is not None and self.return_optimal_meas is False:
-        #     self._optimal_value = value
-        #     return
-        # elif value is not None and self.return_optimal_meas:
-        #     self._optimal_value, self._optimal_measurements = value, meas
-        #     return
-
         if self.dist_measurement == "ppt":
             opt = PPT(
                 self.ensemble,

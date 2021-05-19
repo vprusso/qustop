@@ -158,6 +158,8 @@ class Separable:
         dim_xyy = np.prod(dim_list)
 
         sym = symmetric_projection(dim, self._level)
+        print(sym)
+        print(dim)
         print(f"DIM: {dim}")
         print(f"DIM_XYY: {dim_xyy}")
         print(f"DIM_LIST: {dim_list}")

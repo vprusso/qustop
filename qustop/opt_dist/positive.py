@@ -88,7 +88,8 @@ class Positive:
             for i, _ in enumerate(self._states)
         ]
 
-        # Valid collection of measurements need to sum to the identity operator.
+        # Valid collection of measurements need to sum to the identity operator and be
+        # positive semidefinite.
         constraints = [cvxpy.sum(meas) == np.identity(self._ensemble.shape[0])]
         for i in range(num_measurements):
             constraints.append(meas[i] >> 0)

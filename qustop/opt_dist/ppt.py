@@ -62,7 +62,6 @@ class PPT:
 
     def solve(self) -> Union[float, Tuple[float, List[cvxpy.Variable]]]:
         """Solve either the primal or dual problem for the PPT SDP."""
-
         # Return the optimal value and the optimal measurements.
         if self._return_optimal_meas:
             return self.primal_problem()
@@ -76,7 +75,6 @@ class PPT:
         The primal problem for the min-error case is defined in equation-1 from arXiv:1205.1031.
         The primal problem for the unambiguous case is defined in equation-4 from arXiv:1205.1031.
         """
-
         # Unambiguous consists of `len(self._states)` + 1 measurement operators, where the outcome
         # of the `len(self._states)`+1^st corresponds to the inconclusive answer.
         num_measurements = (
