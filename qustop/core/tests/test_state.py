@@ -27,13 +27,29 @@ def test_state_shape():
     bell_vec = 1 / np.sqrt(2) * (np.kron(e_0, e_0) + np.kron(e_1, e_1))
     state_vec = State(bell_vec, [2, 2])
 
-    assert state_vec.shape == (4, 4)
+    np.testing.assert_equal(state_vec.shape, (4, 4))
 
     # Ensure the state shape is properly set when density matrix is provided as argument.
     bell_state = bell_vec * bell_vec.conj().T
     state_matrix = State(bell_state, [2, 2])
 
-    assert state_matrix.shape == (4, 4)
+    np.testing.assert_equal(state_matrix.shape, (4, 4))
+
+
+def test_state_kron():
+    """Test kronecker product."""
+    dims = [2, 2]
+    state_1 = State(bell(0), dims)
+    state_2 = State(bell(0), dims)
+    state_3 = state_1.kron(state_2)
+
+    np.testing.assert_allclose(state_3.value, np.kron(bell(0)*bell(0).conj().T, bell(0) * bell(0).conj().T))
+
+    state_1 = State(bell(0), dims)
+    state_2 = State(bell(1), dims)
+    state_3 = state_1.kron(state_2)
+
+    np.testing.assert_allclose(state_3.value, np.kron(bell(0) * bell(0).conj().T, bell(1) * bell(1).conj().T))
 
 
 def test_state_purity():
@@ -53,8 +69,8 @@ def test_state_purity():
     rho_1 = State(v_1, dims)
     rho_2 = State(v_2, dims)
 
-    assert rho_1.is_pure is True
-    assert rho_2.is_pure is True
+    np.testing.assert_equal(rho_1.is_pure, True)
+    np.testing.assert_equal(rho_2.is_pure, True)
 
     # sigma_1 = 3/4 |+><+| + 1/4|-><-|
     sigma_1 = 3 / 4 * (e_p * e_p.conj().T) + 1 / 4 * (e_m * e_m.conj().T)
@@ -67,12 +83,22 @@ def test_state_purity():
     sigma_1 = State(sigma_1, dims)
     sigma_2 = State(sigma_2, dims)
 
-    assert sigma_1.is_pure is False
+    np.testing.assert_equal(sigma_1.is_pure, False)
     assert sigma_2.is_pure is False
 
 
 def test_state_equality():
-    pass
+    """Test the equality between different `State` objects."""
+    dims = [2, 2]
+    state_1 = State(bell(0), dims)
+    state_2 = State(bell(0), dims)
+
+    assert state_1 == state_2
+
+    state_1 = State(bell(0), dims)
+    state_2 = State(bell(1), dims)
+
+    assert state_1 != state_2
 
 
 def test_invalid_state():
@@ -100,3 +126,10 @@ def test_invalid_swap_vector_out_of_range():
         dims = [2, 2]
         psi = State(bell(0), dims)
         psi.swap([6, 7])
+
+
+def test_invalid_dims():
+    """Product of dims vector should be equal to dimension of input matrix"""
+    with np.testing.assert_raises(ValueError):
+        dims = [2, 2, 2]
+        State(bell(0), dims)
