@@ -156,8 +156,6 @@ class State:
                 * If either element of `sub_sys_swap` is greater than the number of elements in
                   the ensemble.
         """
-        print(sub_sys_swap)
-        print(len(self._state) + 1)
         if len(sub_sys_swap) != 2:
             raise ValueError(
                 f"The length of the swap vector is {len(sub_sys_swap)}, but must be "
