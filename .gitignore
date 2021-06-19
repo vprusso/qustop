@@ -1,6 +1,6 @@
 *dummy*
 *experiments/
-plot.py
+experiments/plot.py
 *.DS_Store
 *.lock
 *.idea

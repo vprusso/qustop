@@ -221,13 +221,13 @@ def test_state_distinguishability_three_non_orthogonal_states():
     np.testing.assert_equal(
         np.isclose(primal_unambig_res.value, 0, atol=0.001), True
     )
-    # TODO FIX ME
-    # # Dual unambiguous
-    # dual_unambig_res = OptDist(
-    #     ensemble=ensemble, dist_measurement="pos", dist_method="unambiguous", return_optimal_meas=False
-    # )
-    # dual_unambig_res.solve()
-    # np.testing.assert_equal(np.isclose(dual_unambig_res.value, 0, atol=0.001), True)
+
+    # Dual unambiguous
+    dual_unambig_res = OptDist(
+        ensemble=ensemble, dist_measurement="pos", dist_method="unambiguous", return_optimal_meas=False
+    )
+    dual_unambig_res.solve()
+    np.testing.assert_equal(np.isclose(dual_unambig_res.value, 0, atol=0.001), True)
 
 
 def test_state_distinguishability_ydy_density_matrices():

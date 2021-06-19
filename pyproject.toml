@@ -41,7 +41,7 @@ cvx = "*"
 cvxpy = "*"
 numpy = "1.19.0"
 scipy = "*"
-toqito = { path = "../toqito/" }
+toqito = "*"
 scs = "^2.1.2"
 
 [tool.poetry.dev-dependencies]
