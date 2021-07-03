@@ -18,6 +18,7 @@ from typing import List, Optional, Tuple
 
 import numpy as np
 
+from toqito.matrix_ops import vec
 from qustop.core.state import State
 
 
@@ -98,6 +99,13 @@ class Ensemble:
                     ):
                         return False
         return True
+
+    @property
+    def is_linearly_independent(self) -> bool:
+        """Determine if all of the states in the ensemble are linearly independent."""
+        vecs = tuple([vec(state.value) for state in self._states])
+        mat = np.array(vecs).T
+        return np.alltrue(np.linalg.matrix_rank(mat) == len(vecs))
 
     def swap(self, sub_sys_swap: List[int]) -> None:
         """Performs a swap between two subsystems of each state in the ensemble.
