@@ -14,3 +14,4 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 """Optimal probability of cloning of quantum states."""
+from qustop.opt_clone.opt_clone import OptClone
