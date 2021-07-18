@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from typing import List, Tuple, Union
+from typing import Union
 
 import cvxpy
 import numpy as np
@@ -77,7 +77,7 @@ class Separable:
             self._sym_ext_dim_list
         )
 
-    def solve(self) -> Union[float, Tuple[float, List[cvxpy.Variable]]]:
+    def solve(self) -> Union[float, tuple[float, list[cvxpy.Variable]]]:
         """Solve either the primal or dual problem for the separable SDP."""
 
         # Return the optimal value and the optimal measurements.

@@ -13,8 +13,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from typing import List, Tuple
-
 import cvxpy
 import numpy as np
 
@@ -62,7 +60,7 @@ class Positive:
         # Otherwise, it is often less computationally intensive to just solve the dual problem.
         return self.dual_problem()
 
-    def primal_problem(self) -> Tuple[float, List[cvxpy.Variable]]:
+    def primal_problem(self) -> tuple[float, list[cvxpy.Variable]]:
         """Calculate primal problem for the pos (global) distinguishability SDP.
 
         The primal problem for the min-error case is defined in equation-20 from arXiv:1707.02571

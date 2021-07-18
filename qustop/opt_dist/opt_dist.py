@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from typing import Any, List
+from typing import Any
 
 import cvxpy
 import numpy as np
@@ -41,14 +41,14 @@ class OptDist:
         self.level = kwargs.get("level", 2)
 
         self._optimal_value = None
-        self._optimal_measurements: List[np.ndarray] = []
+        self._optimal_measurements: list[np.ndarray] = []
 
     @property
     def value(self) -> float:
         return self._optimal_value
 
     @property
-    def measurements(self) -> List[np.ndarray]:
+    def measurements(self) -> list[np.ndarray]:
         if isinstance(self._optimal_measurements[0], cvxpy.Variable):
             self._optimal_measurements = self.convert_measurements(
                 self._optimal_measurements
@@ -56,7 +56,7 @@ class OptDist:
         return self._optimal_measurements
 
     @staticmethod
-    def convert_measurements(measurements) -> List[np.ndarray]:
+    def convert_measurements(measurements) -> list[np.ndarray]:
         return [measurements[i].value for i in range(len(measurements))]
 
     def solve(self) -> None:

@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from typing import List, Tuple, Union
+from typing import Union
 
 import cvxpy
 import numpy as np
@@ -60,7 +60,7 @@ class PPT:
         # us to take the partial transpose over Alice's subsystems.
         self._sys = self._ensemble[0].alice_systems
 
-    def solve(self) -> Union[float, Tuple[float, List[cvxpy.Variable]]]:
+    def solve(self) -> Union[float, tuple[float, list[cvxpy.Variable]]]:
         """Solve either the primal or dual problem for the PPT SDP."""
         # Return the optimal value and the optimal measurements.
         if self._return_optimal_meas:
@@ -69,7 +69,7 @@ class PPT:
         # Otherwise, it is often less computationally intensive to just solve the dual problem.
         return self.dual_problem()
 
-    def primal_problem(self) -> Tuple[float, List[cvxpy.Variable]]:
+    def primal_problem(self) -> tuple[float, list[cvxpy.Variable]]:
         """Calculate primal problem for the PPT distinguishability SDP.
 
         The primal problem for the min-error case is defined in equation-1 from arXiv:1205.1031.

@@ -14,7 +14,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 """Ensemble of quantum states."""
-from typing import List, Optional, Tuple
+from typing import Optional
 
 import numpy as np
 
@@ -28,7 +28,7 @@ class Ensemble:
     """
 
     def __init__(
-        self, states: List[State], probs: Optional[List[float]] = None
+        self, states: list[State], probs: Optional[list[float]] = None
     ) -> None:
         """Initializes an Ensemble.
 
@@ -65,27 +65,27 @@ class Ensemble:
         return self._states[key]
 
     @property
-    def probs(self) -> List[float]:
+    def probs(self) -> list[float]:
         return self._probs
 
     @property
-    def states(self) -> List[State]:
+    def states(self) -> list[State]:
         return self._states
 
     @property
-    def systems(self) -> List[int]:
+    def systems(self) -> list[int]:
         return self._states[0].systems
 
     @property
-    def dims(self) -> List[int]:
+    def dims(self) -> list[int]:
         return self._states[0].dims
 
     @property
-    def shape(self) -> Tuple[int, int]:
+    def shape(self) -> tuple[int, int]:
         return self._states[0].shape
 
     @property
-    def density_matrices(self) -> List[np.ndarray]:
+    def density_matrices(self) -> list[np.ndarray]:
         return [state.value for state in self._states]
 
     @property
@@ -107,7 +107,7 @@ class Ensemble:
         mat = np.array(vecs).T
         return np.alltrue(np.linalg.matrix_rank(mat) == len(vecs))
 
-    def swap(self, sub_sys_swap: List[int]) -> None:
+    def swap(self, sub_sys_swap: list[int]) -> None:
         """Performs a swap between two subsystems of each state in the ensemble.
 
         Args:
@@ -136,7 +136,7 @@ class Ensemble:
         [state.swap(sub_sys_swap) for state in self._states]
 
     @staticmethod
-    def _prepare_states(states: List[State]) -> Optional[List[State]]:
+    def _prepare_states(states: list[State]) -> Optional[list[State]]:
         """Returns the validated list of quantum states to be used for Ensemble.
 
         Args:
@@ -161,7 +161,7 @@ class Ensemble:
 
         return states
 
-    def _prepare_probs(self, probs: List[float]) -> Optional[List[float]]:
+    def _prepare_probs(self, probs: list[float]) -> Optional[list[float]]:
         """Returns the validated list of probabilities to be used for Ensemble.
 
         Args:

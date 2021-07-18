@@ -36,10 +36,10 @@ keywords = ["quantum information", "quantum computing", "quantum state optimizat
 
 
 [tool.poetry.dependencies]
-python = "3.8.*"
+python = "^3.9"
 cvx = "*"
 cvxpy = "*"
-numpy = "1.19.0"
+numpy = "*"
 scipy = "*"
 toqito = "*"
 scs = "^2.1.2"
