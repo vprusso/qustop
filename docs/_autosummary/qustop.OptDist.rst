@@ -15,7 +15,6 @@ qustop.OptDist
    
       ~OptDist.__init__
       ~OptDist.convert_measurements
-      ~OptDist.pre_optimize
       ~OptDist.solve
    
    

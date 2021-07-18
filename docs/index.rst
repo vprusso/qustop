@@ -39,23 +39,13 @@ User documentation
     states_and_ensembles
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
     :caption: Quantum state distinguishability
 
     quantum_state_distinguishability
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
     :caption: Quantum state exclusion
 
     quantum_state_exclusion
-
-.. toctree::
-    :maxdepth: 2
-    :caption: Tutorials
-
-    tutorials
-
-
-
-

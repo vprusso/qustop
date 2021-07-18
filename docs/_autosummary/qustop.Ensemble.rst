@@ -26,6 +26,7 @@ qustop.Ensemble
    
       ~Ensemble.density_matrices
       ~Ensemble.dims
+      ~Ensemble.is_linearly_independent
       ~Ensemble.is_mutually_orthogonal
       ~Ensemble.probs
       ~Ensemble.shape

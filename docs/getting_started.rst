@@ -4,7 +4,7 @@ Getting started
 Installing
 ^^^^^^^^^^
 
-1. Ensure you have Python 3.8 or greater installed on your machine.
+1. Ensure you have Python 3.9 or greater installed on your machine.
 
 2. Consider using a `virtual environment <https://packaging.python.org/guides/installing-using-pip-and-virtualenv/>`_.
 
@@ -59,7 +59,7 @@ A BibTeX entry that you can use to cite :code:`qustop` is provided here:
 
     @misc{qustop,
        author       = {Vincent Russo},
-       title        = {qustop: A {P}ython package for investigating quantum state optimization, version 1.0.0},
+       title        = {qustop: A {P}ython package for investigating quantum state optimization, version 0.1},
        howpublished = {\url{https://github.com/vprusso/qustop}},
        month        = May,
        year         = 2021,
