@@ -2,7 +2,7 @@
    :alt: qustop logo
    :align: center
 
-qustop
+QUSTOP
 ======
 
 :code:`qustop` (QUantum STate OPtimizer) is a Python package for investigating various quantum state
@@ -22,36 +22,26 @@ quantum state exclusion, quantum state cloning, and more.
    :alt: DOI
    :target: https://zenodo.org/badge/latestdoi/XXX
 
-
-User documentation
-------------------
-
 .. toctree::
     :maxdepth: 1
+    :caption: Getting started
 
     getting_started
     intro_tutorial
 
 .. toctree::
-    :maxdepth: 2
-    :caption: Quantum states and ensembles
+    :maxdepth: 1
+    :caption: API
 
-    states_and_ensembles
-
-.. toctree::
-    :maxdepth: 2
-    :caption: Quantum state distinguishability
-
-    quantum_state_distinguishability
+    api
 
 .. toctree::
-    :maxdepth: 2
-    :caption: Quantum state exclusion
+    :maxdepth: 1
+    :caption: Tutorials
 
-    quantum_state_exclusion
-
-.. toctree::
-    :maxdepth: 2
-    :caption: Quantum state cloning
-
-    quantum_state_cloning
+    tutorials.state_distinguishability
+    tutorials.positive
+    tutorials.ppt
+    tutorials.separable
+    tutorials.state_exclusion
+    tutorials.state_cloning
