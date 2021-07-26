@@ -29,13 +29,12 @@ phi_7 = np.kron((e_0 + e_1 - e_3), e_1 / np.sqrt(3))
 phi_8 = np.kron((e_0 - e_1 + e_2), (e_1 + e_2 + e_3) / 3)
 
 dims = [4, 4]
-states = [
+ensemble = Ensemble([
     State(phi_1, dims), State(phi_2, dims),
     State(phi_3, dims), State(phi_4, dims),
     State(phi_5, dims), State(phi_6, dims),
-    State(phi_7, dims), State(phi_8, dims),
-]
-ensemble = Ensemble(states=states)
+    State(phi_7, dims), State(phi_8, dims)
+])
 res = OptDist(ensemble, "sep", "min-error", level=2)
 res.solve()
 

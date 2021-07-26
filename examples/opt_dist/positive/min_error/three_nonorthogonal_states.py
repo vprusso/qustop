@@ -23,11 +23,11 @@ e_p, e_m = (
 )
 
 dims = [2]
-phi_1 = State(np.sqrt(3 / 4) * e_p + np.sqrt(1 / 4) * e_m, dims)
-phi_2 = State(np.sqrt(1 / 4) * e_p + np.sqrt(3 / 4) * e_m, dims)
-phi_3 = State(np.sqrt(1 / 2) * e_p + np.sqrt(1 / 2) * e_m, dims)
-
-ensemble = Ensemble([phi_1, phi_2, phi_3])
+ensemble = Ensemble([
+    State(np.sqrt(3 / 4) * e_p + np.sqrt(1 / 4) * e_m, dims),
+    State(np.sqrt(1 / 4) * e_p + np.sqrt(3 / 4) * e_m, dims),
+    State(np.sqrt(1 / 2) * e_p + np.sqrt(1 / 2) * e_m, dims)
+])
 
 # Verify that ensemble consists of non-mutually-orthogonal states.:
 print(f"Is ensemble mutually orthogonal: {ensemble.is_mutually_orthogonal}")

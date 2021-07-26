@@ -17,12 +17,10 @@ from toqito.states import bell
 from qustop import State, Ensemble, OptDist
 
 dims = [2, 2]
-psi_0 = State(bell(0), dims)
-psi_1 = State(bell(1), dims)
-psi_2 = State(bell(2), dims)
-psi_3 = State(bell(3), dims)
-
-ensemble = Ensemble([psi_0, psi_1, psi_2, psi_3])
+ensemble = Ensemble([State(bell(0), dims),
+                     State(bell(1), dims),
+                     State(bell(2), dims),
+                     State(bell(3), dims)])
 
 # Verify that states in the ensemble are mutually orthogonal:
 print(f"Are states mutually orthogonal: {ensemble.is_mutually_orthogonal}")

@@ -25,8 +25,10 @@ sigma_1 = (
     np.kron(np.identity(dim), np.identity(dim)) - swap_operator(dim)
 ) / (dim * (dim - 1))
 
-states = [State(sigma_0, [dim, dim]), State(sigma_1, [dim, dim])]
-ensemble = Ensemble(states)
+ensemble = Ensemble([
+    State(sigma_0, [dim, dim]),
+    State(sigma_1, [dim, dim])
+])
 
 expected_val = 1 / 2 + 1 / (dim + 1)
 

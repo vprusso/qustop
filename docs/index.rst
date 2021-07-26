@@ -37,7 +37,7 @@ quantum state exclusion, quantum state cloning, and more.
 
 .. toctree::
     :maxdepth: 1
-    :caption: Tutorials
+    :caption: Examples
 
     tutorials.state_distinguishability
     tutorials.positive

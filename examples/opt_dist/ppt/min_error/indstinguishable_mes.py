@@ -20,17 +20,12 @@ from qustop import State, Ensemble, OptDist
 
 # Define the maximally entangled states from arXiv1107.3224
 dims = [2, 2, 2, 2]
-rho_0 = np.kron(bell(0), bell(0)) * np.kron(bell(0), bell(0)).conj().T
-rho_1 = np.kron(bell(2), bell(1)) * np.kron(bell(2), bell(1)).conj().T
-rho_2 = np.kron(bell(3), bell(1)) * np.kron(bell(3), bell(1)).conj().T
-rho_3 = np.kron(bell(1), bell(1)) * np.kron(bell(1), bell(1)).conj().T
-
 ensemble = Ensemble(
     [
-        State(rho_0, dims),
-        State(rho_1, dims),
-        State(rho_2, dims),
-        State(rho_3, dims),
+        State(np.kron(bell(0), bell(0)) * np.kron(bell(0), bell(0)).conj().T),
+        State(np.kron(bell(2), bell(1)) * np.kron(bell(2), bell(1)).conj().T),
+        State(np.kron(bell(3), bell(1)) * np.kron(bell(3), bell(1)).conj().T),
+        State(np.kron(bell(1), bell(1)) * np.kron(bell(1), bell(1)).conj().T)
     ]
 )
 

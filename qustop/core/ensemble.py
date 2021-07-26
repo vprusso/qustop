@@ -105,7 +105,9 @@ class Ensemble:
         """Determine if all of the states in the ensemble are linearly independent."""
         vecs = tuple([vec(state.value) for state in self._states])
         mat = np.array(vecs).T
-        return np.alltrue(np.linalg.matrix_rank(mat) == len(vecs))
+        if np.alltrue(np.linalg.matrix_rank(mat) == len(vecs)):
+            return True
+        return False
 
     def swap(self, sub_sys_swap: list[int]) -> None:
         """Performs a swap between two subsystems of each state in the ensemble.

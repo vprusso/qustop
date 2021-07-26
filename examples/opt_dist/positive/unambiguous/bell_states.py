@@ -17,12 +17,12 @@ from toqito.states import bell
 from qustop import State, Ensemble, OptDist
 
 dims = [2, 2]
-rho_1 = State(bell(0), dims)
-rho_2 = State(bell(1), dims)
-rho_3 = State(bell(2), dims)
-rho_4 = State(bell(3), dims)
-
-ensemble = Ensemble([rho_1, rho_2, rho_3, rho_4])
+ensemble = Ensemble([
+    State(bell(0), dims),
+    State(bell(1), dims),
+    State(bell(2), dims),
+    State(bell(3), dims)
+])
 
 print(f"Are states mutually orthogonal: {ensemble.is_mutually_orthogonal}")
 

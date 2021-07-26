@@ -18,13 +18,15 @@ from qustop import Ensemble, State, OptDist
 
 # Construct the corresponding density matrices of the Bell states.
 dims = [2, 2]
-states = [
-    State(bell(0), dims),
-    State(bell(1), dims),
-    State(bell(2), dims),
-    State(bell(3), dims),
-]
-ensemble = Ensemble(states, [1 / 4, 1 / 4, 1 / 4, 1 / 4])
+ensemble = Ensemble(
+    [
+        State(bell(0), dims),
+        State(bell(1), dims),
+        State(bell(2), dims),
+        State(bell(3), dims),
+    ],
+    [1 / 4, 1 / 4, 1 / 4, 1 / 4]
+)
 res = OptDist(ensemble, "ppt", "min-error")
 res.solve()
 

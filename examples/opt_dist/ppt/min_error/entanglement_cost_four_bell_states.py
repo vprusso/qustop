@@ -26,14 +26,15 @@ tau = np.sqrt((1 + eps) / 2) * np.kron(e_0, e_0) + np.sqrt(
 ) * np.kron(e_1, e_1)
 
 dims = [2, 2, 2, 2]
-states = [
-    State(np.kron(bell(0), tau), dims),
-    State(np.kron(bell(1), tau), dims),
-    State(np.kron(bell(2), tau), dims),
-    State(np.kron(bell(3), tau), dims),
-]
-probs = [1 / 4, 1 / 4, 1 / 4, 1 / 4]
-ensemble = Ensemble(states, probs)
+ensemble = Ensemble(
+    [
+        State(np.kron(bell(0), tau), dims),
+        State(np.kron(bell(1), tau), dims),
+        State(np.kron(bell(2), tau), dims),
+        State(np.kron(bell(3), tau), dims)
+    ],
+    [1 / 4, 1 / 4, 1 / 4, 1 / 4]
+)
 
 ppt_res = OptDist(ensemble, "ppt", "min-error")
 ppt_res.solve()

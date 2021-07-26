@@ -181,18 +181,6 @@ space :math:`\mathcal{X}` satisfying the constraint that
 
 There are many different classes of measurements.
 
-LOCC measurements
-^^^^^^^^^^^^^^^^^
-
-Separable measurements
-^^^^^^^^^^^^^^^^^^^^^^^
-
-PPT measurements
-^^^^^^^^^^^^^^^^
-
-Positive (global) measurements
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
 Quantum state distinguishability
 ---------------------------------
 
