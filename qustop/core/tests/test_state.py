@@ -21,6 +21,13 @@ from qustop import State
 e_0, e_1 = basis(2, 0), basis(2, 1)
 
 
+def test_ensemble_str_repr():
+    """Test overloaded __str__ method for `State`."""
+    dims = [2, 2]
+    state = State(bell(0), dims)
+    assert isinstance(str(state), str) is True
+
+
 def test_state_shape():
     """Test `shape` property of `State` object."""
     # Ensure the state shape is properly set when vector is provided as argument.

@@ -32,8 +32,9 @@ ensemble = Ensemble([
 # Verify that ensemble consists of non-mutually-orthogonal states.:
 print(f"Is ensemble mutually orthogonal: {ensemble.is_mutually_orthogonal}")
 
-# For any set of more than two states that are non-mutually orthogonal, no closed-form expression for optimal
-# distinguishability is known to exist. Therefore, we must resort to solving the SDP to determine what the optimal
+# For any set of more than two states that are non-mutually orthogonal,
+# no closed-form expression for optimal distinguishability is known to exist.
+# Therefore, we must resort to solving the SDP to determine what the optimal
 # probability is.
 res = OptDist(ensemble, "pos", "min-error")
 

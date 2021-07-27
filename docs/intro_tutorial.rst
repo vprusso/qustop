@@ -89,12 +89,14 @@ state.
      dimensions = [2, 2],
      spaces = ℂ^2 ⊗ ℂ^2,
      labels = A_1 ⊗ B_2,
+     pure = True,
      shape = (4, 4),
+
 
 For instance, we see the :code:`shape` attribute gives information about the
 size of the density matrix of the state. There is also information about the
 subsystems along with which party the subsystems belong to (either Alice or
-Bob), etc.
+Bob), whether the state is pure, etc.
 
 We can use the :code:`value` property of any :code:`State` object to obtain the
 :code:`numpy` matrix representation of the quantum state
@@ -107,7 +109,35 @@ We can use the :code:`value` property of any :code:`State` object to obtain the
      [0.  0.  0.  0. ]
      [0.5 0.  0.  0.5]]
 
+We can also do things like take tensor products of :code:`State` objects.
 
+.. code-block:: python
+
+    >>> sigma_0 = rho_0.kron(rho_0)
+    >>> print(sigma_0)
+    State:
+     dimensions = [2, 2, 2, 2],
+     spaces = ℂ^2 ⊗ ℂ^2 ⊗ ℂ^2 ⊗ ℂ^2,
+     labels = A_1 ⊗ B_2 ⊗ A_3 ⊗ B_4,
+     pure = True,
+     shape = (16, 16),
+
+It is sometimes convenient to swap the subsystems of a given state. For instance,
+this example shows how we can swap the second and third subsystems of the
+:code:`sigma_0` state.
+
+.. code-block:: python
+
+    >>> sigma_0.swap([2, 3])
+    >>> print(sigma_0)
+    State:
+     dimensions = [2, 2, 2, 2],
+     spaces = ℂ^2 ⊗ ℂ^2 ⊗ ℂ^2 ⊗ ℂ^2,
+     labels = A_1 ⊗ A_3 ⊗ B_2 ⊗ B_4,
+     pure = True,
+     shape = (16, 16),
+
+Notice how the :code:`A_3` and :code:`B_2` subsystems are swapped.
 
 Ensembles
 ^^^^^^^^^
@@ -133,6 +163,18 @@ Recall the four two-qubit Bell states
         \end{aligned}
     \end{equation}
 
+The corresponding density operators may be defined as
+
+.. math::
+    \begin{equation}
+        \begin{aligned}
+            \rho_0 = | \psi_0 \rangle \langle \psi_0 |, &\quad
+            \rho_1 = | \psi_1 \rangle \langle \psi_1 |, \\
+            \rho_2 = | \psi_2 \rangle \langle \psi_2 |, &\quad
+            \rho_3 = | \psi_3 \rangle \langle \psi_3 |.
+        \end{aligned}
+    \end{equation}
+
 We can define the following ensemble consisting of the Bell states where the
 probability of selecting any one state from the ensemble is equal to
 :math:`1/4`:
@@ -140,10 +182,10 @@ probability of selecting any one state from the ensemble is equal to
 .. math::
     \begin{equation}
         \eta = \left\{
-                \left(| \psi_0 \rangle, \frac{1}{4} \right),
-                \left(| \psi_1 \rangle, \frac{1}{4} \right),
-                \left(| \psi_2 \rangle, \frac{1}{4} \right),
-                \left(| \psi_3 \rangle, \frac{1}{4} \right)
+                \left(\rho_0, \frac{1}{4} \right),
+                \left(\rho_1, \frac{1}{4} \right),
+                \left(\rho_2, \frac{1}{4} \right),
+                \left(\rho_3, \frac{1}{4} \right)
                \right\}.
     \end{equation}
 
@@ -163,6 +205,48 @@ In :code:`qustop`, we would define this ensemble like so
         State(bell(3) * bell(3).conj().T, dims)
     ]
     ensemble = Ensemble(states=states, probs=[1/4, 1/4, 1/4, 1/4])
+
+Printing out any :code:`Ensemble` object gives us some information about the contents:
+
+.. code-block:: python
+
+    >>> print(ensemble)
+    Ensemble:
+     num_states = 4,
+     states = ρ_0 ⊗ ρ_1 ⊗ ρ_2 ⊗ ρ_3,
+     is_mutually_orthogonal = True,
+     is_linearly_independent = True,
+
+We can see certain pieces of information including how many states
+are contained in the ensemble, whether the states in the ensemble are all
+mutually orthogonal, linearly independent, etc.
+
+We can access any of the states from the :code:`Ensemble` object using standard array indexing notation. For
+instance, here is how we can access the first state in the ensemble.
+
+.. code-block:: python
+
+    >>> print(ensemble[0])
+    State:
+     dimensions = [2, 2],
+     spaces = ℂ^2 ⊗ ℂ^2,
+     labels = A_1 ⊗ B_2,
+     pure = True,
+     shape = (4, 4),
+
+We may also wish to apply some of the functions that we saw before for `State` objects onto the entire ensemble. For
+instance, here is an example of how we can swap the first and second subsystems of each state in the ensemble.
+
+.. code-block:: python
+
+    >>> ensemble.swap([1, 2])
+    >>> print(ensemble[0])
+    State:
+     dimensions = [2, 2],
+     spaces = ℂ^2 ⊗ ℂ^2,
+     labels = B_2 ⊗ A_1,
+     pure = True,
+     shape = (4, 4),
 
 
 Measurements
@@ -191,18 +275,19 @@ two parties--typically denoted as *Alice* and *Bob*.
 A more in-depth description and tutorial on this setting in :code:`qustop` can
 be found in:
 
-- `Tutorial : Quantum State Distinguishability <https://qustop.readthedocs.io/en/latest/tutorials.quantum_state_distinguishabiliy.html>`_.
+- `Tutorial : Quantum state distinguishability <https://qustop.readthedocs.io/en/latest/tutorials.quantum_state_distinguishabiliy.html>`_.
 
-More in-depth descriptions pertaining to quantum state distinguishability under PPT, separable, and positive measurements can be found in:
+More in-depth descriptions pertaining to quantum state distinguishability under positive, PPT, and separable
+measurements can be found in:
 
-- `Tutorial: Quantum State Distinguishability using PPT Measurements
+- `Tutorial: Quantum state distinguishability using positive measurements
+  <https://qustop.readthedocs.io/en/latest/tutorials.positive.html>`_.
+
+- `Tutorial: Quantum state distinguishability using PPT measurements
   <https://qustop.readthedocs.io/en/latest/tutorials.ppt.html>`_.
 
-- `Tutorial: Quantum State Distinguishability using Separable Measurements
+- `Tutorial: Quantum state distinguishability using separable measurements
   <https://qustop.readthedocs.io/en/latest/tutorials.separable.html>`_.
-
-- `Tutorial: Quantum State Distinguishability using Positive Measurements
-  <https://qustop.readthedocs.io/en/latest/tutorials.positive.html>`_.
 
 Quantum state exclusion
 -----------------------

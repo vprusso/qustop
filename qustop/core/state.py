@@ -24,7 +24,7 @@ from toqito.matrix_props import is_density
 
 
 class State:
-    """A `State` object representing a quantum state."""
+    """A :code:`State` object representing a quantum state."""
 
     def __init__(self, state: np.ndarray, dims: list[int]) -> None:
         """Initializes a quantum state.
@@ -60,6 +60,7 @@ class State:
             f"dimensions = {self._dims}, \n "
             f"spaces = {spaces}, \n "
             f"labels = {labels}, \n "
+            f"pure = {self.is_pure}, \n "
             f"shape = {self.shape}, \n"
         )
         return out_s

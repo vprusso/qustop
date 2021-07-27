@@ -50,12 +50,20 @@ class Ensemble:
         return len(self._states)
 
     def __str__(self) -> str:
-        out_s = f"Ensemble: num_states = {len(self)}\n"
+        states = ""
         for i, _ in enumerate(self._states):
             if i == len(self._states) - 1:
-                out_s += f"ρ_{i}"
+                states += f"ρ_{i}"
             else:
-                out_s += f"ρ_{i} ⊗ "
+                states += f"ρ_{i} ⊗ "
+
+        out_s = (
+            f"Ensemble: \n "
+            f"num_states = {len(self)}, \n "
+            f"states = {states}, \n "
+            f"is_mutually_orthogonal = {self.is_mutually_orthogonal}, \n "
+            f"is_linearly_independent = {self.is_linearly_independent}, \n "
+        )
         return out_s
 
     def __repr__(self) -> str:

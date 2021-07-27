@@ -33,6 +33,7 @@ sd = OptDist(
     return_optimal_meas=True,
 )
 
-# Mutually orthogonal states are optimally distinguishable--giving an optimal value of one.
+# Mutually orthogonal states are optimally distinguishable;
+# giving an optimal value of one.
 sd.solve()
 print(sd.value)
