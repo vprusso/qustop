@@ -45,3 +45,9 @@ quantum state exclusion, quantum state cloning, and more.
     tutorials.separable
     tutorials.state_exclusion
     tutorials.state_cloning
+
+.. toctree::
+    :maxdepth: 1
+    :caption: Research
+
+    tutorials.open_problems

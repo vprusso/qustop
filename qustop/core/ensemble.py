@@ -23,7 +23,7 @@ from qustop.core.state import State
 
 
 class Ensemble:
-    """A set of `State` objects denoting quantum states where each element has an associated
+    """A set of :code:`State` objects denoting quantum states where each element has an associated
     probability of being selected from the set.
     """
 

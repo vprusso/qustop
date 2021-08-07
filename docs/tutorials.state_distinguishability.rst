@@ -46,9 +46,13 @@ This setting is depicted in the following figure.
 Distinguishability methods
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-* Minimum-error discrimination
+* Minimum-error discrimination:
 
-* Unambiguous discrimination
+Minimize the average probability of making an error in conclusively identifying the state.
+
+* Unambiguous discrimination:
+
+Never give an incorrect answer, although the answer can be inconclusive.
 
 Distinguishability measurements
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

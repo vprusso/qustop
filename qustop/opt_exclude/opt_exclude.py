@@ -76,13 +76,7 @@ class OptExclude:
         The primal problem for the min-error case is defined in equation-3 from arXiv:1306.4683.
         The primal problem for the unambiguous case is defined in equation-37 from arXiv:1306.4683.
         """
-        # Unambiguous consists of `len(self._states)` + 1 measurement operators, where the outcome
-        # of the `len(self._states)`+1^st corresponds to the inconclusive answer.
-        num_measurements = (
-            len(self._states) + 1
-            if self._dist_method == "unambiguous"
-            else len(self._states)
-        )
+        num_measurements = len(self._states)
 
         # Define each measurement variable to be a PSD variable of appropriate dimension.
         meas = [
@@ -90,32 +84,53 @@ class OptExclude:
             for _ in range(num_measurements)
         ]
 
-        # Objective function is the inner product between the states and measurements.
-        obj_func = [
-            self._probs[i] * cvxpy.trace(self._states[i].conj().T @ meas[i])
-            for i, _ in enumerate(self._states)
-        ]
-
-        # Unambiguous state discrimination has an additional constraint on the states and
-        # measurements.
+        # Unambiguous state discrimination has an additional constraint on the states and measurements.
         if self._dist_method == "unambiguous":
-            # TODO
+            # Objective function is the inner product between the states and measurements.
+            obj_func = [
+                self._probs[i] * cvxpy.trace(self._states[j].conj().T @ meas[i])
+                for i, _ in enumerate(self._states)
+                for j, _ in enumerate(self._states)
+            ]
+            # Valid collection of measurements need to sum to the identity operator and be positive semidefinite.
+            constraints = [cvxpy.sum(meas) <= np.identity(self._ensemble.shape[0])]
+            for i in range(num_measurements):
+                constraints.append(meas[i] >> 0)
+
+            for i in range(num_measurements):
+                constraints.append(cvxpy.trace(self._states[i].conj().T @ meas[i]) == 0)
+
+            obj_sum = cvxpy.sum(obj_func)
+            objective = cvxpy.Maximize(cvxpy.real(obj_sum))
+
+            problem = cvxpy.Problem(objective, constraints)
+            opt_val = problem.solve(solver=self._solver, verbose=self._verbose, eps=self._eps)
+            self._optimal_value = opt_val
+            self._optimal_measurements = meas
+
+        elif self._dist_method == "min-error":
+            # Objective function is the inner product between the states and measurements.
+            obj_func = [
+                self._probs[i] * cvxpy.trace(self._states[i].conj().T @ meas[i])
+                for i, _ in enumerate(self._states)
+            ]
+
+            # Valid collection of measurements need to sum to the identity operator and be positive semidefinite.
+            constraints = [cvxpy.sum(meas) == np.identity(self._ensemble.shape[0])]
+            for i in range(num_measurements):
+                constraints.append(meas[i] >> 0)
+
+            obj_sum = cvxpy.sum(obj_func)
+            objective = cvxpy.Minimize(cvxpy.real(obj_sum))
+
+            problem = cvxpy.Problem(objective, constraints)
+            opt_val = problem.solve(solver=self._solver, verbose=self._verbose, eps=self._eps)
+            self._optimal_value = opt_val
+            self._optimal_measurements = meas
+        elif self._dist_method == "worst-case":
             pass
-
-        # Valid collection of measurements need to sum to the identity operator and be
-        # positive semidefinite.
-        constraints = [cvxpy.sum(meas) == np.identity(self._ensemble.shape[0])]
-        for i in range(num_measurements):
-            constraints.append(meas[i] >> 0)
-
-        obj_sum = cvxpy.sum(obj_func)
-        objective = cvxpy.Minimize(cvxpy.real(obj_sum))
-        problem = cvxpy.Problem(objective, constraints)
-        opt_val = problem.solve(
-            solver=self._solver, verbose=self._verbose, eps=self._eps
-        )
-        self._optimal_value = opt_val
-        self._optimal_measurements = meas
+        else:
+            pass
 
     def dual_problem(self) -> None:
         num_measurements = (
@@ -132,8 +147,6 @@ class OptExclude:
                 for i in range(num_measurements)
             ]
 
-        # This implements the dual problem (equation-4.73) from
-        # https://uwspace.uwaterloo.ca/bitstream/handle/10012/9572/Cosentino_Alessandro.pdf:
         if self._dist_method == "unambiguous":
             pass
 
