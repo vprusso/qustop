@@ -22,7 +22,7 @@ from scipy.stats import unitary_group
 # Number of random states to generate.
 num_tests = 5
 
-ppt_vals_1, ppt_vals_2 = [], []
+ppt_vals = []
 for test in range(num_tests):
     # Generate an ensemble of random mutually orthogonal and pure states.
     # In this case, the ensemble consists of four states, but we could
@@ -56,4 +56,4 @@ for test in range(num_tests):
     # In any case, print out the two-copy values of the ensembles
     # as we progress through the trials.
     print(f"PPT 2-copy: {ppt_2_copy.value}")
-    ppt_vals_2.append(ppt_2_copy.value)
+    ppt_vals.append(ppt_2_copy.value)
