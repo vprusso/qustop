@@ -17,6 +17,7 @@ from typing import Any
 
 import cvxpy
 import numpy as np
+import picos
 
 from qustop.core import Ensemble
 
@@ -133,26 +134,35 @@ class OptExclude:
             pass
 
     def dual_problem(self) -> None:
-        num_measurements = (
-            len(self._states) + 1
-            if self._dist_method == "unambiguous"
-            else len(self._states)
-        )
-        constraints = []
-        y_var = cvxpy.Variable(self._ensemble.shape, hermitian=True)
-
-        if self._dist_method == "min-error":
-            constraints = [
-                (y_var - self._probs[i] * self._states[i]) >> 0
-                for i in range(num_measurements)
-            ]
-
         if self._dist_method == "unambiguous":
-            pass
+            problem = picos.Problem()
 
-        objective = cvxpy.Minimize(cvxpy.trace(cvxpy.real(y_var)))
-        problem = cvxpy.Problem(objective, constraints)
-        opt_val = problem.solve(
-            solver=self._solver, verbose=self._verbose, eps=self._eps
-        )
-        self._optimal_value = opt_val
+            # States as rows:
+            state_mtx = cvxpy.matrix(self._states)
+            n = state_mtx.size[0]
+            d = state_mtx.size[1]
+
+            # Set up density matrices as problem parameters.
+            density_matrices = []
+
+            for k in range(n):
+                mtx = (state_mtx[k, :].H * state_mtx[k, :])
+                density_matrices.append(picos.new_param("P[{0}]".format(k), mtx))
+
+            # Set up the Lagrange multiplier matrix (check the interp?).
+            Y = problem.add_variable("Y", (d, d), "hermitian")
+
+            # Add constraints:
+            problem.add_list_of_constraints([Y << p for p in density_matrices])
+
+            # Add objective:
+            problem.set_objective("max", "I" | Y)
+
+            # Solve the problem:
+            solution = problem.solve(solver=self._solver, verbose=self._verbose)
+
+            # Extract the optimal measurements:
+            measurements = [problem.get_constraint(k).dual for k in range(n)]
+
+            self._optimal_value = solution.value
+            self._optimal_measurements = measurements

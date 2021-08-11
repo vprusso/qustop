@@ -18,8 +18,24 @@ To test installation, run
 
 .. code-block:: python
 
-    import qustop
-    qustop.about()
+    >>> import qustop
+    >>> qustop.about()
+
+    qustop: Quantum Optimizer: A Python toolkit for computing optimal values of various convex
+    optimization problems in quantum information.
+    ==============================================================================
+    Authored by: Vincent Russo, 2021
+
+    Core Dependencies
+    -----------------
+    CVXPY Version:  1.1.13
+    NumPy Version:  1.21.0
+    SciPy Version:  1.6.3
+    Optional Dependencies
+    ---------------------
+    Python Version: 3.9.2
+    Platform Info:  Darwin (x86_64)
+
 
 This prints out version information about core requirements and optional conic optimization software packages that
 :code:`qustop` can interface with.
