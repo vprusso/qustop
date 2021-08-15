@@ -89,16 +89,42 @@ Consider the following Bell states:
         \end{aligned}
     \end{equation}
 
-It is possible to perfectly distinguish via LOCC measurements amongst an
-ensemble of mutually orthogonal states. As the Bell states are all mutually
-orthogonal, we can see that indeed, as LOCC serves as a lower bound for
-distinguishing via PPT measurements that it is possible to perfectly
-distinguish amongst the ensemble of four Bell states.
+Assuming a uniform probability of selecting from any one of these states, that is, assuming we define an ensemble of
+Bell states defined as
+
+.. math::
+    \begin{equation}
+        \mathbb{B} = \left\{
+                        \left(| \psi_0 \rangle, \frac{1}{4} \right),
+                        \left(| \psi_1 \rangle, \frac{1}{4} \right),
+                        \left(| \psi_2 \rangle, \frac{1}{4} \right),
+                        \left(| \psi_3 \rangle, \frac{1}{4} \right)
+                     \right\}
+    \end{equation}
+
+it holds that
+
+.. math::
+    \begin{equation}
+        \text{opt}_{\text{PPT}}(\mathbb{B}) = \frac{1}{2}.
+    \end{equation}
+
+We can observe this using :code:`qustop` as follows.
 
 .. literalinclude:: ../examples/opt_dist/ppt/min_error/four_bell_states.py
    :language: python
    :linenos:
    :start-after: # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+Indeed, a stronger statement is known to hold for :math:`\mathbb{B}`, that is
+
+.. math::
+    \begin{equation}
+        \text{opt}_{\text{LOCC}}(\mathbb{B}) = \frac{1}{2}.
+    \end{equation}
+
+Recall that for any ensemble :math:`\eta`, it holds that :math:`\text{opt}_{\text{LOCC}}(\eta) <
+\text{opt}_{\text{PPT}}(\eta)`.
 
 Four indistinguishable orthogonal maximally entangled states
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

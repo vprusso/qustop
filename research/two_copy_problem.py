@@ -52,5 +52,3 @@ def run(num_states: int, num_trials: int) -> None:
         # In any case, print out the two-copy values of the ensembles
         # as we progress through the trials.
         print(f"PPT 2-copy: {ppt_2_copy.value}")
-
-run(4, 5)

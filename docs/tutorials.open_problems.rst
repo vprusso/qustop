@@ -129,6 +129,10 @@ choice of :math:`\alpha` and :math:`\beta`?
     .. math::
         \frac{1}{2} \left(1 + \sqrt{1-\epsilon^2}\right).
 
+Computational approach:
+^^^^^^^^^^^^^^^^^^^^^^^
+
+(TODO)
 
 The antidistinguishability conjecture
 ---------------------------------------
