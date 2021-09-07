@@ -182,10 +182,10 @@ probability of selecting any one state from the ensemble is equal to
 .. math::
     \begin{equation}
         \eta = \left\{
-                \left(\rho_0, \frac{1}{4} \right),
-                \left(\rho_1, \frac{1}{4} \right),
-                \left(\rho_2, \frac{1}{4} \right),
-                \left(\rho_3, \frac{1}{4} \right)
+                \left(\frac{1}{4}, \rho_1 \right),
+                \left(\frac{1}{4}, \rho_2 \right),
+                \left(\frac{1}{4}, \rho_3 \right),
+                \left(\frac{1}{4}, \rho_4 \right)
                \right\}.
     \end{equation}
 

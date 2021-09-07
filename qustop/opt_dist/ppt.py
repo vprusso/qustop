@@ -151,12 +151,18 @@ class PPT:
                 for _ in range(num_measurements)
             ]
             constraints = [
-                y_var - self._probs[i] * self._states[i]
-                >> partial_transpose(dual_vars[i], self._sys, self._dims)
+                y_var - partial_transpose(self._states[i], self._sys, self._dims) >> 0
                 for i in range(num_measurements)
             ]
             for i in range(num_measurements):
                 constraints.append(dual_vars[i] >> 0)
+            # constraints = [
+            #     y_var - self._probs[i] * self._states[i]
+            #     >> partial_transpose(dual_vars[i], self._sys, self._dims)
+            #     for i in range(num_measurements)
+            # ]
+            # for i in range(num_measurements):
+            #     constraints.append(dual_vars[i] >> 0)
 
         # This implements the dual problem (equation-5) rom arXiv:1205.1031:
         if self._dist_method == "unambiguous":
@@ -195,4 +201,17 @@ class PPT:
             solver=self._solver, verbose=self._verbose, eps=self._eps
         )
 
-        return opt_val
+        # from skimage.util import view_as_blocks
+        #
+        # np.set_printoptions(suppress=True)
+        # Y = np.real(np.around(y_var.value, decimals=5))
+        # Y = view_as_blocks(Y, (8, 8))
+        # print(Y[0][0])
+        # print("\n")
+        # print(Y[0][1])
+        # print("\n")
+        # print(Y[1][0])
+        # print("\n")
+        # print(Y[1][1])
+
+        return 1/len(self._states) * opt_val

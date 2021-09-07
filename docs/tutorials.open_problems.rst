@@ -19,21 +19,26 @@ Euclidean space, let :math:`\rho_i \in \text{D}(\mathcal{X})` be a pure quantum
 state represented as a density operator and let
 
 .. math::
-    \eta = \left\{\rho_1, \ldots, \rho_n \right\} \subset \mathcal{X}
+    \eta = \left\{\left(\frac{1}{n} \rho_1\right), 
+                  \ldots, 
+                  \left(\frac{1}{n}, \rho_n\right) \right\}
+   \subset \mathcal{X}
 
 be an ensemble of pure and mutually orthogonal quantum states. Define
 :math:`\eta^{\otimes 2}` as the two-copy ensemble where
 
 .. math::
-    \eta^{\otimes 2} = \left\{\rho_1 \otimes \rho_1, \ldots, \rho_n \otimes
-    \rho_n \right\} \subset \mathcal{X} \otimes\mathcal{X}
+    \eta^{\otimes 2} = \left\{\left(\frac{1}{n}, \rho_1 \otimes \rho_1\right), 
+                             \ldots, 
+                             \left(\frac{1}{n}, \rho_n \otimes \rho_n\right) \right\} 
+   \subset \mathcal{X} \otimes\mathcal{X}
 
 **Question**: Does there exist a certain ensemble :math:`\eta^{\otimes 2}` such
 that
 
 .. math::
-    \text{opt}_{\text{PPT}}(\eta^{\otimes 2}) < 1 \quad \text{or} \quad
-   \text{opt}_{\text{SEP}}(\eta^{\otimes 2}) < 1?
+    \text{opt}_{\text{PPT}}\left(\eta^{\otimes 2}\right) < 1 \quad \text{or} \quad
+   \text{opt}_{\text{SEP}}\left(\eta^{\otimes 2}\right) < 1?
 
 Computational approach:
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -49,9 +54,9 @@ distinguishing via PPT measurements.
    :linenos:
    :start-after: # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-One can specify the `num_states` parameter to determine how many states are in
-the ensemble and can also modify the `num_trials` parameter to specify for how
-many random ensembles should be generated and checked.
+One can specify the :code:`num_states` parameter to determine how many states
+are in the ensemble and can also modify the :code:`num_trials` parameter to
+specify for how many random ensembles should be generated and checked.
 
 For instance, here we can randomly generate a 4-state two-copy ensemble 5
 different times:
@@ -123,8 +128,8 @@ choice of :math:`\alpha` and :math:`\beta`?
 .. note::
 
     When :math:`\alpha = \beta = \frac{1}{\sqrt{2}}`, the ensemble :math:`\eta`
-    is consists of the Bell states. In this case, it is known that the
-    closed-form entanglement cost is
+    consists of the Bell states. In this case, it is known that the closed-form
+    entanglement cost is
 
     .. math::
         \frac{1}{2} \left(1 + \sqrt{1-\epsilon^2}\right).
