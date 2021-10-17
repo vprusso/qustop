@@ -23,6 +23,7 @@ from qustop.opt_dist import Positive, PPT, Separable
 
 
 class OptDist:
+    """Quantum state distinguishability via positive, PPT, or separable measurements."""
     def __init__(
         self,
         ensemble: Ensemble,
