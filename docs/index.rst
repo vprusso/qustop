@@ -15,7 +15,7 @@ quantum state exclusion, quantum state cloning, and more.
 .. image:: https://readthedocs.org/projects/qustop/badge/?version=latest&style=plastic
    :alt: Documentation
    :target: https://qustop.readthedocs.io/en/latest/
-.. image:: https://codecov.io/gh/vprusso/qustop/branch/master/graph/badge.svg?style=plastic
+.. image:: https://codecov.io/gh/vprusso/qustop/branch/main/graph/badge.svg?style=plastic
    :alt: Codecov
    :target: https://codecov.io/gh/vprusso/qustop
 .. image:: https://zenodo.org/badge/235493396.svg?style=plastic

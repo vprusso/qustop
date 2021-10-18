@@ -58,7 +58,7 @@ All contributions, bug reports, bug fixes, documentation improvements,
 enhancements, and ideas are welcome.
 
 A detailed overview on how to contribute can be found in the
-`contributing guide <https://github.com/vprusso/qustop/blob/master/.github/CONTRIBUTING.md>`_.
+`contributing guide <https://github.com/vprusso/qustop/blob/main/.github/CONTRIBUTING.md>`_.
 
 Citing
 ======

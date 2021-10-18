@@ -2,6 +2,10 @@
 
 # Qustop
 
+[![build status](http://img.shields.io/travis/vprusso/toqito.svg?style=plastic)](https://travis-ci.org/vprusso/qustop)
+[![doc status](https://readthedocs.org/projects/toqito/badge/?version=latest&style=plastic)](https://qustop.readthedocs.io/en/latest/)
+[![codecov](https://codecov.io/gh/vprusso/toqito/branch/main/graph/badge.svg?style=plastic)](https://codecov.io/gh/vprusso/qustop)
+
 *NOTE*: The `qustop` package is still is under development. 
 
 qustop (QUantum STate OPtimizer) is a Python toolkit for studying various
