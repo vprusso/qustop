@@ -17,6 +17,5 @@ formats:
 python:
    version: 3.8
    install:
-   # Install Mitiq with "pip install .[development]"
    - method: pip
      path: .
