@@ -28,18 +28,20 @@ See the [installation guide](https://qustop.readthedocs.io/en/latest/getting_sta
 
 ## Usage
 
-See the [documentation](https://toqito.readthedocs.io/en/latest/index.html) and 
-[tutorials](https://qustop.readthedocs.io/en/latest/tutorials.html).
+See the [documentation](https://qustop.readthedocs.io/en/latest/index.html).
 
 ## Examples
 
-For more examples, please consult `qustop/examples` as well as the `qustop`
-[tutorial page](https://qustop.readthedocs.io/en/latest/tutorials.html).
+For more examples, please consult
+[`qustop/examples`](https://github.com/vprusso/qustop/tree/main/examples/)
+as well as the `qustop` [introductory
+tutorial](https://qustop.readthedocs.io/en/latest/intro_tutorial.html).
 
 ### Quantum state distinguishability
 
 Further examples on quantum state distinguishability can be found in the
-`qustop/examples/opt_dist` directory.
+[`qustop/examples/opt_dist`](https://github.com/vprusso/qustop/tree/main/examples/opt_dist)
+directory.
 
 Consider the following Bell states:
 
