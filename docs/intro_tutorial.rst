@@ -11,12 +11,12 @@ Quantum Computing"
 <https://cs.uwaterloo.ca/~watrous/LectureNotes/CPSC519.Winter2006/all.pdf)>`_
 by John Watrous.
 
-More advanced tutorials can be found on the `tutorials page
-<https://qustop.readthedocs.io/en/latest/tutorials.html>`_.
+More advanced tutorials can be found on the `main documentation directory
+<https://qustop.readthedocs.io/en/latest/index.html>`_.
 
 This tutorial assumes you have :code:`qustop` installed on your machine. If you
-do not, please consult the `installation instructions
-<https://qustop.readthedocs.io/en/latest/install.html>`_.
+do not, please consult the `getting started instructions
+<https://qustop.readthedocs.io/en/latest/getting_started.html>`_.
 
 States, ensembles, and measurements
 -----------------------------------
@@ -275,7 +275,7 @@ two parties--typically denoted as *Alice* and *Bob*.
 A more in-depth description and tutorial on this setting in :code:`qustop` can
 be found in:
 
-- `Tutorial : Quantum state distinguishability <https://qustop.readthedocs.io/en/latest/tutorials.quantum_state_distinguishabiliy.html>`_.
+- `Tutorial : Quantum state distinguishability <https://qustop.readthedocs.io/en/latest/tutorials.state_distinguishability.html>`_.
 
 More in-depth descriptions pertaining to quantum state distinguishability under positive, PPT, and separable
 measurements can be found in:

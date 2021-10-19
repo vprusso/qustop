@@ -1,9 +1,10 @@
 Distinguishing quantum states via positive measurements
 =======================================================
 
-In this tutorial, we are going to show how to make use of :code:`qustop` to calculate the optimal
-probability of distinguishing a state from an ensemble of quantum states when Alice and Bob are
-allowed to use global (positive) measurements on their system.
+In this tutorial, we are going to show how to make use of :code:`qustop` to
+calculate the optimal probability of distinguishing a state from an ensemble of
+quantum states when Alice and Bob are allowed to use global (positive)
+measurements on their system.
 
 Minimum-error distinguishability via positive measurements
 ----------------------------------------------------------
@@ -40,13 +41,13 @@ For the special case of distinguishing between two states, the probability of op
 distinguishing is exactly
 
 .. math::
-    \text{opt}_{\text{pos}}(\eta) = \frac{1}{2} + \frac{1}{4} \left\lVert \eta(0) - \eta(1) \right\rVert_1
+    \text{opt}_{\text{POS}}(\eta) = \frac{1}{2} + \frac{1}{4} \left\lVert \eta(0) - \eta(1) \right\rVert_1
 
 where :math:`\left\lVert \cdot \right\rVert_1`.
 
 A result of [tWalgate00]_ shows that any two orthogonal pure states can be distinguished perfectly.
 This result actually applies to LOCC measurements and is a stronger claim than just for positive
-measurements, but since :math:`\text{opt}_{\text{LOCC}}(\eta) \leq \text{opt}_{\text{pos}}(\eta)` is
+measurements, but since :math:`\text{opt}_{\text{LOCC}}(\eta) \leq \text{opt}_{\text{POS}}(\eta)` is
 true for any ensemble :math:`\eta`, it also holds for positive measurements.
 
 For example, consider the two orthogonal pure states

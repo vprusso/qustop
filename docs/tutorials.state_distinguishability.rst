@@ -101,14 +101,15 @@ separable, and LOCC measurements. Specifically, given an ensemble of quantum
 states, :math:`\eta`, it holds that
 
 .. math::
+    0 \leq
     \text{opt}_{\text{LOCC}}(\eta) \leq
     \text{opt}_{\text{SEP}}(\eta) \leq
     \text{opt}_{\text{PPT}}(\eta) \leq
-    \text{opt}_{\text{pos}}(\eta),
+    \text{opt}_{\text{POS}}(\eta) \leq 1
 
 where:
 
-- :math:`\text{opt}_{\text{pos}}(\eta)` represents the optimal probability of distinguishing using
+- :math:`\text{opt}_{\text{POS}}(\eta)` represents the optimal probability of distinguishing using
   positive measurements,
 
 -   :math:`\text{opt}_{\text{PPT}}(\eta)` represents the probability of distinguishing via PPT
