@@ -19,7 +19,7 @@ Euclidean space, let :math:`\rho_i \in \text{D}(\mathcal{X})` be a pure quantum
 state represented as a density operator and let
 
 .. math::
-    \eta = \left\{\left(\frac{1}{n} \rho_1\right), 
+    \eta = \left\{\left(\frac{1}{n}, \rho_1\right), 
                   \ldots, 
                   \left(\frac{1}{n}, \rho_n\right) \right\}
    \subset \mathcal{X}
@@ -105,7 +105,7 @@ Define the state
 .. math::
     | \tau_{\epsilon} \rangle = \sqrt{\frac{1+\epsilon}{2}} | 00 \rangle +
                                 \sqrt{\frac{1-\epsilon}{2}} | 11 \rangle
-    \in \mathcal{X_2} \otimes \mathcal{Y_2}
+    \in \mathcal{X}_2 \otimes \mathcal{Y}_2
 
 for some choice of :math:`\epsilon \in [0,1]`.
 
@@ -121,7 +121,7 @@ Consider the ensemble
     \subset \mathcal{X} \otimes \mathcal{Y}.
 
 **Question**: Assuming a uniform distribution :math:`p_1 = p_2 = p_3 = p_4 =
-1/4`, any state from :math:`\eta` being selected, what is the closed-form
+1/4`, with any state from :math:`\eta` being selected, what is the closed-form
 entanglement cost of distinguishing :math:`\eta` via PPT measurements for any
 choice of :math:`\alpha` and :math:`\beta`?
 
@@ -137,7 +137,16 @@ choice of :math:`\alpha` and :math:`\beta`?
 Computational approach:
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-(TODO)
+Consider the following snippet of code that considers this problem:
+
+.. literalinclude:: ../research/entanglement_cost_two_qubit.py
+   :language: python
+   :linenos:
+   :start-after: # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+Is it possible to determine a closed form of the optimal value of distinguishing
+via PPT measurements for any choice of `n` and `eps`? It may be illuminating to
+alter these values and see if any obvious closed-form expressions emerge.
 
 The antidistinguishability conjecture
 ---------------------------------------
