@@ -23,8 +23,8 @@ from qustop import Ensemble, State, OptDist
 e_0, e_1 = basis(2, 0), basis(2, 1)
 
 # Define constants "n" and "epsilon":
-n = 0.5
-eps = 0.0
+n = 0.0
+eps = 0.75
 
 # Parameters alpha and beta are defined in terms of "n"
 alpha, beta = np.sqrt((1 + n) / 2), np.sqrt((1 - n) / 2)
@@ -33,24 +33,27 @@ alpha, beta = np.sqrt((1 + n) / 2), np.sqrt((1 - n) / 2)
 psi_0 = alpha * np.kron(e_0, e_0) + beta * np.kron(e_1, e_1)
 psi_1 = beta * np.kron(e_0, e_0) - alpha * np.kron(e_1, e_1)
 psi_2 = alpha * np.kron(e_0, e_1) + beta * np.kron(e_1, e_0)
-psi_3 = beta * np.kron(e_0, e_1) - alpha * np.kron(e_1, e_0)
 
 # Define the resource state:
 tau_state = np.sqrt((1 + eps) / 2) * np.kron(e_0, e_0) + np.sqrt((1 - eps) / 2) * np.kron(e_1, e_1)
 tau = tau_state * tau_state.conj().T
 
-# Create the ensembles to distinguish:
+# Create the ensemble to distinguish:
 dims = [2, 2, 2, 2]
 rho_0 = State(np.kron(psi_0 * psi_0.conj().T, tau), dims)
 rho_1 = State(np.kron(psi_1 * psi_1.conj().T, tau), dims)
 rho_2 = State(np.kron(psi_2 * psi_2.conj().T, tau), dims)
-rho_3 = State(np.kron(psi_3 * psi_3.conj().T, tau), dims)
-
-ensemble = Ensemble([rho_0, rho_1, rho_2, rho_3])
+ensemble = Ensemble([rho_0, rho_1, rho_2])
 
 # Determine the optimal value of distinguishing the ensemble via PPT
 # measurements:
 ppt_res = OptDist(ensemble, "ppt", "min-error")
 ppt_res.solve()
 
-print(f"For n = {n} the PPT value is {ppt_res.value}")
+# Print value of "n", "eps", and the optimal value of distinguishing via PPT
+# measurements:
+print(f"For n = {n} and eps={eps}, the PPT value is {ppt_res.value}")
+sep_eq = 1/3 * (2 + np.sqrt(1 - eps**2))
+eq = 1/3 * (2 + np.sqrt(1.219 - eps**2))
+print(f"EQ:{eq}")
+print(f"SEP_EQ: {sep_eq}")

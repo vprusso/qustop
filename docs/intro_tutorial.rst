@@ -182,10 +182,10 @@ probability of selecting any one state from the ensemble is equal to
 .. math::
     \begin{equation}
         \eta = \left\{
+                \left(\frac{1}{4}, \rho_0 \right),
                 \left(\frac{1}{4}, \rho_1 \right),
                 \left(\frac{1}{4}, \rho_2 \right),
-                \left(\frac{1}{4}, \rho_3 \right),
-                \left(\frac{1}{4}, \rho_4 \right)
+                \left(\frac{1}{4}, \rho_3 \right)
                \right\}.
     \end{equation}
 
@@ -234,8 +234,10 @@ instance, here is how we can access the first state in the ensemble.
      pure = True,
      shape = (4, 4),
 
-We may also wish to apply some of the functions that we saw before for `State` objects onto the entire ensemble. For
-instance, here is an example of how we can swap the first and second subsystems of each state in the ensemble.
+We may also wish to apply some of the functions that we saw before for
+:code:`State` objects onto the entire ensemble. For instance, here is an example
+of how we can swap the first and second subsystems of each state in the
+ensemble.
 
 .. code-block:: python
 
@@ -269,16 +271,16 @@ Quantum state distinguishability
 ---------------------------------
 
 Given an ensemble of quantum states, we can consider the setting of *quantum
-state distinguishability*. This setting can be considered as an interaction between
-two parties--typically denoted as *Alice* and *Bob*.
+state distinguishability*. This setting can be considered as an interaction
+between two parties--typically denoted as *Alice* and *Bob*.
 
 A more in-depth description and tutorial on this setting in :code:`qustop` can
 be found in:
 
 - `Tutorial : Quantum state distinguishability <https://qustop.readthedocs.io/en/latest/tutorials.state_distinguishability.html>`_.
 
-More in-depth descriptions pertaining to quantum state distinguishability under positive, PPT, and separable
-measurements can be found in:
+More in-depth descriptions pertaining to quantum state distinguishability under
+positive, PPT, and separable measurements can be found in:
 
 - `Tutorial: Quantum state distinguishability using positive measurements
   <https://qustop.readthedocs.io/en/latest/tutorials.positive.html>`_.
