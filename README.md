@@ -1,6 +1,6 @@
 # ![logo](./docs/figures/logo.svg "logo") 
 
-# Qustop
+# QUSTOP
 
 [![build status](http://img.shields.io/travis/vprusso/toqito.svg?style=plastic)](https://travis-ci.org/vprusso/qustop)
 [![doc status](https://readthedocs.org/projects/toqito/badge/?version=latest&style=plastic)](https://qustop.readthedocs.io/en/latest/)
@@ -8,19 +8,21 @@
 
 *NOTE*: The `qustop` package is still is under development. 
 
-qustop (QUantum STate OPtimizer) is a Python toolkit for studying various
-quantum state optimization scenarios including calculating optimal values for
-quantum state distinguishability, quantum state exclusion, quantum state
-cloning, and more.
+The `qustop` (QUantum STate OPtimizer) package is a Python toolkit for studying
+various quantum state optimization scenarios including calculating optimal
+values for quantum state distinguishability, quantum state exclusion, quantum
+state cloning, and more.
 
 ## Applications
 
 The `qustop` package can be used to:
 
 - Calculate and approximate optimal probabilities of distinguishing quantum
-  states over positive, PPT, and separable measurements.
+  states over positive, PPT, and separable measurements with either minimum-error
+  or unambiguously.
 
-- Calculate optimal probabilities of optimally excluding quantum states.
+- Calculate and approximate optimal probabilities of excluding quantum states
+  with either minimum-error or unambiguously.
 
 ## Installation
 
