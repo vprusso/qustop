@@ -14,8 +14,8 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import numpy as np
 from toqito.states import basis
-from qustop import Ensemble, State, OptDist
 
+from qustop import Ensemble, OptDist, State
 
 e_0, e_1, e_2, e_3 = basis(4, 0), basis(4, 1), basis(4, 2), basis(4, 3)
 
@@ -29,12 +29,18 @@ phi_7 = np.kron((e_0 + e_1 - e_3), e_1 / np.sqrt(3))
 phi_8 = np.kron((e_0 - e_1 + e_2), (e_1 + e_2 + e_3) / 3)
 
 dims = [4, 4]
-ensemble = Ensemble([
-    State(phi_1, dims), State(phi_2, dims),
-    State(phi_3, dims), State(phi_4, dims),
-    State(phi_5, dims), State(phi_6, dims),
-    State(phi_7, dims), State(phi_8, dims)
-])
+ensemble = Ensemble(
+    [
+        State(phi_1, dims),
+        State(phi_2, dims),
+        State(phi_3, dims),
+        State(phi_4, dims),
+        State(phi_5, dims),
+        State(phi_6, dims),
+        State(phi_7, dims),
+        State(phi_8, dims),
+    ]
+)
 res = OptDist(ensemble, "sep", "min-error", level=2)
 res.solve()
 

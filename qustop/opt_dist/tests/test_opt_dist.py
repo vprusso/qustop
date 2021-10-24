@@ -15,9 +15,9 @@
 
 
 import numpy as np
-
-from qustop import Ensemble, State, OptDist
 from toqito.states import bell
+
+from qustop import Ensemble, OptDist, State
 
 
 def test_invalid_ensemble():

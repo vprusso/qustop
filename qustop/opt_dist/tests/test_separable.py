@@ -15,9 +15,9 @@
 
 import numpy as np
 import pytest
-
 from toqito.states import basis, bell, tile
-from qustop import Ensemble, State, OptDist
+
+from qustop import Ensemble, OptDist, State
 
 
 def test_symmetric_extension_hierarchy_four_bell_density_matrices():

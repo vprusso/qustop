@@ -15,8 +15,7 @@
 import numpy as np
 from toqito.states import bell
 
-from qustop import State, Ensemble, OptDist
-
+from qustop import Ensemble, OptDist, State
 
 # Define the maximally entangled states from arXiv1107.3224
 dims = [2, 2, 2, 2]
@@ -25,7 +24,7 @@ ensemble = Ensemble(
         State(np.kron(bell(0), bell(0)) * np.kron(bell(0), bell(0)).conj().T),
         State(np.kron(bell(2), bell(1)) * np.kron(bell(2), bell(1)).conj().T),
         State(np.kron(bell(3), bell(1)) * np.kron(bell(3), bell(1)).conj().T),
-        State(np.kron(bell(1), bell(1)) * np.kron(bell(1), bell(1)).conj().T)
+        State(np.kron(bell(1), bell(1)) * np.kron(bell(1), bell(1)).conj().T),
     ]
 )
 

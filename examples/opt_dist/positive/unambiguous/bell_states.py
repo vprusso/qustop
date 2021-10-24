@@ -14,15 +14,17 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from toqito.states import bell
 
-from qustop import State, Ensemble, OptDist
+from qustop import Ensemble, OptDist, State
 
 dims = [2, 2]
-ensemble = Ensemble([
-    State(bell(0), dims),
-    State(bell(1), dims),
-    State(bell(2), dims),
-    State(bell(3), dims)
-])
+ensemble = Ensemble(
+    [
+        State(bell(0), dims),
+        State(bell(1), dims),
+        State(bell(2), dims),
+        State(bell(3), dims),
+    ]
+)
 
 print(f"Are states mutually orthogonal: {ensemble.is_mutually_orthogonal}")
 

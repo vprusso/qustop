@@ -89,35 +89,45 @@ class OptExclude:
         if self._dist_method == "unambiguous":
             # Objective function is the inner product between the states and measurements.
             obj_func = [
-                self._probs[i] * cvxpy.trace(self._states[j].conj().T @ meas[i])
+                self._probs[i]
+                * cvxpy.trace(self._states[j].conj().T @ meas[i])
                 for i, _ in enumerate(self._states)
                 for j, _ in enumerate(self._states)
             ]
             # Valid collection of measurements need to sum to the identity operator and be positive semidefinite.
-            constraints = [cvxpy.sum(meas) <= np.identity(self._ensemble.shape[0])]
+            constraints = [
+                cvxpy.sum(meas) <= np.identity(self._ensemble.shape[0])
+            ]
             for i in range(num_measurements):
                 constraints.append(meas[i] >> 0)
 
             for i in range(num_measurements):
-                constraints.append(cvxpy.trace(self._states[i].conj().T @ meas[i]) == 0)
+                constraints.append(
+                    cvxpy.trace(self._states[i].conj().T @ meas[i]) == 0
+                )
 
             obj_sum = cvxpy.sum(obj_func)
             objective = cvxpy.Maximize(cvxpy.real(obj_sum))
 
             problem = cvxpy.Problem(objective, constraints)
-            opt_val = problem.solve(solver=self._solver, verbose=self._verbose, eps=self._eps)
+            opt_val = problem.solve(
+                solver=self._solver, verbose=self._verbose, eps=self._eps
+            )
             self._optimal_value = opt_val
             self._optimal_measurements = meas
 
         elif self._dist_method == "min-error":
             # Objective function is the inner product between the states and measurements.
             obj_func = [
-                self._probs[i] * cvxpy.trace(self._states[i].conj().T @ meas[i])
+                self._probs[i]
+                * cvxpy.trace(self._states[i].conj().T @ meas[i])
                 for i, _ in enumerate(self._states)
             ]
 
             # Valid collection of measurements need to sum to the identity operator and be positive semidefinite.
-            constraints = [cvxpy.sum(meas) == np.identity(self._ensemble.shape[0])]
+            constraints = [
+                cvxpy.sum(meas) == np.identity(self._ensemble.shape[0])
+            ]
             for i in range(num_measurements):
                 constraints.append(meas[i] >> 0)
 
@@ -125,7 +135,9 @@ class OptExclude:
             objective = cvxpy.Minimize(cvxpy.real(obj_sum))
 
             problem = cvxpy.Problem(objective, constraints)
-            opt_val = problem.solve(solver=self._solver, verbose=self._verbose, eps=self._eps)
+            opt_val = problem.solve(
+                solver=self._solver, verbose=self._verbose, eps=self._eps
+            )
             self._optimal_value = opt_val
             self._optimal_measurements = meas
         elif self._dist_method == "worst-case":
@@ -137,20 +149,16 @@ class OptExclude:
         if self._dist_method == "unambiguous":
             problem = picos.Problem()
 
-            # States as rows:
-            state_mtx = cvxpy.matrix(self._states)
-            n = state_mtx.size[0]
-            d = state_mtx.size[1]
-
             # Set up density matrices as problem parameters.
             density_matrices = []
 
-            for k in range(n):
-                mtx = (state_mtx[k, :].H * state_mtx[k, :])
-                density_matrices.append(picos.new_param("P[{0}]".format(k), mtx))
+            for i, state in enumerate(self._states):
+                density_matrices.append(
+                    picos.Constant("P[{0}]".format(i), state)
+                )
 
-            # Set up the Lagrange multiplier matrix (check the interp?).
-            Y = problem.add_variable("Y", (d, d), "hermitian")
+            # Set up the Lagrange multiplier matrix:
+            Y = picos.HermitianVariable("Y", self._states[0].shape)
 
             # Add constraints:
             problem.add_list_of_constraints([Y << p for p in density_matrices])
@@ -159,10 +167,15 @@ class OptExclude:
             problem.set_objective("max", "I" | Y)
 
             # Solve the problem:
-            solution = problem.solve(solver=self._solver, verbose=self._verbose)
+            solution = problem.solve(
+                solver=self._solver, verbosity=self._verbose
+            )
 
             # Extract the optimal measurements:
-            measurements = [problem.get_constraint(k).dual for k in range(n)]
+            measurements = [
+                problem.get_constraint(k).dual
+                for k in range(len(self._states))
+            ]
 
             self._optimal_value = solution.value
             self._optimal_measurements = measurements

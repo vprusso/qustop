@@ -17,11 +17,11 @@ from typing import Union
 
 import cvxpy
 import numpy as np
+from toqito.channels import partial_trace, partial_transpose
+from toqito.helper import cvx_kron
+from toqito.perms import symmetric_projection
 
 from qustop import Ensemble
-from toqito.channels import partial_trace, partial_transpose
-from toqito.perms import symmetric_projection
-from toqito.helper import cvx_kron
 
 
 class Separable:

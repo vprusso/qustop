@@ -14,8 +14,8 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import numpy as np
 from toqito.perms import swap_operator
-from qustop import Ensemble, State, OptDist
 
+from qustop import Ensemble, OptDist, State
 
 dim = 2
 sigma_0 = (
@@ -25,10 +25,7 @@ sigma_1 = (
     np.kron(np.identity(dim), np.identity(dim)) - swap_operator(dim)
 ) / (dim * (dim - 1))
 
-ensemble = Ensemble([
-    State(sigma_0, [dim, dim]),
-    State(sigma_1, [dim, dim])
-])
+ensemble = Ensemble([State(sigma_0, [dim, dim]), State(sigma_1, [dim, dim])])
 
 expected_val = 1 / 2 + 1 / (dim + 1)
 

@@ -14,7 +14,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import numpy as np
 
-from qustop import State, Ensemble, OptDist
+from qustop import Ensemble, OptDist, State
 
 # Define single-qubit |+> and |-> basis states.
 e_p, e_m = (

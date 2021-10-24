@@ -17,8 +17,8 @@
 from typing import Optional
 
 import numpy as np
-
 from toqito.matrix_ops import vec
+
 from qustop.core.state import State
 
 

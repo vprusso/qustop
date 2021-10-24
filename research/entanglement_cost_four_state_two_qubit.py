@@ -12,12 +12,11 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-import numpy as np
-
-from toqito.states import basis
 import matplotlib.pyplot as plt
+import numpy as np
+from toqito.states import basis
 
-from qustop import Ensemble, State, OptDist
+from qustop import Ensemble, OptDist, State
 
 # Define the |0> and |1> basis states:
 e_0, e_1 = basis(2, 0), basis(2, 1)
@@ -36,7 +35,9 @@ psi_2 = alpha * np.kron(e_0, e_1) + beta * np.kron(e_1, e_0)
 psi_3 = beta * np.kron(e_0, e_1) - alpha * np.kron(e_1, e_0)
 
 # Define the resource state:
-tau_state = np.sqrt((1 + eps) / 2) * np.kron(e_0, e_0) + np.sqrt((1 - eps) / 2) * np.kron(e_1, e_1)
+tau_state = np.sqrt((1 + eps) / 2) * np.kron(e_0, e_0) + np.sqrt(
+    (1 - eps) / 2
+) * np.kron(e_1, e_1)
 tau = tau_state * tau_state.conj().T
 
 # Create the ensemble to distinguish:

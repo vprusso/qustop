@@ -18,12 +18,13 @@ from typing import Any
 import cvxpy
 import numpy as np
 
+from qustop.opt_dist import PPT, Positive, Separable
 from qustop.core import Ensemble
-from qustop.opt_dist import Positive, PPT, Separable
 
 
 class OptDist:
     """Quantum state distinguishability via positive, PPT, or separable measurements."""
+
     def __init__(
         self,
         ensemble: Ensemble,

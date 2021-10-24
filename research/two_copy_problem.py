@@ -12,11 +12,12 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-import numpy as np
 import pickle
 
-from qustop import Ensemble, State, OptDist
+import numpy as np
 from scipy.stats import unitary_group
+
+from qustop import Ensemble, OptDist, State
 
 
 def generate_random_two_copy_ensemble(num_states: int) -> Ensemble:
@@ -28,7 +29,9 @@ def generate_random_two_copy_ensemble(num_states: int) -> Ensemble:
 
     # Create the two-copy ensemble.
     dims = [2] * num_states
-    ensemble = [State(np.kron(state, state), dims) for _, state in enumerate(states)]
+    ensemble = [
+        State(np.kron(state, state), dims) for _, state in enumerate(states)
+    ]
     return Ensemble(ensemble)
 
 

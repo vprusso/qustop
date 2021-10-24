@@ -13,8 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from toqito.states import bell
-from qustop import Ensemble, State, OptDist
 
+from qustop import Ensemble, OptDist, State
 
 # Construct the corresponding density matrices of the Bell states.
 dims = [2, 2]
@@ -25,7 +25,7 @@ ensemble = Ensemble(
         State(bell(2), dims),
         State(bell(3), dims),
     ],
-    [1 / 4, 1 / 4, 1 / 4, 1 / 4]
+    [1 / 4, 1 / 4, 1 / 4, 1 / 4],
 )
 res = OptDist(ensemble, "ppt", "min-error")
 res.solve()

@@ -13,11 +13,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import numpy as np
-
 from toqito.states import basis
-import matplotlib.pyplot as plt
 
-from qustop import Ensemble, State, OptDist
+from qustop import Ensemble, OptDist, State
 
 # Define the |0> and |1> basis states:
 e_0, e_1 = basis(2, 0), basis(2, 1)
@@ -35,7 +33,9 @@ psi_1 = beta * np.kron(e_0, e_0) - alpha * np.kron(e_1, e_1)
 psi_2 = alpha * np.kron(e_0, e_1) + beta * np.kron(e_1, e_0)
 
 # Define the resource state:
-tau_state = np.sqrt((1 + eps) / 2) * np.kron(e_0, e_0) + np.sqrt((1 - eps) / 2) * np.kron(e_1, e_1)
+tau_state = np.sqrt((1 + eps) / 2) * np.kron(e_0, e_0) + np.sqrt(
+    (1 - eps) / 2
+) * np.kron(e_1, e_1)
 tau = tau_state * tau_state.conj().T
 
 # Create the ensemble to distinguish:
@@ -53,7 +53,7 @@ ppt_res.solve()
 # Print value of "n", "eps", and the optimal value of distinguishing via PPT
 # measurements:
 print(f"For n = {n} and eps={eps}, the PPT value is {ppt_res.value}")
-sep_eq = 1/3 * (2 + np.sqrt(1 - eps**2))
-eq = 1/3 * (2 + np.sqrt(1.219 - eps**2))
+sep_eq = 1 / 3 * (2 + np.sqrt(1 - eps ** 2))
+eq = 1 / 3 * (2 + np.sqrt(1.219 - eps ** 2))
 print(f"EQ:{eq}")
 print(f"SEP_EQ: {sep_eq}")

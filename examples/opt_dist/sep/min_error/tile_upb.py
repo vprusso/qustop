@@ -14,18 +14,19 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from toqito.states import basis, tile
 
-from qustop import Ensemble, State, OptDist
-
+from qustop import Ensemble, OptDist, State
 
 # Construct the corresponding density matrices of the Tiles UPB.
 dims = [3, 3]
-ensemble = Ensemble([
-    State(tile(0) * tile(0).conj().T, dims),
-    State(tile(1) * tile(1).conj().T, dims),
-    State(tile(2) * tile(2).conj().T, dims),
-    State(tile(3) * tile(3).conj().T, dims),
-    State(tile(4) * tile(4).conj().T, dims)
-])
+ensemble = Ensemble(
+    [
+        State(tile(0) * tile(0).conj().T, dims),
+        State(tile(1) * tile(1).conj().T, dims),
+        State(tile(2) * tile(2).conj().T, dims),
+        State(tile(3) * tile(3).conj().T, dims),
+        State(tile(4) * tile(4).conj().T, dims),
+    ]
+)
 res = OptDist(ensemble, "sep", "min-error", level=2)
 res.solve()
 

@@ -12,10 +12,11 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-import numpy as np
 import pickle
 
-from qustop import Ensemble, State, OptExclude
+import numpy as np
+
+from qustop import Ensemble, OptExclude, State
 
 
 def generate_random_ensemble(dim: int) -> np.ndarray:

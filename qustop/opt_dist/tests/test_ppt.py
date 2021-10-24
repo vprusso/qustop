@@ -15,12 +15,12 @@
 
 import numpy as np
 import pytest
-
 from toqito.matrices import gen_pauli
-from toqito.states import bell
-from toqito.perms import swap_operator
-from qustop import Ensemble, State, OptDist
 from toqito.matrix_ops import vec
+from toqito.perms import swap_operator
+from toqito.states import bell
+
+from qustop import Ensemble, OptDist, State
 
 
 def test_ppt_distinguishability_one_state():

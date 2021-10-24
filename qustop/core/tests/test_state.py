@@ -14,8 +14,8 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import numpy as np
-
 from toqito.states import basis, bell
+
 from qustop import State
 
 e_0, e_1 = basis(2, 0), basis(2, 1)
@@ -50,13 +50,19 @@ def test_state_kron():
     state_2 = State(bell(0), dims)
     state_3 = state_1.kron(state_2)
 
-    np.testing.assert_allclose(state_3.value, np.kron(bell(0)*bell(0).conj().T, bell(0) * bell(0).conj().T))
+    np.testing.assert_allclose(
+        state_3.value,
+        np.kron(bell(0) * bell(0).conj().T, bell(0) * bell(0).conj().T),
+    )
 
     state_1 = State(bell(0), dims)
     state_2 = State(bell(1), dims)
     state_3 = state_1.kron(state_2)
 
-    np.testing.assert_allclose(state_3.value, np.kron(bell(0) * bell(0).conj().T, bell(1) * bell(1).conj().T))
+    np.testing.assert_allclose(
+        state_3.value,
+        np.kron(bell(0) * bell(0).conj().T, bell(1) * bell(1).conj().T),
+    )
 
 
 def test_state_purity():

@@ -248,11 +248,11 @@ Separation between LOCC and separable value
 Problem statement:
 ^^^^^^^^^^^^^^^^^^
 
-Does there exist an ensemble :math:`\eta` fully composed of orthogonal maximally
-entangled states for which the following strict inequality holds:
+Does there exist an ensemble, :math:`\eta`, fully composed of orthogonal
+maximally entangled states for which the following strict inequality holds:
 
 .. math::
-    \text{opt}_{\text{LOCC}}(\eta) < \text{opt}_{\text{SEP}}(\eta).
+    \text{opt}_{\text{LOCC}}(\eta) < \text{opt}_{\text{SEP}}(\eta)?
 
 
 The mathematical structure of LOCC is difficult to generalize, but it is

@@ -15,12 +15,12 @@
 
 """Quantum state object."""
 from __future__ import annotations
+
 from typing import Optional
 
 import numpy as np
-
-from toqito.perms import swap
 from toqito.matrix_props import is_density
+from toqito.perms import swap
 
 
 class State:

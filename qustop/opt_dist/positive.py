@@ -16,7 +16,6 @@
 import cvxpy
 import numpy as np
 
-
 from qustop import Ensemble
 
 

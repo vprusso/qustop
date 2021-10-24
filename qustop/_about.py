@@ -20,11 +20,10 @@ import inspect
 import platform
 import sys
 
+import toqito
 from cvxpy import __version__ as cvxpy_version
 from numpy import __version__ as numpy_version
 from scipy import __version__ as scipy_version
-
-import toqito
 
 TOQITO_SOURCE_FILE = inspect.getsourcefile(toqito)
 assert TOQITO_SOURCE_FILE

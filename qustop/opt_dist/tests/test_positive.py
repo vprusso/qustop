@@ -15,9 +15,9 @@
 
 
 import numpy as np
-
-from qustop import Ensemble, State, OptDist
 from toqito.states import bell
+
+from qustop import Ensemble, OptDist, State
 
 
 def test_state_distinguishability_one_state():
@@ -224,10 +224,15 @@ def test_state_distinguishability_three_non_orthogonal_states():
 
     # Dual unambiguous
     dual_unambig_res = OptDist(
-        ensemble=ensemble, dist_measurement="pos", dist_method="unambiguous", return_optimal_meas=False
+        ensemble=ensemble,
+        dist_measurement="pos",
+        dist_method="unambiguous",
+        return_optimal_meas=False,
     )
     dual_unambig_res.solve()
-    np.testing.assert_equal(np.isclose(dual_unambig_res.value, 0, atol=0.001), True)
+    np.testing.assert_equal(
+        np.isclose(dual_unambig_res.value, 0, atol=0.001), True
+    )
 
 
 def test_state_distinguishability_ydy_density_matrices():

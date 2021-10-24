@@ -14,29 +14,33 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import numpy as np
-
 from toqito.states import basis, bell
-from qustop import State, Ensemble
+
+from qustop import Ensemble, State
 
 
 def test_ensemble_str_repr():
     """Test overloaded __str__ method for `Ensemble`."""
     dims = [2, 2]
-    ensemble = Ensemble([
-        State(bell(0), dims),
-    ])
+    ensemble = Ensemble(
+        [
+            State(bell(0), dims),
+        ]
+    )
     assert isinstance(str(ensemble), str) is True
 
 
 def test_ensemble_states():
     """Check to ensure that `Ensemble` returns list of `State` objects."""
     dims = [2, 2]
-    bell_ensemble = Ensemble([
-        State(bell(0), dims),
-        State(bell(1), dims),
-        State(bell(2), dims),
-        State(bell(3), dims)
-    ])
+    bell_ensemble = Ensemble(
+        [
+            State(bell(0), dims),
+            State(bell(1), dims),
+            State(bell(2), dims),
+            State(bell(3), dims),
+        ]
+    )
     assert len(bell_ensemble.states) == 4
     assert isinstance(bell_ensemble.states[0], State) is True
 
@@ -44,36 +48,34 @@ def test_ensemble_states():
 def test_ensemble_systems():
     """Check to ensure that `Ensemble` returns list of systems."""
     sys_1_dims = [2]
-    sys_1_ensemble = Ensemble([
-        State(basis(2, 0), sys_1_dims),
-        State(basis(2, 1), sys_1_dims)
-    ])
+    sys_1_ensemble = Ensemble(
+        [State(basis(2, 0), sys_1_dims), State(basis(2, 1), sys_1_dims)]
+    )
     assert sys_1_ensemble.systems == [1]
 
     sys_2_dims = [2, 2]
-    sys_2_ensemble = Ensemble([
-        State(bell(0), sys_2_dims),
-        State(bell(1), sys_2_dims),
-        State(bell(2), sys_2_dims),
-        State(bell(3), sys_2_dims)
-    ])
+    sys_2_ensemble = Ensemble(
+        [
+            State(bell(0), sys_2_dims),
+            State(bell(1), sys_2_dims),
+            State(bell(2), sys_2_dims),
+            State(bell(3), sys_2_dims),
+        ]
+    )
     assert sys_2_ensemble.systems == [1, 2]
 
 
 def test_is_linearly_independent():
     """Check if the states are linearly independent or not."""
     dims = [2]
-    li_states = [
-        State(basis(2, 0), dims),
-        State(basis(2, 1), dims)
-    ]
+    li_states = [State(basis(2, 0), dims), State(basis(2, 1), dims)]
     li_ensemble = Ensemble(li_states)
     assert li_ensemble.is_linearly_independent is True
 
     ld_states = [
         State(basis(2, 0), dims),
         State(basis(2, 1), dims),
-        State(basis(2, 0), dims)
+        State(basis(2, 0), dims),
     ]
     ld_ensemble = Ensemble(ld_states)
     assert ld_ensemble.is_linearly_independent is False

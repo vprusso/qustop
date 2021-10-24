@@ -14,7 +14,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import numpy as np
 
-from qustop import State, Ensemble, OptDist
+from qustop import Ensemble, OptDist, State
 
 # Define single-qubit |+> and |-> basis states.
 e_p, e_m = (
@@ -23,11 +23,13 @@ e_p, e_m = (
 )
 
 dims = [2]
-ensemble = Ensemble([
-    State(np.sqrt(3 / 4) * e_p + np.sqrt(1 / 4) * e_m, dims),
-    State(np.sqrt(1 / 4) * e_p + np.sqrt(3 / 4) * e_m, dims),
-    State(np.sqrt(1 / 2) * e_p + np.sqrt(1 / 2) * e_m, dims)
-])
+ensemble = Ensemble(
+    [
+        State(np.sqrt(3 / 4) * e_p + np.sqrt(1 / 4) * e_m, dims),
+        State(np.sqrt(1 / 4) * e_p + np.sqrt(3 / 4) * e_m, dims),
+        State(np.sqrt(1 / 2) * e_p + np.sqrt(1 / 2) * e_m, dims),
+    ]
+)
 
 res = OptDist(ensemble, "pos", "unambiguous")
 
