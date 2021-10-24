@@ -222,7 +222,7 @@ choice of :math:`\alpha` and :math:`\beta`?
     entanglement cost for separable measurements is
 
     .. math::
-        \frac{1}{2} \left(2 + \sqrt{1-\epsilon^2}\right).
+        \frac{1}{3} \left(2 + \sqrt{1-\epsilon^2}\right).
 
 A simpler version of this question is to determine
 :math:`\text{opt}_{\text{PPT}}(\eta)` for :math:`n=0` for any :math:`\epsilon`.
