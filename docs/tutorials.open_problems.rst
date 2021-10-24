@@ -291,13 +291,12 @@ We can randomly generate an ensemble of :math:`d` pure states of dimension
 
 X
 
-Next, we check whether the states are antidistinguishable. This is equivalent
-to checking whether the optimal value of the semidefinite program for the
-problem for the problem of unambiguous quantum state exclusion from
-[arXiv:1306.4683](https://arxiv.org/pdf/1306.4683.pdf) yields a non-zero
-result.
+Next, we check whether the states are antidistinguishable. This is equivalent to
+checking whether the optimal value of the semidefinite program for the problem
+for the problem of unambiguous quantum state exclusion from `arXiv:1306.4683
+<https://arxiv.org/pdf/1306.4683.pdf>`_ yields a non-zero result.
 
-If the states *are* distinguishable, check the bound in the conjecture:
+If the states *are* antidistinguishable, check the bound in the conjecture:
 
     - If the bound is satisfied it implies a satisfaction of the conjecture, so
       we go back to the beginning and try to generate another random ensemble.

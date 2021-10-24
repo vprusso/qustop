@@ -63,7 +63,7 @@ A detailed overview on how to contribute can be found in the
 Citing
 ======
 
-You can cite :code:`qustop` using the following DOI: XXX.
+You can cite :code:`qustop` using the following DOI: 5595257.
 
 If you are using the :code:`qustop` software package in research work, please
 include an explicit mention of :code:`qustop` in your publication. Something
@@ -82,5 +82,4 @@ A BibTeX entry that you can use to cite :code:`qustop` is provided here:
        howpublished = {\url{https://github.com/vprusso/qustop}},
        month        = May,
        year         = 2021,
-       doi          = {XXX}
-     }
+       doi          = {5595257}}
