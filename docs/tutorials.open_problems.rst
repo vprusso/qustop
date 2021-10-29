@@ -270,8 +270,8 @@ measurement that never outputs the result :math:`i` on :math:`| \rho_i
 Problem statement:
 ^^^^^^^^^^^^^^^^^^
 
-Let :math:`| \rho_1 \rangle, \ldots, | \rho_d \rangle` be :math:`d` pure
-quantum states each of dimension :math:`d`. If 
+Let :math:`| \rho_1 \rangle, \ldots, | \rho_d \rangle` be :math:`d` pure quantum
+states each of dimension :math:`d`. If 
 
 .. math:: 
    | \langle \rho_i | \rho_j\rangle| \leq (d-2)/(d-1) 

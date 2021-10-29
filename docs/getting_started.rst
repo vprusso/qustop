@@ -7,8 +7,8 @@ The :code:`qustop` package can be installed from PyPi via
 
     pip install qustop
 
-To build from source, you may also run the following command from the
-top-level package directory.
+To build from source, you may also run the following command from the top-level
+package directory.
 
 .. code-block:: bash
 
@@ -21,8 +21,8 @@ To test installation, run
     >>> import qustop
     >>> qustop.about()
 
-    qustop: Quantum Optimizer: A Python toolkit for computing optimal values of various convex
-    optimization problems in quantum information.
+    qustop: Quantum Optimizer: A Python toolkit for computing optimal values of
+    various convex optimization problems in quantum information.
     ==============================================================================
     Authored by: Vincent Russo, 2021
 
@@ -37,15 +37,17 @@ To test installation, run
     Platform Info:  Darwin (x86_64)
 
 
-This prints out version information about core requirements and optional conic optimization software packages that
-:code:`qustop` can interface with.
+This prints out version information about core requirements and optional conic
+optimization software packages that :code:`qustop` can interface with.
 
 Testing
 =======
 
-The :code:`pytest` module is used for testing. In order to run and :code:`pytest`, you will need to ensure it is
-installed on your machine. Consult the `pytest <https://docs.pytest.org/en/latest/>`_ website for more information. To
-run the suite of tests for :code:`qustop`, run the following command in the root directory of this project:
+The :code:`pytest` module is used for testing. In order to run and
+:code:`pytest`, you will need to ensure it is installed on your machine. Consult
+the `pytest <https://docs.pytest.org/en/latest/>`_ website for more information.
+To run the suite of tests for :code:`qustop`, run the following command in the
+root directory of this project:
 
 .. code-block:: bash
 
@@ -57,8 +59,8 @@ Contributing
 All contributions, bug reports, bug fixes, documentation improvements,
 enhancements, and ideas are welcome.
 
-A detailed overview on how to contribute can be found in the
-`contributing guide <https://github.com/vprusso/qustop/blob/main/.github/CONTRIBUTING.md>`_.
+A detailed overview on how to contribute can be found in the `contributing guide
+<https://github.com/vprusso/qustop/blob/main/.github/CONTRIBUTING.md>`_.
 
 Citing
 ======

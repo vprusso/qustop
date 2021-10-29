@@ -21,7 +21,7 @@ from qustop import State
 e_0, e_1 = basis(2, 0), basis(2, 1)
 
 
-def test_ensemble_str_repr():
+def test_state_str_repr():
     """Test overloaded __str__ method for `State`."""
     dims = [2, 2]
     state = State(bell(0), dims)

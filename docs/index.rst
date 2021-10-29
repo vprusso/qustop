@@ -5,9 +5,10 @@
 QUSTOP
 ======
 
-:code:`qustop` (QUantum STate OPtimizer) is a Python package for investigating various quantum state
-optimization scenarios including calculating optimal values for quantum state distinguishability,
-quantum state exclusion, quantum state cloning, and more.
+:code:`qustop` (QUantum STate OPtimizer) is a Python package for investigating
+various quantum state optimization scenarios including calculating optimal
+values for quantum state distinguishability, quantum state exclusion, quantum
+state cloning, and more.
 
 .. image:: http://img.shields.io/travis/vprusso/toqito.svg?style=plastic
    :alt: Build Status
@@ -18,9 +19,10 @@ quantum state exclusion, quantum state cloning, and more.
 .. image:: https://codecov.io/gh/vprusso/qustop/branch/main/graph/badge.svg?style=plastic
    :alt: Codecov
    :target: https://codecov.io/gh/vprusso/qustop
-.. image:: https://zenodo.org/badge/235493396.svg?style=plastic
+.. image:: https://zenodo.org/badge/5595257.svg?style=plastic
    :alt: DOI
-   :target: https://zenodo.org/badge/latestdoi/XXX
+   :target: https://zenodo.org/badge/latestdoi/5595257
+
 
 .. toctree::
     :maxdepth: 1

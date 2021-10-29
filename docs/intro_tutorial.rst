@@ -8,8 +8,8 @@ introduction to quantum information. For introductory material on quantum
 information, please consult "Quantum Information and Quantum Computation" by
 Nielsen and Chuang or the freely available lecture notes `"Introduction to
 Quantum Computing"
-<https://cs.uwaterloo.ca/~watrous/LectureNotes/CPSC519.Winter2006/all.pdf)>`_
-by John Watrous.
+<https://cs.uwaterloo.ca/~watrous/LectureNotes/CPSC519.Winter2006/all.pdf)>`_ by
+John Watrous.
 
 More advanced tutorials can be found on the `main documentation directory
 <https://qustop.readthedocs.io/en/latest/index.html>`_.
@@ -21,8 +21,8 @@ do not, please consult the `getting started instructions
 States, ensembles, and measurements
 -----------------------------------
 
-Quantum states, and collections of those quantum states that form ensembles,
-are the core building blocks of :code:`qustop`.
+Quantum states, and collections of those quantum states that form ensembles, are
+the core building blocks of :code:`qustop`.
 
 Quantum states
 ^^^^^^^^^^^^^^
@@ -122,9 +122,9 @@ We can also do things like take tensor products of :code:`State` objects.
      pure = True,
      shape = (16, 16),
 
-It is sometimes convenient to swap the subsystems of a given state. For instance,
-this example shows how we can swap the second and third subsystems of the
-:code:`sigma_0` state.
+It is sometimes convenient to swap the subsystems of a given state. For
+instance, this example shows how we can swap the second and third subsystems of
+the :code:`sigma_0` state.
 
 .. code-block:: python
 
@@ -206,7 +206,8 @@ In :code:`qustop`, we would define this ensemble like so
     ]
     ensemble = Ensemble(states=states, probs=[1/4, 1/4, 1/4, 1/4])
 
-Printing out any :code:`Ensemble` object gives us some information about the contents:
+Printing out any :code:`Ensemble` object gives us some information about the
+contents:
 
 .. code-block:: python
 
@@ -217,12 +218,13 @@ Printing out any :code:`Ensemble` object gives us some information about the con
      is_mutually_orthogonal = True,
      is_linearly_independent = True,
 
-We can see certain pieces of information including how many states
-are contained in the ensemble, whether the states in the ensemble are all
-mutually orthogonal, linearly independent, etc.
+We can see certain pieces of information including how many states are contained
+in the ensemble, whether the states in the ensemble are all mutually orthogonal,
+linearly independent, etc.
 
-We can access any of the states from the :code:`Ensemble` object using standard array indexing notation. For
-instance, here is how we can access the first state in the ensemble.
+We can access any of the states from the :code:`Ensemble` object using standard
+array indexing notation. For instance, here is how we can access the first state
+in the ensemble.
 
 .. code-block:: python
 
@@ -259,8 +261,8 @@ A *measurement* is defined as a function
 .. math::
     \mu : \Sigma \rightarrow \text{Pos}(\mathcal{X})
 
-for some finite and nonempty set :math:`\Sigma` and some complex Euclidean
-space :math:`\mathcal{X}` satisfying the constraint that
+for some finite and nonempty set :math:`\Sigma` and some complex Euclidean space
+:math:`\mathcal{X}` satisfying the constraint that
 
 .. math::
     \sum_{a \in \Sigma} \mu(a) = \mathbb{I}_{\mathcal{X}}.
@@ -293,8 +295,10 @@ positive, PPT, and separable measurements can be found in:
 
 Quantum state exclusion
 -----------------------
-(Coming soon).
+
+- `Tutorial : Quantum state exclusion <https://qustop.readthedocs.io/en/latest/tutorials.state_exclusion.html>`_.
 
 Quantum state cloning
 ----------------------
-(Coming soon).
+
+- `Tutorial : Quantum state cloning <https://qustop.readthedocs.io/en/latest/tutorials.state_cloning.html>`_.
