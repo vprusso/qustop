@@ -14,7 +14,6 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from qustop._about import about
-from qustop._version import __version__
 from qustop.core import Ensemble, State
 from qustop.opt_clone import OptClone
 from qustop.opt_dist import PPT, OptDist, Positive, Separable
