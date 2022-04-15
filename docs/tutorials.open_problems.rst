@@ -204,22 +204,22 @@ Consider the ensemble
 
 .. math::
     \eta = \left\{
-    | \psi_0 \rangle \otimes | \tau_{\epsilon} \rangle,
-    | \psi_1 \rangle \otimes | \tau_{\epsilon} \rangle,
+    | \psi_0 \rangle \otimes | \tau_{\epsilon} \rangle, \quad
+    | \psi_1 \rangle \otimes | \tau_{\epsilon} \rangle, \\
     | \psi_2 \rangle \otimes | \tau_{\epsilon} \rangle,
     \right\}
     \subset \mathcal{X} \otimes \mathcal{Y}.
 
 **Question**: Assuming a uniform distribution :math:`p_1 = p_2 = p_3 =
 1/3`, with any state from :math:`\eta` being selected, what is the closed-form
-entanglement cost of distinguishing :math:`\eta` via PPT measurements for any
+entanglement cost of distinguishing :math:`\eta` via separable measurements for any
 choice of :math:`\alpha` and :math:`\beta`?
 
 .. note::
 
     When :math:`\alpha = \beta = \frac{1}{\sqrt{2}}`, the ensemble :math:`\eta`
-    consists of the Bell states. In this case, it is known that the closed-form
-    entanglement cost for separable measurements is
+    consists of three out of the four the Bell states. In this case, it is known
+    that the closed-form entanglement cost for separable measurements is
 
     .. math::
         \frac{1}{3} \left(2 + \sqrt{1-\epsilon^2}\right).

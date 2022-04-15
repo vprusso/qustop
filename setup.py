@@ -15,7 +15,7 @@ requirements = [
 
 setuptools.setup(
     name="qustop",
-    version="0.0.1",
+    version="0.0.2",
     author="Vincent Russo",
     author_email="vincentrusso1@gmail.com",
     description="Python toolkit for studying quantum state optimization problems",
