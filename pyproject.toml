@@ -21,7 +21,7 @@ exclude = '''
 
 [tool.poetry]
 name = "qustop"
-version = "0.0.2"
+version = "0.0.3"
 description = "Python tools for the optimizing over quantum states."
 authors = [
     "Vincent Russo <vincentrusso1@gmail.com>"
